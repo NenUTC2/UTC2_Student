@@ -171,7 +171,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     radius: 100,
                     backgroundColor: ColorApp.lightGrey,
                     backgroundImage: NetworkImage(
-                        "https://scontent.fvca1-2.fna.fbcdn.net/v/t1.6435-9/83499693_1792923720844190_4433367952779116544_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=0qsq2LoR4KAAX91KY5Y&_nc_ht=scontent.fvca1-2.fna&oh=3885c959ab4a00fc44f57791a46f2132&oe=6092C8E1"),
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png"),
                   ),
                 ),
               ),

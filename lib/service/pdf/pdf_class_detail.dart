@@ -57,7 +57,7 @@ class PdfParagraphApi {
           ),
           Divider(thickness: .5),
           SizedBox(height: 0.5 * PdfPageFormat.cm),
-          textCheck('Phạm Thị Miên', customFont, customFontBold)
+          textCheck('Phan Thành Nên', customFont, customFontBold)
         ],
         footer: (context) {
           final text = 'Trang ${context.pageNumber} of ${context.pagesCount}';
@@ -105,9 +105,9 @@ class PdfParagraphApi {
                 SizedBox(height: 0.2 * PdfPageFormat.cm),
                 textInfo('Mô tả : ', '...', customFont),
                 SizedBox(height: 0.2 * PdfPageFormat.cm),
-                textInfo('Giảng viên : ', 'Phạm Thị Miên', customFont),
+                textInfo('Giảng viên : ', 'Phan Thành Nên', customFont),
                 SizedBox(height: 0.2 * PdfPageFormat.cm),
-                textInfo('Email : ', 'ptmien@utc2.edu.vn', customFont),
+                textInfo('Email : ', '5851071044', customFont),
               ]),
               Column(children: [
                 qrCode(logo),

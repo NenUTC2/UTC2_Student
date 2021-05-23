@@ -18,45 +18,46 @@ class _CustomDrawerState extends State<CustomDrawer> {
       'link': 'https://utc2.edu.vn/'
     },
     {
-      'title': 'Nhập điểm',
+      'title': 'Xem điểm',
       'icon': Icons.table_view,
-      'link': 'http://nhapdiem.tms.utc2.edu.vn/TaiKhoangv/#'
+      'link':
+          'http://xemdiem.utc2.edu.vn/svxemdiem.aspx?ID=5851071044&m_lopID=C%C3%B4ng%20ngh%E1%BB%87%20th%C3%B4ng%20tin%20K58&m_lopID_ID=5321&istinchi=1'
     },
-    {
-      'title': 'Hệ thống Cố vấn học tập, Chủ nhiệm lớp',
-      'icon': Icons.fact_check,
-      'link': 'http://smart.utc2.edu.vn:85/cvht/gv/login.jsp'
-    },
-    {
-      'title': 'Đăng ký sử dụng phòng học / báo dạy bù',
-      'icon': Icons.storage,
-      'link': 'http://tmsweb.utc2.edu.vn/Dangkyphong/Dangkyphong'
-    },
-    {
-      'title': 'Đăng ký giấy đi công tác',
-      'icon': Icons.flight_land,
-      'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
-    },
-    {
-      'title': 'Đăng ký giấy giới thiệu',
-      'icon': Icons.badge,
-      'link': 'http://smart.utc2.edu.vn/dvc/vi-vn'
-    },
-    {
-      'title': 'Đăng ký xe đi công tác',
-      'icon': Icons.airport_shuttle,
-      'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
-    },
-    {
-      'title': 'Đăng ký lịch công tác tuần',
-      'icon': Icons.date_range,
-      'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
-    },
-    {
-      'title': 'Đăng ký ở nhà khách',
-      'icon': Icons.night_shelter,
-      'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
-    },
+    // {
+    //   'title': 'Hệ thống Cố vấn học tập, Chủ nhiệm lớp',
+    //   'icon': Icons.fact_check,
+    //   'link': 'http://smart.utc2.edu.vn:85/cvht/gv/login.jsp'
+    // },
+    // {
+    //   'title': 'Đăng ký sử dụng phòng học / báo dạy bù',
+    //   'icon': Icons.storage,
+    //   'link': 'http://tmsweb.utc2.edu.vn/Dangkyphong/Dangkyphong'
+    // },
+    // {
+    //   'title': 'Đăng ký giấy đi công tác',
+    //   'icon': Icons.flight_land,
+    //   'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
+    // },
+    // {
+    //   'title': 'Đăng ký giấy giới thiệu',
+    //   'icon': Icons.badge,
+    //   'link': 'http://smart.utc2.edu.vn/dvc/vi-vn'
+    // },
+    // {
+    //   'title': 'Đăng ký xe đi công tác',
+    //   'icon': Icons.airport_shuttle,
+    //   'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
+    // },
+    // {
+    //   'title': 'Đăng ký lịch công tác tuần',
+    //   'icon': Icons.date_range,
+    //   'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
+    // },
+    // {
+    //   'title': 'Đăng ký ở nhà khách',
+    //   'icon': Icons.night_shelter,
+    //   'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
+    // },
   ];
 
   @override

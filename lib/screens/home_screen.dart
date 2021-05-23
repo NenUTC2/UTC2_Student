@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 elevation: 10,
                 backgroundColor: Colors.white,
                 title: Text(
-                  'Phạm Thị Miên',
+                  'Phan Thành Nên',
                   style: TextStyle(color: ColorApp.black),
                 ),
                 leading: Builder(
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: CircleAvatar(
                               backgroundColor: ColorApp.lightGrey,
                               backgroundImage: NetworkImage(
-                                  "https://scontent.fvca1-2.fna.fbcdn.net/v/t1.6435-9/83499693_1792923720844190_4433367952779116544_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=0qsq2LoR4KAAX91KY5Y&_nc_ht=scontent.fvca1-2.fna&oh=3885c959ab4a00fc44f57791a46f2132&oe=6092C8E1"),
+                                  "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png"),
                             ),
                           ),
                         ),
@@ -124,24 +124,24 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavyBarItem(
                 icon: Icon(Icons.home_rounded),
                 title: Text('Trang chủ'),
-                activeColor: Colors.blue,
+                activeColor: Colors.orange[700],
                 inactiveColor: ColorApp.black),
             BottomNavyBarItem(
                 icon: Icon(
                   Icons.notifications,
                 ),
                 title: Text('Thông báo'),
-                activeColor: Colors.blue,
+                activeColor: Colors.orange[700],
                 inactiveColor: ColorApp.black),
             BottomNavyBarItem(
                 icon: Icon(Icons.date_range),
                 title: Text('Lịch trình'),
-                activeColor: Colors.blue,
+                activeColor: Colors.orange[700],
                 inactiveColor: ColorApp.black),
             BottomNavyBarItem(
                 icon: Icon(Icons.stacked_line_chart_rounded),
                 title: Text('Hoạt động'),
-                activeColor: Colors.blue,
+                activeColor: Colors.orange[700],
                 inactiveColor: ColorApp.black),
           ],
         ));

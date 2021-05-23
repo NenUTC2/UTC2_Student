@@ -20,7 +20,7 @@ class ProFilePage extends StatefulWidget {
 class _ProFilePageState extends State<ProFilePage> {
   File _image;
   String linkImage =
-      'https://scontent.fvca1-2.fna.fbcdn.net/v/t1.6435-9/83499693_1792923720844190_4433367952779116544_n.jpg?_nc_cat=100&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=0qsq2LoR4KAAX91KY5Y&_nc_ht=scontent.fvca1-2.fna&oh=3885c959ab4a00fc44f57791a46f2132&oe=6092C8E1';
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png';
   final picker = ImagePicker();
   Future getImage(bool isCamere) async {
     final pickedFile = await picker.getImage(
@@ -85,7 +85,7 @@ class _ProFilePageState extends State<ProFilePage> {
     {'title': 'Thông tin cá nhân', 'icon': Icons.person_pin},
     {'title': 'Điểm danh', 'icon': Icons.library_add_check_outlined},
     {'title': 'Khối lượng công việc', 'icon': Icons.poll_outlined},
-    {'title': 'Xem bảng lương', 'icon': Icons.money},
+    {'title': 'Xem thời khoá biểu', 'icon': Icons.money},
     {'title': 'Trợ giúp', 'icon': Icons.help_outline_outlined},
     {'title': 'Đánh giá ứng dụng', 'icon': Icons.star},
     {'title': 'Cài đặt', 'icon': Icons.settings},
@@ -239,8 +239,8 @@ class _ProFilePageState extends State<ProFilePage> {
                 SizedBox(
                   height: 10,
                 ),
-                _name('Phạm Thị Miên', size),
-                _email('ptmien@utc2.edu.vn', size),
+                _name('Phan Thành Nên', size),
+                _email('5851071044', size),
               ],
             ),
           ),

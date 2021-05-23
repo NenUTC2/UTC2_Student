@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:circular_check_box/circular_check_box.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -23,7 +22,7 @@ class _HomePageState extends State<HomePage> {
   List user = [
     'https://images.pexels.com/photos/1987042/pexels-photo-1987042.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.6435-9/132520813_846603219451783_6386312700226999104_n.jpg?_nc_cat=106&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=o4rFjC9w9mAAX8uytLC&_nc_ht=scontent.fsgn2-5.fna&oh=4c8653b5d4079ba4db437c5a09f2f239&oe=6091F89D'
+    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png'
   ];
   final _scrollController = ScrollController();
   @override
@@ -178,16 +177,16 @@ class _HomePageState extends State<HomePage> {
                           itemCount: subTask.length,
                           itemBuilder: (context, i) {
                             return ListTile(
-                              leading: CircularCheckBox(
-                                value: subTask[i]['isComplete'],
-                                activeColor: ColorApp.mediumBlue,
-                                checkColor: ColorApp.lightGrey,
-                                onChanged: (value) {
-                                  setState(() {
-                                    subTask[i]['isComplete'] = value;
-                                  });
-                                },
-                              ),
+                              // leading: CircularCheckBox(
+                              //   value: subTask[i]['isComplete'],
+                              //   activeColor: ColorApp.mediumBlue,
+                              //   checkColor: ColorApp.lightGrey,
+                              //   onChanged: (value) {
+                              //     setState(() {
+                              //       subTask[i]['isComplete'] = value;
+                              //     });
+                              //   },
+                              // ),
                               title: Text(subTask[i]['title'].toString()),
                             );
                           },

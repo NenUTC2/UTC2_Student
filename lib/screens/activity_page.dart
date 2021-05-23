@@ -3,7 +3,6 @@ import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/screens/classroom/new_class.dart';
 import 'package:utc2_student/utils/color_random.dart';
 import 'package:utc2_student/utils/utils.dart';
-import 'package:circular_check_box/circular_check_box.dart';
 import 'package:flutter/material.dart';
 
 class ActivityPage extends StatefulWidget {
@@ -15,7 +14,7 @@ class _ActivityPageState extends State<ActivityPage> {
   List activity = [
     {
       'title': 'Đồ án tốt nghiệp',
-      'name': 'Phạm Thị Miên',
+      'name': 'Phan Thành Nên',
       'subAct': ['Báo Cáo tiến độ']
     },
     {
@@ -69,7 +68,7 @@ class _ActivityPageState extends State<ActivityPage> {
     );
   }
 
-  _showBottomSheet(BuildContext context, Size size, String title) {
+  showBottomSheet(BuildContext context, Size size, String title) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -174,15 +173,13 @@ class _ActivityPageState extends State<ActivityPage> {
     return Stack(
       children: [
         Container(
-          child: Expanded(
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: activity.length,
-              itemBuilder: (context, index) {
-                return customList(size, context, activity[index]['title'],
-                    activity[index]['name'], activity[index]['subAct']);
-              },
-            ),
+          child: ListView.builder(
+            physics: BouncingScrollPhysics(),
+            itemCount: activity.length,
+            itemBuilder: (context, index) {
+              return customList(size, context, activity[index]['title'],
+                  activity[index]['name'], activity[index]['subAct']);
+            },
           ),
         ),
         Positioned(

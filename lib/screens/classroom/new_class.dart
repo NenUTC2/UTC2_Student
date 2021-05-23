@@ -4,8 +4,6 @@ import 'dart:typed_data';
 import 'package:utc2_student/service/pdf/pdf_api.dart';
 import 'package:utc2_student/service/pdf/pdf_class_detail.dart';
 import 'package:utc2_student/utils/utils.dart';
-
-import 'package:circular_check_box/circular_check_box.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
@@ -30,7 +28,7 @@ class _NewClassState extends State<NewClass> {
     },
     {
       'avatar':
-          'https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.6435-9/132520813_846603219451783_6386312700226999104_n.jpg?_nc_cat=106&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=o4rFjC9w9mAAX8uytLC&_nc_ht=scontent.fsgn2-5.fna&oh=4c8653b5d4079ba4db437c5a09f2f239&oe=6091F89D',
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png',
       'title': '5851071033@st.utc2.edu.vn',
       'isComplete': false
     },
@@ -54,7 +52,7 @@ class _NewClassState extends State<NewClass> {
     },
     {
       'avatar':
-          'https://scontent.fsgn2-5.fna.fbcdn.net/v/t1.6435-9/132520813_846603219451783_6386312700226999104_n.jpg?_nc_cat=106&ccb=1-3&_nc_sid=09cbfe&_nc_ohc=o4rFjC9w9mAAX8uytLC&_nc_ht=scontent.fsgn2-5.fna&oh=4c8653b5d4079ba4db437c5a09f2f239&oe=6091F89D',
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png',
       'title': '5851071033@st.utc2.edu.vn',
       'isComplete': false
     },
@@ -448,24 +446,24 @@ class _NewClassState extends State<NewClass> {
                                       Text('Tất cả (' +
                                           user.length.toString() +
                                           ")"),
-                                      Transform.scale(
-                                        scale: 0.8,
-                                        child: CircularCheckBox(
-                                          value: isAll,
-                                          activeColor: ColorApp.mediumBlue,
-                                          checkColor: ColorApp.lightGrey,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              for (int i = 0;
-                                                  i < user.length;
-                                                  i++) {
-                                                user[i]['isComplete'] = value;
-                                              }
-                                              isAll = value;
-                                            });
-                                          },
-                                        ),
-                                      ),
+                                      // Transform.scale(
+                                      //   scale: 0.8,
+                                      //   child: CircularCheckBox(
+                                      //     value: isAll,
+                                      //     activeColor: ColorApp.mediumBlue,
+                                      //     checkColor: ColorApp.lightGrey,
+                                      //     onChanged: (value) {
+                                      //       setState(() {
+                                      //         for (int i = 0;
+                                      //             i < user.length;
+                                      //             i++) {
+                                      //           user[i]['isComplete'] = value;
+                                      //         }
+                                      //         isAll = value;
+                                      //       });
+                                      //     },
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                 ),
@@ -520,22 +518,22 @@ class _NewClassState extends State<NewClass> {
                                     Stack(
                                       alignment: Alignment.center,
                                       children: [
-                                        Transform.scale(
-                                          scale: 0.7,
-                                          child: CircularCheckBox(
-                                            value: user[index]['isComplete'],
-                                            activeColor: ColorApp.mediumBlue,
-                                            checkColor: ColorApp.lightGrey,
-                                            onChanged: (value) {
-                                              setState(() {
-                                                setState(() {
-                                                  user[index]['isComplete'] =
-                                                      value;
-                                                });
-                                              });
-                                            },
-                                          ),
-                                        ),
+                                        // Transform.scale(
+                                        //   scale: 0.7,
+                                        //   child: CircularCheckBox(
+                                        //     value: user[index]['isComplete'],
+                                        //     activeColor: ColorApp.mediumBlue,
+                                        //     checkColor: ColorApp.lightGrey,
+                                        //     onChanged: (value) {
+                                        //       setState(() {
+                                        //         setState(() {
+                                        //           user[index]['isComplete'] =
+                                        //               value;
+                                        //         });
+                                        //       });
+                                        //     },
+                                        //   ),
+                                        // ),
                                         Text(
                                           (index + 1).toString(),
                                           style: TextStyle(

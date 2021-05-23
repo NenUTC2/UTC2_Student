@@ -35,7 +35,9 @@ class _NotifyPageState extends State<NotifyPage> {
               child: RefreshIndicator(
                 color: ColorApp.blue,
                 displacement: 40,
-                onRefresh: () {},
+                onRefresh: () async {
+                  print('Refreshed');
+                },
                 child: ListView.builder(
                     physics: BouncingScrollPhysics(),
                     itemCount: 10,
