@@ -14,10 +14,10 @@ class _HomePageState extends State<HomePage> {
       PageController(initialPage: 0, viewportFraction: 0.85);
   final ValueNotifier<int> _pageNotifier = new ValueNotifier<int>(0);
   List subTask = [
-    {'title': 'Báo Cáo', 'isComplete': true},
-    {'title': 'Khảo sát ý kiến', 'isComplete': false},
+    {'title': 'Làm bài kiểm tra', 'isComplete': true},
+    {'title': 'Báo cáo', 'isComplete': false},
+    {'title': 'Trình bày', 'isComplete': false},
     {'title': 'Tổng kết', 'isComplete': true},
-    {'title': 'Trình bày', 'isComplete': false}
   ];
   List user = [
     'https://images.pexels.com/photos/1987042/pexels-photo-1987042.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Tham gia họp báo',
+                      'Lập trình di động',
                       style: TextStyle(
                           color: ColorApp.mediumBlue,
                           fontSize: size.width * 0.05,
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           padding: EdgeInsets.all(5),
                           child: Text(
-                            'Now, 07:00 -11:30',
+                            'Hôm nay, 07:00 -11:30',
                             style: TextStyle(
                               color: ColorApp.blue,
                             ),
@@ -148,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                                   size: 16,
                                 ),
                                 Text(
-                                  'C1',
+                                  '6E10',
                                   style: TextStyle(
                                     color: ColorApp.blue,
                                   ),
@@ -271,7 +271,7 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Trí Tuệ Nhân Tạo',
+                                    'Lập trình di động',
                                     style: TextStyle(
                                         color: ColorApp.mediumBlue,
                                         fontSize: size.width * 0.045,

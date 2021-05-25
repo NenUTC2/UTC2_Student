@@ -50,8 +50,11 @@ class _NotifyPageState extends State<NotifyPage> {
                         //     EdgeInsets.symmetric(horizontal: size.width * 0.03),
                         child: FlatButton(
                           onPressed: () {
-                            _showBottomSheet(context, size, 'Lễ tốt nghiệp',
-                                'Lễ trao bằng tốt nghiệp Đại học tháng 4 năm 2021Lễ trao bằng tốt nghiệp Đại học tháng 4 năm 2021');
+                            _showBottomSheet(
+                                context,
+                                size,
+                                'Đến giờ vào lớp Lập Trình Di động',
+                                'Lớp học đã bắt đầu');
                           },
                           splashColor: ColorApp.blue.withOpacity(.4),
                           highlightColor: ColorApp.lightGrey,
@@ -59,14 +62,14 @@ class _NotifyPageState extends State<NotifyPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Flexible(
-                                  flex: 3, child: leading(size, '11-04-2021')),
+                                  flex: 3, child: leading(size, '11-05-2021')),
                               SizedBox(
                                 width: 10,
                               ),
                               Flexible(
                                 flex: 7,
-                                child: title(
-                                    'Lễ trao bằng tốt nghiệp Đại học tháng 4 năm 2021Lễ trao bằng tốt nghiệp Đại học tháng 4 năm 2021'),
+                                child:
+                                    title('Đến giờ vào lớp Lập trình di động'),
                               ),
                             ],
                           ),

@@ -26,16 +26,20 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
       meetings = <Meeting>[];
       final DateTime today = DateTime.now();
       final DateTime startTime =
-          DateTime(today.year, today.month, today.day, 9, 0, 0);
+          DateTime(today.year, today.month, today.day + 1, 7, 0, 0);
       final DateTime startTime1 =
-          DateTime(today.year, today.month, today.day, 7, 30, 0);
-      final DateTime endTime = startTime.add(const Duration(hours: 2));
-      meetings.add(Meeting('Trí tuệ nhân tạo\n 204E7', startTime, endTime,
+          DateTime(today.year, today.month, today.day + 3, 7, 30, 0);
+      final DateTime startTime2 =
+          DateTime(today.year, today.month, today.day + 5, 7, 30, 0);
+      final DateTime endTime = startTime.add(const Duration(hours: 4));
+      final DateTime endTime1 = startTime1.add(const Duration(hours: 4));
+      final DateTime endTime2 = startTime2.add(const Duration(hours: 4));
+      meetings.add(Meeting('Lập trình di động\n 204E7', startTime, endTime,
           ColorApp.lightBlue, false));
-      meetings.add(Meeting('Trí tuệ nhân tạo\n 204E7', startTime, endTime,
+      meetings.add(Meeting('Trí tuệ nhân tạo\n 204E7', startTime1, endTime1,
           ColorApp.lightBlue, false));
-      meetings.add(Meeting('Trí tuệ nhân tạo\n 204E7', startTime1, endTime,
-          ColorApp.lightBlue, false));
+      meetings.add(Meeting(
+          'PTTKHT\n 204E7', startTime2, endTime2, ColorApp.lightBlue, false));
       return meetings;
     }
 

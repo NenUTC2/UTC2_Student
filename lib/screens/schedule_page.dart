@@ -19,13 +19,13 @@ class _SchedulePageState extends State<SchedulePage> {
             backgroundColor: Colors.white,
             centerTitle: true,
             title: PreferredSize(
-                preferredSize: Size.fromHeight(kToolbarHeight),
+                preferredSize: Size(0, size.height * 0.12),
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 10),
+                  margin: EdgeInsets.only(bottom: 10, top: 5),
                   width: size.width * 0.8,
                   height: size.height * 0.06,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(20),
                       color: ColorApp.lightGrey),
                   child: TabBar(
                     physics: BouncingScrollPhysics(),

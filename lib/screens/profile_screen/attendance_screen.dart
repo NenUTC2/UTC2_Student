@@ -160,7 +160,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               CustomAvatarGlow(
                 glowColor: Colors.blue,
                 endRadius: 70.0,
-                duration: Duration(milliseconds: 1000),
+                duration: Duration(milliseconds: 2000),
                 repeat: true,
                 showTwoGlows: true,
                 repeatPauseDuration: Duration(milliseconds: 100),
