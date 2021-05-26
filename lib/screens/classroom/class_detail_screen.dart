@@ -1,5 +1,8 @@
 import 'dart:math';
 
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:utc2_student/screens/home_screen.dart';
+import 'package:utc2_student/service/local_notification.dart';
 import 'package:utc2_student/utils/custom_glow.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:utc2_student/widgets/class_drawer.dart';
@@ -16,6 +19,36 @@ class DetailClassScreen extends StatefulWidget {
 }
 
 class _DetailClassScreenState extends State<DetailClassScreen> {
+  final notifications = FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    sendNoti();
+    final settingsAndroid = AndroidInitializationSettings('app_icon');
+
+    final settingsIOS = IOSInitializationSettings(
+        onDidReceiveLocalNotification: (id, title, body, payload) =>
+            onSelectNotification(payload));
+
+    notifications.initialize(
+        InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
+        onSelectNotification: onSelectNotification);
+  }
+
+  void sendNoti() async {
+    await MyLocalNotification.configureLocalTimeZone();
+    // await MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
+    //     notifications, 14, 20);
+    // await MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
+    //     notifications, 14, 19);
+  }
+
+  Future onSelectNotification(String payload) async => await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+      );
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -62,7 +95,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
             SizedBox(
               height: 7,
             ),
-            comment(size)
+            comment(size, MyLocalNotification.showNotification, notifications)
           ],
         ),
       ),
@@ -168,7 +201,11 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
     );
   }
 
-  Widget comment(Size size) {
+  Widget comment(
+      Size size,
+      Future<void> comment(
+          FlutterLocalNotificationsPlugin noti, String t, String b),
+      FlutterLocalNotificationsPlugin noti) {
     return Container(
       width: size.width,
       alignment: Alignment.center,
@@ -186,7 +223,10 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: ColorApp.lightGrey)),
       child: TextButton(
-        onPressed: () {},
+        onPressed: () async {
+          await comment(noti, 'title', 'body');
+          print('dsd');
+        },
         child: Row(
           children: [
             CustomAvatarGlow(
@@ -200,8 +240,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                 padding: EdgeInsets.all(4),
                 child: CircleAvatar(
                   backgroundColor: ColorApp.lightGrey,
-                  backgroundImage: NetworkImage(
-                      "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png"),
+                  backgroundImage: AssetImage('assets/images/logoUTC.png'),
                 ),
               ),
             ),

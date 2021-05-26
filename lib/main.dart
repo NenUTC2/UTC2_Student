@@ -3,13 +3,14 @@ import 'dart:io';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:utc2_student/service/local_notification.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
 }
@@ -45,9 +46,19 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   FirebaseMessaging _fireBaseMessaging;
+  final notifications = FlutterLocalNotificationsPlugin();
   @override
   void initState() {
     super.initState();
+    final settingsAndroid = AndroidInitializationSettings('app_icon');
+
+    final settingsIOS = IOSInitializationSettings(
+        onDidReceiveLocalNotification: (id, title, body, payload) =>
+            onSelectNotification(payload));
+
+    notifications.initialize(
+        InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
+        onSelectNotification: onSelectNotification);
     if (Platform.isIOS) {
       _fireBaseMessaging.requestPermission(
           alert: true, badge: true, sound: true, provisional: true);
@@ -65,10 +76,15 @@ class _HomePageState extends State<HomePage> {
       }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print('>>>>>>>>>>A new onMessage event');
+      print('>>>>>>>>>>A new onMessage event' + message.notification.body);
+      MyLocalNotification.showNotification(
+          notifications, message.notification.title, message.notification.body);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('>>>>>>>>>>A new onMessageOpenedApp event');
+      // Future.delayed(Duration(seconds: 2), () {
+      Get.to(DetailClassScreen());
+      // });
     });
   }
 
@@ -80,7 +96,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
           fontFamily: 'Nunito',
           primaryColor: Colors.orange,
@@ -102,5 +118,13 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       print('get token exception : ' + e.toString());
     }
+  }
+
+  Future onSelectNotification(String payload) async {
+    print('onSelect');
+    await Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen()),
+    );
   }
 }

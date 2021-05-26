@@ -52,7 +52,6 @@ dependencies:
   firebase_core: ^1.2.0
   firebase_auth: ^1.2.0
   flutter_bloc: ^7.0.0
-  flutter_local_notifications: ^5.0.0+4
   flutter_barcode_scanner: ^2.0.0
   flutter_svg: ^0.22.0
   flutter_html: ^2.0.0
@@ -73,6 +72,8 @@ dependencies:
   pdf: ^3.3.0
   path_provider: ^2.0.1
   open_file: ^3.2.1
+  flutter_local_notifications: ^6.0.0
+  flutter_native_timezone: ^1.0.10
 
  
 
