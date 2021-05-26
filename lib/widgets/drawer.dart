@@ -23,41 +23,92 @@ class _CustomDrawerState extends State<CustomDrawer> {
       'link':
           'http://xemdiem.utc2.edu.vn/svxemdiem.aspx?ID=5851071044&m_lopID=C%C3%B4ng%20ngh%E1%BB%87%20th%C3%B4ng%20tin%20K58&m_lopID_ID=5321&istinchi=1'
     },
+     {
+      'title': 'Đánh giá rèn luyện',
+      'icon': Icons.night_shelter,
+      'link': 'http://smart.utc2.edu.vn:8383/HTDRL/login.jsp;jsessionid=9F42BD32BC8BD2542813A97D57DA101A'
+    },
+     {
+      'title': 'Đóng học phí',
+      'icon': Icons.table_view,
+      'link':
+          'http://nophocphi.utc2.edu.vn/'
+    },
+    {
+      'title': 'Đánh giá công tác Cố vấn học tập, Chủ nhiệm lớp',
+      'icon': Icons.night_shelter,
+      'link': 'http://smart.utc2.edu.vn:85/cvht/sv/login.jsp'
+    },
     {
       'title': 'Đăng ký học phần',
       'icon': Icons.fact_check,
-      'link': 'http://smart.utc2.edu.vn:85/cvht/gv/login.jsp'
+      'link': 'http://dangkyhoc.utc2.edu.vn/TaiKhoan/#'
     },
-    // {
-    //   'title': 'Đăng ký sử dụng phòng học / báo dạy bù',
-    //   'icon': Icons.storage,
-    //   'link': 'http://tmsweb.utc2.edu.vn/Dangkyphong/Dangkyphong'
-    // },
+    {
+      'title': 'Đăng ký nội trú ký túc xá',
+      'icon': Icons.storage,
+      'link': 'http://ktx.utc2.edu.vn/Default/Login'
+    },
+     {
+      'title': 'Tra cứu phòng ở ký túc xá',
+      'icon': Icons.storage,
+      'link': 'http://nophocphi.utc2.edu.vn/tracuu_ktx.aspx'
+    },
+     {
+      'title': 'Đăng ký cấp lại thẻ sinh viên',
+      'icon': Icons.storage,
+      'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
+    },
+     {
+      'title': 'Đăng ký cấp bảng điểm',
+      'icon': Icons.storage,
+      'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
+    },
     {
       'title': 'Đăng ký giấy xác nhận sinh viên',
       'icon': Icons.badge,
-      'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
+      'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
     },
-    // {
-    //   'title': 'Đăng ký giấy giới thiệu',
-    //   'icon': Icons.badge,
-    //   'link': 'http://smart.utc2.edu.vn/dvc/vi-vn'
-    // },
-    // {
-    //   'title': 'Đăng ký xe đi công tác',
-    //   'icon': Icons.airport_shuttle,
-    //   'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
-    // },
-    // {
-    //   'title': 'Đăng ký lịch công tác tuần',
-    //   'icon': Icons.date_range,
-    //   'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
-    // },
-    // {
-    //   'title': 'Đăng ký ở nhà khách',
-    //   'icon': Icons.night_shelter,
-    //   'link': 'http://vanthu.utc2.edu.vn:85/HanhChinhCong/'
-    // },
+    {
+      'title': 'Đăng ký giấy xác nhận vay vốn',
+      'icon': Icons.badge,
+      'link': 'http://smart.utc2.edu.vn/dvc/vi-vn'
+    },
+    {
+      'title': 'Đăng ký giấy trợ cấp ưu đãi giáo dục',
+      'icon': Icons.airport_shuttle,
+      'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
+    },
+    {
+      'title': 'Đăng ký cấp biên lai thu học phí',
+      'icon': Icons.date_range,
+      'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
+    },
+    {
+      'title': 'Đăng ký giấy xác nhận đã bảo vệ tốt nghiệp',
+      'icon': Icons.night_shelter,
+      'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
+    },
+    {
+      'title': 'Đăng ký giấy xác nhận đoàn viên',
+      'icon': Icons.night_shelter,
+      'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn/'
+    },
+    {
+      'title': 'Đăng ký rút hồ sơ đoàn viên',
+      'icon': Icons.night_shelter,
+      'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
+    },
+    {
+      'title': 'Đăng ký thi lần 2, 3',
+      'icon': Icons.night_shelter,
+      'link': 'http://thidilan2.utc2.edu.vn/'
+    },{
+      'title': 'Đăng ký học kỳ phụ',
+      'icon': Icons.night_shelter,
+      'link': 'http://dangkyhoclai.utc2.edu.vn/'
+    },
+   
   ];
 
   @override

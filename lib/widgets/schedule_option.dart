@@ -113,8 +113,7 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
                     monHoc[i]['TenMon'] + '\n\n' + lichHoc[j]['Room'],
                     startTime,
                     endTime,
-                    ColorRandom
-                        .colors[_random.nextInt(ColorRandom.colors.length)][0],
+                    ColorRandom.colors[int.parse(monHoc[i]['id'])][0],
                     false));
               }
             }

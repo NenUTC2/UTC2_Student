@@ -1,8 +1,29 @@
+import 'dart:io';
+
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-void main() {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // If you're going to use other Firebase services in the background, such as Firestore,
+  // make sure you call `initializeApp` before using other Firebase services.
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
   runApp(MyApp());
 }
 
@@ -13,6 +34,52 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
     ));
+    return HomePage();
+  }
+}
+
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  FirebaseMessaging _fireBaseMessaging;
+  @override
+  void initState() {
+    super.initState();
+    if (Platform.isIOS) {
+      _fireBaseMessaging.requestPermission(
+          alert: true, badge: true, sound: true, provisional: true);
+    }
+    // LoginEmailBloc.getInstance().init();
+    // ConnectionStatusSingleton.getInstance()
+    //     .connectionChange
+    //     .listen(_updateConnectivity);
+    // _notificationPlugin = NotificationPlugin();
+    FirebaseMessaging.instance
+        .getInitialMessage()
+        .then((RemoteMessage message) {
+      if (message != null) {
+        print('MESSAGE>>>>' + message.toString());
+      }
+    });
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print('>>>>>>>>>>A new onMessage event');
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('>>>>>>>>>>A new onMessageOpenedApp event');
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    getTokenFCM();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
           fontFamily: 'Nunito',
@@ -24,5 +91,16 @@ class MyApp extends StatelessWidget {
       // home: HomeScreen(),
       home: HomeScreen(),
     );
+  }
+
+  getTokenFCM() {
+    try {
+      FirebaseMessaging.instance.getToken().then((token) => {
+            // LoginEmailBloc.getInstance().setFCMToken = token,
+            print('token : ' + token)
+          });
+    } catch (e) {
+      print('get token exception : ' + e.toString());
+    }
   }
 }

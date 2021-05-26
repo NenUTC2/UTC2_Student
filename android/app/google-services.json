@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "423190494078",
+    "project_id": "utc2-ea569",
+    "storage_bucket": "utc2-ea569.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423190494078:android:aa4aec205ba6e3f7b1912f",
+        "android_client_info": {
+          "package_name": "com.example.utc2_student"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423190494078-d09ttrg4cdutjqmc63a9oq8m0tmal1ti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkuE98NGto54cCx2TunqtRsOldY0N-kTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423190494078-d09ttrg4cdutjqmc63a9oq8m0tmal1ti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
