@@ -49,21 +49,28 @@ class MyLocalNotification {
     return scheduledDate;
   }
 
-  static Future<void> showNotification(FlutterLocalNotificationsPlugin notifications, String title, String body) async {
+  static Future<void> showNotification(
+      FlutterLocalNotificationsPlugin notifications,
+      String title,
+      String body,
+      Map<String, dynamic> data) async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-            'your channel id', 'your channel name', 'your channel description',
-            importance: Importance.max,
-            priority: Priority.high,
-            ticker: 'ticker');
+      'your channel id',
+      'your channel name',
+      'your channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
     const NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
-    await notifications.show(
-        0, title, body, platformChannelSpecifics,
-        payload: 'item x');
+    await notifications.show(0, title, body, platformChannelSpecifics,
+        payload: data['msg']);
   }
 
-  static Future<void> cancelNotification(FlutterLocalNotificationsPlugin notifications) async {
+  static Future<void> cancelNotification(
+      FlutterLocalNotificationsPlugin notifications) async {
     await notifications.cancel(0);
   }
 }

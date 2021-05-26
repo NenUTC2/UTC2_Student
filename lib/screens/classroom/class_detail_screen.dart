@@ -204,7 +204,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
   Widget comment(
       Size size,
       Future<void> comment(
-          FlutterLocalNotificationsPlugin noti, String t, String b),
+          FlutterLocalNotificationsPlugin noti, String t, String b, Map<String, dynamic>data),
       FlutterLocalNotificationsPlugin noti) {
     return Container(
       width: size.width,
@@ -224,7 +224,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
           border: Border.all(color: ColorApp.lightGrey)),
       child: TextButton(
         onPressed: () async {
-          await comment(noti, 'title', 'body');
+          await comment(noti, 'title', 'body',null);
           print('dsd');
         },
         child: Row(

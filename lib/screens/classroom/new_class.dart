@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:utc2_student/service/pdf/pdf_api.dart';
 import 'package:utc2_student/service/pdf/pdf_class_detail.dart';
 import 'package:utc2_student/utils/utils.dart';
@@ -12,6 +14,7 @@ import 'dart:ui' as ui;
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:http/http.dart' as http;
 
 class NewClass extends StatefulWidget {
   @override
@@ -154,8 +157,24 @@ class _NewClassState extends State<NewClass> {
                     borderRadius: BorderRadius.circular(30),
                     side: BorderSide(color: Colors.red)))),
         onPressed: () async {
-          final pdfFile = await PdfParagraphApi.generate();
-          PdfApi.openFile(pdfFile);
+          // final pdfFile = await PdfParagraphApi.generate();
+          // PdfApi.openFile(pdfFile);
+          final response =
+              await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
+                  headers: <String, String>{
+                    'Content-Type': 'application/json; charset=UTF-8',
+                    'Authorization':
+                        'key=AAAAYogee34:APA91bFuj23NLRj88uqP9J-aRCehCgVSo8QgUOIPZy8CzBE-Xbubx58trUepsb2SABoIGsPYbONqa2jjS03l1fW5r2aQywmKkYN6L3RXHIML6795xTHyamls_ZwLSt-_n3AJ8av82CiW',
+                  },
+                  body: jsonEncode({
+                    "to": "/topics/fcm_test",
+                    "data": {"msg": "Hello"},
+                    "notification": {"title": "fcm", "body": "body"}
+                  }));
+          if (response.statusCode == 200)
+            print('success');
+          else
+            print('faile');
         },
       ),
       body: SingleChildScrollView(

@@ -77,15 +77,14 @@ class _HomePageState extends State<HomePage> {
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('>>>>>>>>>>A new onMessage event' + message.notification.body);
-      MyLocalNotification.showNotification(
-          notifications, message.notification.title, message.notification.body);
+      MyLocalNotification.showNotification(notifications,
+          message.notification.title, message.notification.body, message.data);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('>>>>>>>>>>A new onMessageOpenedApp event');
-      // Future.delayed(Duration(seconds: 2), () {
-      Get.to(DetailClassScreen());
-      // });
+      Get.to(HomeScreen());
     });
+    FirebaseMessaging.instance.subscribeToTopic('fcm_test');
   }
 
   @override
@@ -121,10 +120,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future onSelectNotification(String payload) async {
-    print('onSelect');
-    await Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreen()),
-    );
+    print(payload);
+    // Get.to(DetailClassScreen());
   }
 }
