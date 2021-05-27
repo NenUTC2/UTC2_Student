@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:timezone/data/latest.dart' as tz;
@@ -60,7 +62,8 @@ class MyLocalNotification {
       String title,
       String body,
       Map<String, dynamic> data) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    int insistentFlag = 4;
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'your channel id',
       'your channel name',
@@ -68,8 +71,10 @@ class MyLocalNotification {
       importance: Importance.max,
       priority: Priority.high,
       ticker: 'ticker',
+      additionalFlags: Int32List.fromList(<int>[insistentFlag]),
+      styleInformation: BigTextStyleInformation(''),
     );
-    const NotificationDetails platformChannelSpecifics =
+    NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await notifications.show(0, title, body, platformChannelSpecifics,
         payload: data['msg']);
