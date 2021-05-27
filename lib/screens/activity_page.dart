@@ -36,13 +36,13 @@ class _ActivityPageState extends State<ActivityPage> {
 
   showAlertDialog(BuildContext context, String name) {
     // set up the buttons
-    Widget cancelButton = FlatButton(
+    Widget cancelButton = TextButton(
       child: Text("Thoát"),
       onPressed: () {
         Navigator.pop(context);
       },
     );
-    Widget continueButton = FlatButton(
+    Widget continueButton = TextButton(
       child: Text("Rời khỏi"),
       onPressed: () {
         Navigator.pop(context);

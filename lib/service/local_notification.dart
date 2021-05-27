@@ -5,17 +5,24 @@ import 'package:timezone/timezone.dart' as tz;
 
 class MyLocalNotification {
   static Future<void> scheduleWeeklyMondayTenAMNotification(
-      FlutterLocalNotificationsPlugin notifications, int h, int m) async {
+      FlutterLocalNotificationsPlugin notifications,
+      int wd,
+      int sh,
+      int sm,
+      int eh,
+      int em,
+      String tenMon,
+      String room,
+      int maMon,
+      int maLich) async {
     await notifications.zonedSchedule(
-        m,
-        'Trí Tuệ Nhân Tạo $m',
-        '7:00 - 11:45 AM $m',
-        nextInstanceOfWeekDayTime(h, m),
+        int.parse('$maMon$maLich'),
+        'Đến giờ học môn $tenMon - $room',
+        '$sh:$sm - $em:$em',
+        nextInstanceOfWeekDayTime(sh, sm, wd),
         NotificationDetails(
           android: AndroidNotificationDetails(
-              'weekly notification channel $m',
-              'weekly notification channel name $m',
-              'weekly notificationdescription $m'),
+              '$tenMon-$maLich', '$tenMon-$maLich', '$tenMon-$maLich'),
         ),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
@@ -23,11 +30,11 @@ class MyLocalNotification {
         matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
   }
 
-  static Future<void> configureLocalTimeZone() async {
+  static void configureLocalTimeZone() {
     tz.initializeTimeZones();
-    final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
-    tz.setLocalLocation(tz.getLocation(timeZoneName));
-    print(timeZoneName);
+    // final String timeZoneName = await FlutterNativeTimezone.getLocalTimezone();
+    tz.setLocalLocation(tz.getLocation('Asia/Bangkok'));
+    // print(timeZoneName);
   }
 
   static tz.TZDateTime nextInstanceOfTime(int h, int m) {
@@ -40,12 +47,11 @@ class MyLocalNotification {
     return scheduledDate;
   }
 
-  static tz.TZDateTime nextInstanceOfWeekDayTime(int h, int m) {
+  static tz.TZDateTime nextInstanceOfWeekDayTime(int h, int m, int wd) {
     tz.TZDateTime scheduledDate = nextInstanceOfTime(h, m);
-    while (scheduledDate.weekday != DateTime.wednesday) {
+    while (scheduledDate.weekday != wd) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
-    print(scheduledDate);
     return scheduledDate;
   }
 

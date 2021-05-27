@@ -1,7 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:utc2_student/service/local_notification.dart';
 import 'package:utc2_student/utils/color_random.dart';
 
 import 'package:utc2_student/utils/utils.dart';
@@ -17,9 +18,26 @@ class OpitonSchedule extends StatefulWidget {
 }
 
 class _OpitonScheduleState extends State<OpitonSchedule> {
+  final notifications = FlutterLocalNotificationsPlugin();
   @override
   void initState() {
     super.initState();
+    MyLocalNotification.configureLocalTimeZone();
+    final settingsAndroid = AndroidInitializationSettings('app_icon');
+
+    final settingsIOS = IOSInitializationSettings(
+        onDidReceiveLocalNotification: (id, title, body, payload) =>
+            onSelectNotification(payload));
+
+    notifications.initialize(
+        InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
+        onSelectNotification: onSelectNotification);
+    notifications.cancelAll();
+  }
+
+  Future onSelectNotification(String payload) async {
+    print(payload);
+    // Get.to(DetailClassScreen());
   }
 
   @override
@@ -53,7 +71,7 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
           "Room": "101C2"
         },
         {
-          "id": "1",
+          "id": "2",
           "MonHocId": "1",
           "StartTime": "13:30",
           "EndTime": "17:00",
@@ -61,7 +79,7 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
           "Room": "201C2"
         },
         {
-          "id": "2",
+          "id": "3",
           "MonHocId": "2",
           "StartTime": "13:30",
           "EndTime": "17:00",
@@ -92,22 +110,28 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
               //Kiem tra Week day va id Mon hoc
               if (date.weekday == lichHoc[j]['WeekDay'] &&
                   lichHoc[j]['MonHocId'] == monHoc[i]['id']) {
-                final _random = new Random();
+                ///Timmmmmme
+                int wd = lichHoc[j]['WeekDay'];
+                int sh = int.parse(
+                    lichHoc[j]['StartTime'].toString().substring(0, 2));
+                int sm =
+                    int.parse(lichHoc[j]['StartTime'].toString().substring(3));
+                int eh =
+                    int.parse(lichHoc[j]['EndTime'].toString().substring(0, 2));
+                int em =
+                    int.parse(lichHoc[j]['EndTime'].toString().substring(3));
 
-                DateTime startTime = DateTime(
-                    date.year,
-                    date.month,
-                    date.day,
-                    int.parse(
-                        lichHoc[j]['StartTime'].toString().substring(0, 2)),
-                    int.parse(lichHoc[j]['StartTime'].toString().substring(3)));
+                //Mon
+                String tenMon = monHoc[i]['TenMon'];
+                int maMon = int.parse(monHoc[i]['id']);
+                int maLich = int.parse(lichHoc[j]['id']);
+                String room = lichHoc[j]['Room'];
 
-                DateTime endTime = DateTime(
-                    date.year,
-                    date.month,
-                    date.day,
-                    int.parse(lichHoc[j]['EndTime'].toString().substring(0, 2)),
-                    int.parse(lichHoc[j]['EndTime'].toString().substring(3)));
+                DateTime startTime =
+                    DateTime(date.year, date.month, date.day, sh, sm);
+
+                DateTime endTime =
+                    DateTime(date.year, date.month, date.day, eh, em);
 
                 meetings.add(Meeting(
                     monHoc[i]['TenMon'] + '\n\n' + lichHoc[j]['Room'],
@@ -115,6 +139,9 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
                     endTime,
                     ColorRandom.colors[int.parse(monHoc[i]['id'])][0],
                     false));
+
+                MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
+                    notifications, wd, sh, sm, eh, em, tenMon, room, maMon, maLich);
               }
             }
           }

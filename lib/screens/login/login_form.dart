@@ -48,7 +48,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocListener<LoginBloc, LoginState>(
       listener: (context, state) {
         if (state.isFailure) {
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -65,7 +65,7 @@ class _LoginFormState extends State<LoginForm> {
         }
 
         if (state.isSubmitting) {
-          Scaffold.of(context)
+          ScaffoldMessenger.of(context)
             ..removeCurrentSnackBar()
             ..showSnackBar(
               SnackBar(
@@ -108,7 +108,7 @@ class _LoginFormState extends State<LoginForm> {
                         //labelText: "Email",
                         hintText: 'email@utc2.edu.vn'),
                     keyboardType: TextInputType.emailAddress,
-                    autovalidate: true,
+                    autovalidateMode: AutovalidateMode.always,
                     autocorrect: false,
                     validator: (_) {
                       return !state.isEmailValid ? 'Invalid Email' : null;
@@ -141,7 +141,7 @@ class _LoginFormState extends State<LoginForm> {
                         //labelText: "Password",
                         hintText: '..............'),
                     obscureText: isPass,
-                    autovalidate: true,
+                    autovalidateMode: AutovalidateMode.always,
                     autocorrect: false,
                     validator: (_) {
                       return !state.isPasswordValid ? 'Invalid Password' : null;

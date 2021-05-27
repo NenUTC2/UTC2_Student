@@ -193,8 +193,8 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    FlatButton.icon(
-                      height: 10,
+                    TextButton.icon(
+                      // height: 10,
                       onPressed: () {},
                       icon: Icon(
                         Icons.add,

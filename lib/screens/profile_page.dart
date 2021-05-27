@@ -52,7 +52,7 @@ class _ProFilePageState extends State<ProFilePage> {
                     style: TextStyle(
                         color: Colors.black87, fontSize: size.width * 0.035))),
             actions: <Widget>[
-              FlatButton(
+              TextButton(
                 child: Text('Chụp ảnh mới',
                     style: TextStyle(
                       color: Colors.black87,
@@ -64,7 +64,7 @@ class _ProFilePageState extends State<ProFilePage> {
                   Navigator.pop(context);
                 },
               ),
-              FlatButton(
+              TextButton(
                 child: Text('Chọn ảnh từ thư viện',
                     style: TextStyle(
                       color: Colors.black87,

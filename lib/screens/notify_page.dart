@@ -48,7 +48,7 @@ class _NotifyPageState extends State<NotifyPage> {
                         margin: EdgeInsets.only(bottom: 20),
                         // padding:
                         //     EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                        child: FlatButton(
+                        child: TextButton(
                           onPressed: () {
                             _showBottomSheet(
                                 context,
@@ -56,8 +56,8 @@ class _NotifyPageState extends State<NotifyPage> {
                                 'Đến giờ vào lớp Lập Trình Di động',
                                 'Lớp học đã bắt đầu');
                           },
-                          splashColor: ColorApp.blue.withOpacity(.4),
-                          highlightColor: ColorApp.lightGrey,
+                          // splashColor: ColorApp.blue.withOpacity(.4),
+                          // highlightColor: ColorApp.lightGrey,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [

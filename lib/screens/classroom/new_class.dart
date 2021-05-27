@@ -1,10 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:utc2_student/service/pdf/pdf_api.dart';
-import 'package:utc2_student/service/pdf/pdf_class_detail.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

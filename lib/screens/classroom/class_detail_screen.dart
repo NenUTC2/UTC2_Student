@@ -37,7 +37,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
   }
 
   void sendNoti() async {
-    await MyLocalNotification.configureLocalTimeZone();
+    MyLocalNotification.configureLocalTimeZone();
     // await MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
     //     notifications, 14, 20);
     // await MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
