@@ -148,7 +148,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                               itemBuilder: (context, index) {
                                 var e = state.list[index];
                                 return customList(size, context, e.title,
-                                    'Đã đăng' + e.date, e.content, '2');
+                                    'Đã đăng  ' + e.date, e.content, '2');
                               }),
                         ),
                       ),
