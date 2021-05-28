@@ -1,9 +1,10 @@
-import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:utc2_student/service/firestore/class_database.dart';
+import 'package:utc2_student/utils/utils.dart';
 
 class ClassDrawer extends StatelessWidget {
-  final List active;
-  final Function change;
+  final List<Class> active;
+  final Function(String classId, String name) change;
   ClassDrawer({this.active, this.change});
   @override
   Widget build(BuildContext context) {
@@ -92,18 +93,17 @@ class ClassDrawer extends StatelessWidget {
                   child: ListTile(
                     onTap: () {
                       Navigator.of(context).pop();
-                      change();
+                      change(active[index].id, active[index].name);
                     },
                     leading: Container(
                       width: 30,
                       child: CircleAvatar(
-                        child: Text(active[index]['title']
-                            .substring(0, 1)
-                            .toUpperCase()),
+                        child: Text(
+                            active[index].name.substring(0, 1).toUpperCase()),
                       ),
                     ),
                     title: Text(
-                      active[index]['title'],
+                      active[index].name,
                       style: TextStyle(
                           color: ColorApp.black.withOpacity(.8),
                           fontSize: size.width * 0.042,

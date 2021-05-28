@@ -49,11 +49,12 @@ class MyLocalNotification {
     return scheduledDate;
   }
 
-  static tz.TZDateTime nextInstanceOfWeekDayTime(int h, int m, int wd) {
+   static tz.TZDateTime nextInstanceOfWeekDayTime(int h, int m, int wd) {
     tz.TZDateTime scheduledDate = nextInstanceOfTime(h, m);
     while (scheduledDate.weekday != wd) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
+    print(scheduledDate);
     return scheduledDate;
   }
 

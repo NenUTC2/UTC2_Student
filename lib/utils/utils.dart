@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class ColorApp {
@@ -8,4 +10,11 @@ class ColorApp {
   static const Color lightGrey = Color(0xFFD8B39A);
   static const Color black = Color(0xFF221502);
   static const Color red = Color(0xffD94A50);
+}
+
+String generateRandomString(int len) {
+  var r = Random();
+  const _chars =
+      'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+  return List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
 }

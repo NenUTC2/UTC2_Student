@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
+import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -95,16 +98,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      theme: ThemeData(
-          fontFamily: 'Nunito',
-          primaryColor: Colors.orange,
-          appBarTheme: Theme.of(context)
-              .appBarTheme
-              .copyWith(brightness: Brightness.light)),
-      debugShowCheckedModeBanner: false,
-      // home: HomeScreen(),
-      home: HomeScreen(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ClassBloc>(create: (context) => ClassBloc()),
+        BlocProvider<PostBloc>(create: (context) => PostBloc())
+      ],
+      child: GetMaterialApp(
+        theme: ThemeData(
+            fontFamily: 'Nunito',
+            primaryColor: Colors.orange,
+            appBarTheme: Theme.of(context)
+                .appBarTheme
+                .copyWith(brightness: Brightness.light)),
+        debugShowCheckedModeBanner: false,
+        // home: HomeScreen(),
+        home: HomeScreen(),
+      ),
     );
   }
 

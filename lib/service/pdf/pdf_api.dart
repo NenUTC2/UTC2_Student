@@ -5,18 +5,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
-  static Future<File> generateCenteredText(String text) async {
-    final pdf = Document();
-
-    pdf.addPage(Page(
-      build: (context) => Center(
-        child: Text(text, style: TextStyle(fontSize: 48)),
-      ),
-    ));
-
-    return saveDocument(name: 'my_example.pdf', pdf: pdf);
-  }
-
   static Future<File> saveDocument({
     String name,
     Document pdf,

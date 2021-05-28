@@ -1,6 +1,10 @@
 import 'dart:math';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/screens/classroom/new_class.dart';
+import 'package:utc2_student/service/firestore/class_database.dart';
 import 'package:utc2_student/utils/color_random.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -11,10 +15,11 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
+  ClassDatabase classDatabase = ClassDatabase();
   List activity = [
     {
       'title': 'Đồ án tốt nghiệp',
-      'name': 'Phan Thành Nên',
+      'name': 'Phạm Thị Miên',
       'subAct': ['Báo Cáo tiến độ']
     },
     {
@@ -34,7 +39,7 @@ class _ActivityPageState extends State<ActivityPage> {
     {'title': 'data minning 20-21', 'name': 'Trần Phong Nhã', 'subAct': []},
   ];
 
-  showAlertDialog(BuildContext context, String name) {
+  showAlertDialog(BuildContext context, String name, String id) {
     // set up the buttons
     Widget cancelButton = TextButton(
       child: Text("Thoát"),
@@ -43,9 +48,11 @@ class _ActivityPageState extends State<ActivityPage> {
       },
     );
     Widget continueButton = TextButton(
-      child: Text("Rời khỏi"),
+      child: Text("Kết thúc"),
       onPressed: () {
         Navigator.pop(context);
+        classDatabase.deleteClass(id);
+        classBloc.add(GetClassEvent());
       },
     );
 
@@ -68,103 +75,12 @@ class _ActivityPageState extends State<ActivityPage> {
     );
   }
 
-  showBottomSheet(BuildContext context, Size size, String title) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return Container(
-          color: Color.fromRGBO(0, 0, 0, 0.001),
-          child: DraggableScrollableSheet(
-            initialChildSize: 0.75,
-            minChildSize: 0.2,
-            maxChildSize: 0.85,
-            builder: (_, controller) {
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(20.0),
-                    topRight: const Radius.circular(20.0),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Center(
-                        child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 16),
-                      decoration: BoxDecoration(
-                        color: ColorApp.grey,
-                        borderRadius: BorderRadius.only(
-                          topLeft: const Radius.circular(3),
-                          topRight: const Radius.circular(3),
-                        ),
-                      ),
-                      height: 3,
-                      width: 50,
-                    )),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Center(
-                        child: Text(
-                          title,
-                          textAlign: TextAlign.justify,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                    ),
-                    Divider(
-                      thickness: 0.5,
-                      height: 5,
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        controller: controller,
-                        itemCount: 1,
-                        itemBuilder: (_, index) {
-                          return NewClass();
-                        },
-                      ),
-                    ),
-                    Center(
-                      child: ElevatedButton(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: size.width * 0.2, vertical: 10),
-                            child: Text("Tạo mới",
-                                style: TextStyle(
-                                    fontSize: size.width * 0.045,
-                                    letterSpacing: 1,
-                                    wordSpacing: 1,
-                                    fontWeight: FontWeight.normal)),
-                          ),
-                          style: ButtonStyle(
-                              tapTargetSize: MaterialTapTargetSize.padded,
-                              shadowColor: MaterialStateProperty.all<Color>(
-                                  Colors.lightBlue),
-                              foregroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.white),
-                              backgroundColor:
-                                  MaterialStateProperty.all<Color>(Colors.blue),
-                              shape: MaterialStateProperty.all<
-                                      RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      side: BorderSide(color: Colors.red)))),
-                          onPressed: () {}),
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        );
-      },
-    );
+  var classBloc;
+  @override
+  void initState() {
+    super.initState();
+    classBloc = BlocProvider.of<ClassBloc>(context);
+    classBloc.add(GetClassEvent());
   }
 
   @override
@@ -172,15 +88,57 @@ class _ActivityPageState extends State<ActivityPage> {
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        Container(
-          child: ListView.builder(
-            physics: BouncingScrollPhysics(),
-            itemCount: activity.length,
-            itemBuilder: (context, index) {
-              return customList(size, context, activity[index]['title'],
-                  activity[index]['name'], activity[index]['subAct']);
-            },
-          ),
+        BlocBuilder<ClassBloc, ClassState>(
+          builder: (context, state) {
+            if (state is LoadingClass)
+              return SpinKitChasingDots(
+                color: ColorApp.blue,
+              );
+            else if (state is LoadedClass) {
+              print('loaded');
+
+              return Container(
+                child: RefreshIndicator(
+                  displacement: 20,
+                  onRefresh: () async {
+                    classBloc.add(GetClassEvent());
+                  },
+                  child: Scrollbar(
+                    child: ListView.builder(
+                      itemCount: state.list.length + 1,
+                      physics: BouncingScrollPhysics(),
+                      // itemCount: snapshot.data.length,
+                      itemBuilder: ((context, index) {
+                        return index == state.list.length
+                            ? Container(
+                                height: 200,
+                              )
+                            : customList(
+                                size,
+                                context,
+                                state.list[index].name,
+                                state.list[index].teacherId,
+                                activity[1]['subAct'],
+                                state.list[index].id,
+                                state.list);
+                      }),
+                    ),
+                  ),
+                ),
+              );
+            } else if (state is LoadErrorClass) {
+              return Center(
+                child: Text(
+                  state.error,
+                  style: TextStyle(color: Colors.black, fontSize: 20),
+                ),
+              );
+            } else {
+              return SpinKitChasingDots(
+                color: ColorApp.blue,
+              );
+            }
+          },
         ),
         Positioned(
           bottom: 10,
@@ -191,8 +149,9 @@ class _ActivityPageState extends State<ActivityPage> {
             hoverColor: ColorApp.lightGrey,
             foregroundColor: ColorApp.blue,
             onPressed: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => NewClass()));
+              Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => NewClass()))
+                  .then((value) => classBloc.add(GetClassEvent()));
             },
             child: Icon(Icons.add),
           ),
@@ -202,7 +161,7 @@ class _ActivityPageState extends State<ActivityPage> {
   }
 
   Widget customList(Size size, BuildContext context, String className,
-      String teacherName, List sub) {
+      String teacherName, List sub, String id, List listClass) {
     return Container(
       margin: EdgeInsets.all(size.width * 0.03),
       padding: EdgeInsets.all(size.width * 0.03),
@@ -221,7 +180,8 @@ class _ActivityPageState extends State<ActivityPage> {
                   MaterialPageRoute(
                       builder: (context) => DetailClassScreen(
                             className: className,
-                            listClass: activity,
+                            listClass: listClass,
+                            idClass: id,
                           )));
             },
             child: Container(
@@ -259,7 +219,8 @@ class _ActivityPageState extends State<ActivityPage> {
                       ),
                       IconButton(
                           onPressed: () {
-                            showAlertDialog(context, className.toUpperCase());
+                            showAlertDialog(
+                                context, className.toUpperCase(), id);
                           },
                           icon: Icon(
                             Icons.more_horiz_rounded,
@@ -315,3 +276,4 @@ class _ActivityPageState extends State<ActivityPage> {
     );
   }
 }
+
