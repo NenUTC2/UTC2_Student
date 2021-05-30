@@ -6,8 +6,11 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
+import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
+import 'package:utc2_student/repositories/google_signin_repo.dart';
 import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +55,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   FirebaseMessaging _fireBaseMessaging;
   final notifications = FlutterLocalNotificationsPlugin();
+  GoogleSignInRepository _googleSignIn = GoogleSignInRepository();
+  Widget body = Container();
   @override
   void initState() {
     super.initState();
@@ -68,6 +73,7 @@ class _HomePageState extends State<HomePage> {
       _fireBaseMessaging.requestPermission(
           alert: true, badge: true, sound: true, provisional: true);
     }
+
     // LoginEmailBloc.getInstance().init();
     // ConnectionStatusSingleton.getInstance()
     //     .connectionChange
@@ -90,6 +96,19 @@ class _HomePageState extends State<HomePage> {
       Get.to(HomeScreen());
     });
     FirebaseMessaging.instance.subscribeToTopic('fcm_test');
+    login();
+  }
+
+  Future login() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('userEmail') != null) {
+      setState(() {
+        body = HomeScreen();
+      });
+    } else
+      setState(() {
+        body = LoginScreen();
+      });
   }
 
   @override
@@ -104,6 +123,7 @@ class _HomePageState extends State<HomePage> {
       providers: [
         BlocProvider<ClassBloc>(create: (context) => ClassBloc()),
         BlocProvider<PostBloc>(create: (context) => PostBloc()),
+        BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
       ],
       child: GetMaterialApp(
         theme: ThemeData(
@@ -113,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                 .appBarTheme
                 .copyWith(brightness: Brightness.light)),
         debugShowCheckedModeBanner: false,
-        home: LoginScreen(),
+        home: body,
       ),
     );
   }

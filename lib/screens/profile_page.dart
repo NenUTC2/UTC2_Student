@@ -1,5 +1,9 @@
 import 'dart:io';
 
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utc2_student/repositories/google_signin_repo.dart';
+import 'package:utc2_student/screens/home_screen.dart';
 import 'package:utc2_student/screens/login/login_screen.dart';
 import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
 import 'package:utc2_student/screens/profile_screen/help_screen.dart';
@@ -18,6 +22,7 @@ class ProFilePage extends StatefulWidget {
 }
 
 class _ProFilePageState extends State<ProFilePage> {
+  GoogleSignInRepository _googleSignIn = GoogleSignInRepository();
   File _image;
   String linkImage =
       'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png';
@@ -158,12 +163,39 @@ class _ProFilePageState extends State<ProFilePage> {
                                                             builder: (context) =>
                                                                 screen[index]));
                                               }
-                                            : () {
-                                                Navigator.pushReplacement(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            LoginScreen()));
+                                            : () async {
+                                                ScaffoldMessenger.of(context)
+                                                  ..removeCurrentSnackBar()
+                                                  ..showSnackBar(
+                                                    SnackBar(
+                                                      content: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: <Widget>[
+                                                          Text(
+                                                            'Đã đăng xuất',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      backgroundColor:
+                                                          Color(0xFFFF7434),
+                                                    ),
+                                                  );
+                                                final SharedPreferences prefs =
+                                                    await SharedPreferences
+                                                            .getInstance()
+                                                        .then((value) {
+                                                  ScaffoldMessenger.of(context)
+                                                      .removeCurrentSnackBar();
+                                                  return value;
+                                                });
+                                                prefs.remove('userEmail');
+                                                _googleSignIn.signOut();
+                                                Get.offAll(() => LoginScreen());
                                               },
                                         leading: Icon(
                                           buttonList[index]['icon'],

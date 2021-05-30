@@ -1,4 +1,3 @@
-import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/repositories/user_repository.dart';
 import 'package:utc2_student/screens/login/login_form.dart';
 import 'package:utc2_student/utils/utils.dart';
@@ -18,9 +17,7 @@ class LoginScreen extends StatelessWidget {
       statusBarColor: Colors.transparent,
     ));
     Size size = MediaQuery.of(context).size;
-    return BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc(),
-        child: Scaffold(
+    return  Scaffold(
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
             child: Container(
@@ -62,7 +59,6 @@ class LoginScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(
                               horizontal: size.width * 0.06),
                           child: LoginForm(
-                            userRepository: _userRepository,
                           )),
                     ],
                   ),
@@ -99,8 +95,7 @@ class LoginScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-        ));
+          ));
   }
 }
 
