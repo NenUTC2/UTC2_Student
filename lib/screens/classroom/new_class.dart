@@ -80,7 +80,7 @@ class _NewClassState extends State<NewClass> {
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
-          backgroundColor: ColorApp.mediumBlue,
+          backgroundColor: ColorApp.mediumOrange,
           textColor: Colors.white,
           fontSize: 16.0);
     } catch (e) {
@@ -178,7 +178,7 @@ class _NewClassState extends State<NewClass> {
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: ColorApp.blue.withOpacity(0.05),
+                            color: ColorApp.orange.withOpacity(0.05),
                             spreadRadius: 1,
                             blurRadius: 4,
                             offset: Offset(0, 1), // changes position of shadow
@@ -241,7 +241,7 @@ class _NewClassState extends State<NewClass> {
                               }
                             },
                             style: TextStyle(
-                                fontSize: 20, color: ColorApp.mediumBlue),
+                                fontSize: 20, color: ColorApp.mediumOrange),
                             decoration: InputDecoration(
                                 // border: InputBorder.none,
                                 labelText: 'Tên lớp..',
@@ -284,7 +284,7 @@ class _NewClassState extends State<NewClass> {
                                                   gravity: ToastGravity.CENTER,
                                                   timeInSecForIosWeb: 1,
                                                   backgroundColor:
-                                                      ColorApp.mediumBlue,
+                                                      ColorApp.mediumOrange,
                                                   textColor: Colors.white,
                                                   fontSize: 16.0);
                                             },
@@ -331,7 +331,7 @@ class _NewClassState extends State<NewClass> {
                                               child: Text(
                                                 'Lưu vào thư viện',
                                                 style: TextStyle(
-                                                    color: ColorApp.blue),
+                                                    color: ColorApp.orange),
                                               ),
                                             ),
                                           ),
@@ -342,7 +342,7 @@ class _NewClassState extends State<NewClass> {
                                             child: Text(
                                               'Chia sẻ',
                                               style: TextStyle(
-                                                  color: ColorApp.blue),
+                                                  color: ColorApp.orange),
                                             ),
                                           )
                                         ],
@@ -363,7 +363,7 @@ class _NewClassState extends State<NewClass> {
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: ColorApp.blue.withOpacity(0.05),
+                            color: ColorApp.orange.withOpacity(0.05),
                             spreadRadius: 1,
                             blurRadius: 4,
                             offset: Offset(0, 1), // changes position of shadow
@@ -394,7 +394,7 @@ class _NewClassState extends State<NewClass> {
                         Expanded(
                           child: TextField(
                             style: TextStyle(
-                                fontSize: 20, color: ColorApp.mediumBlue),
+                                fontSize: 20, color: ColorApp.mediumOrange),
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 labelText: 'Mô tả..',
@@ -413,7 +413,7 @@ class _NewClassState extends State<NewClass> {
                     decoration: BoxDecoration(
                         boxShadow: [
                           BoxShadow(
-                            color: ColorApp.blue.withOpacity(0.05),
+                            color: ColorApp.orange.withOpacity(0.05),
                             spreadRadius: 1,
                             blurRadius: 4,
                             offset: Offset(0, 1), // changes position of shadow
@@ -464,7 +464,7 @@ class _NewClassState extends State<NewClass> {
                                       //   scale: 0.8,
                                       //   child: CircularCheckBox(
                                       //     value: isAll,
-                                      //     activeColor: ColorApp.mediumBlue,
+                                      //     activeColor: ColorApp.mediumOrange,
                                       //     checkColor: ColorApp.lightGrey,
                                       //     onChanged: (value) {
                                       //       setState(() {
@@ -536,7 +536,7 @@ class _NewClassState extends State<NewClass> {
                                         //   scale: 0.7,
                                         //   child: CircularCheckBox(
                                         //     value: user[index]['isComplete'],
-                                        //     activeColor: ColorApp.mediumBlue,
+                                        //     activeColor: ColorApp.mediumOrange,
                                         //     checkColor: ColorApp.lightGrey,
                                         //     onChanged: (value) {
                                         //       setState(() {
@@ -554,7 +554,7 @@ class _NewClassState extends State<NewClass> {
                                               fontSize: 9,
                                               color: user[index]['isComplete']
                                                   ? Colors.transparent
-                                                  : ColorApp.blue),
+                                                  : ColorApp.orange),
                                         )
                                       ],
                                     ),

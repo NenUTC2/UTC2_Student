@@ -97,7 +97,7 @@ Widget _email(String email, Size size) {
       Text('Email : '),
       Text(email,
           style: TextStyle(
-              color: ColorApp.lightBlue,
+              color: ColorApp.lightOrange,
               fontSize: size.width * 0.05,
               fontWeight: FontWeight.normal)),
     ],

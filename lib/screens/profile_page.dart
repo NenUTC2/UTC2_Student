@@ -301,7 +301,7 @@ class CurvePainter1 extends CustomPainter {
 Widget _email(String email, Size size) {
   return Text(email,
       style: TextStyle(
-          color: ColorApp.lightBlue,
+          color: ColorApp.lightOrange,
           fontSize: size.width * 0.05,
           fontWeight: FontWeight.normal));
 }

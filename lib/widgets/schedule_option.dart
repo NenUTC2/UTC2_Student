@@ -239,7 +239,7 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
         showDatePickerButton: true,
         showNavigationArrow: true,
         headerHeight: 50,
-        todayHighlightColor: ColorApp.blue,
+        todayHighlightColor: ColorApp.orange,
         appointmentTextStyle: TextStyle(fontSize: 15),
 
         // scheduleViewMonthHeaderBuilder: (BuildContext buildercontext,ScheduleView),

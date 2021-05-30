@@ -33,7 +33,7 @@ class _NotifyPageState extends State<NotifyPage> {
           children: [
             Expanded(
               child: RefreshIndicator(
-                color: ColorApp.blue,
+                color: ColorApp.orange,
                 displacement: 40,
                 onRefresh: () async {
                   print('Refreshed');
@@ -56,7 +56,7 @@ class _NotifyPageState extends State<NotifyPage> {
                                 'Đến giờ vào lớp Lập Trình Di động',
                                 'Lớp học đã bắt đầu');
                           },
-                          // splashColor: ColorApp.blue.withOpacity(.4),
+                          // splashColor: ColorApp.orange.withOpacity(.4),
                           // highlightColor: ColorApp.lightGrey,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -208,7 +208,7 @@ Widget leading(Size size, String date) {
             stops: [0.2, 0.9],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [ColorApp.lightBlue, ColorApp.mediumBlue])),
+            colors: [ColorApp.lightOrange, ColorApp.mediumOrange])),
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

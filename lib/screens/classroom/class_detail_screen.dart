@@ -125,7 +125,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                       decoration: BoxDecoration(
                           boxShadow: [
                             BoxShadow(
-                              color: ColorApp.blue.withOpacity(0.02),
+                              color: ColorApp.orange.withOpacity(0.02),
                               spreadRadius: 1,
                               blurRadius: 3,
                               offset:
@@ -155,7 +155,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                     );
                   } else if (state is LoadingPost) {
                     return SpinKitChasingDots(
-                      color: ColorApp.blue,
+                      color: ColorApp.orange,
                     );
                   } else if (state is LoadErrorPost) {
                     return Center(
@@ -166,7 +166,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                     );
                   } else {
                     return SpinKitChasingDots(
-                      color: ColorApp.blue,
+                      color: ColorApp.orange,
                     );
                   }
                 },
@@ -270,7 +270,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
       decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: ColorApp.blue.withOpacity(0.05),
+              color: ColorApp.orange.withOpacity(0.05),
               spreadRadius: 3,
               blurRadius: 3,
               offset: Offset(0, 1), // changes position of shadow
@@ -290,7 +290,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
         child: Row(
           children: [
             CustomAvatarGlow(
-              glowColor: ColorApp.blue,
+              glowColor: ColorApp.orange,
               endRadius: 20.0,
               duration: Duration(milliseconds: 1000),
               repeat: true,

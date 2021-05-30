@@ -23,7 +23,7 @@ class PieChartSample3State extends State {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: ColorApp.blue.withOpacity(0.05),
+              color: ColorApp.orange.withOpacity(0.05),
               spreadRadius: 1,
               blurRadius: 4,
               offset: Offset(0, 1), // changes position of shadow

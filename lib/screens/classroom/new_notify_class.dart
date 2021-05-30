@@ -123,7 +123,7 @@ class _NewNotifyState extends State<NewNotify> {
                             });
                           },
                           style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumBlue),
+                              fontSize: 20, color: ColorApp.mediumOrange),
                           decoration: InputDecoration(
                               // border: InputBorder.none,
                               isCollapsed: true,
@@ -171,7 +171,7 @@ class _NewNotifyState extends State<NewNotify> {
                             });
                           },
                           style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumBlue),
+                              fontSize: 20, color: ColorApp.mediumOrange),
                           decoration: InputDecoration(
                               // border: InputBorder.none,
                               isCollapsed: true,
@@ -263,7 +263,7 @@ class _NewNotifyState extends State<NewNotify> {
                           expaned
                               ? Icons.remove_circle
                               : Icons.add_circle_rounded,
-                          color: ColorApp.mediumBlue,
+                          color: ColorApp.mediumOrange,
                         ))
                   ],
                 ),
@@ -288,7 +288,7 @@ class _NewNotifyState extends State<NewNotify> {
                               val.isEmpty ? 'Nhập câu hỏi' : null,
                           onChanged: (value) {},
                           style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumBlue),
+                              fontSize: 20, color: ColorApp.mediumOrange),
                           decoration: InputDecoration(
                               // border: InputBorder.none,
                               isCollapsed: true,
@@ -301,7 +301,7 @@ class _NewNotifyState extends State<NewNotify> {
                               val.isEmpty ? 'Nhập câu trả lời đúng' : null,
                           onChanged: (value) {},
                           style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumBlue),
+                              fontSize: 20, color: ColorApp.mediumOrange),
                           decoration: InputDecoration(
                               // border: InputBorder.none,
                               isCollapsed: true,
@@ -315,7 +315,7 @@ class _NewNotifyState extends State<NewNotify> {
                               : null,
                           onChanged: (value) {},
                           style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumBlue),
+                              fontSize: 20, color: ColorApp.mediumOrange),
                           decoration: InputDecoration(
                               // border: InputBorder.none,
                               isCollapsed: true,
@@ -326,7 +326,7 @@ class _NewNotifyState extends State<NewNotify> {
                         TextFormField(
                           onChanged: (value) {},
                           style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumBlue),
+                              fontSize: 20, color: ColorApp.mediumOrange),
                           decoration: InputDecoration(
                               // border: InputBorder.none,
                               isCollapsed: true,
@@ -337,7 +337,7 @@ class _NewNotifyState extends State<NewNotify> {
                         TextFormField(
                           onChanged: (value) {},
                           style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumBlue),
+                              fontSize: 20, color: ColorApp.mediumOrange),
                           decoration: InputDecoration(
                               // border: InputBorder.none,
                               isCollapsed: true,
@@ -364,7 +364,7 @@ class _NewNotifyState extends State<NewNotify> {
                                         Colors.white),
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
-                                            ColorApp.mediumBlue),
+                                            ColorApp.mediumOrange),
                                     shape: MaterialStateProperty.all<
                                             RoundedRectangleBorder>(
                                         RoundedRectangleBorder(
@@ -395,7 +395,7 @@ class _NewNotifyState extends State<NewNotify> {
                                         Colors.white),
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
-                                            ColorApp.mediumBlue),
+                                            ColorApp.mediumOrange),
                                     shape: MaterialStateProperty.all<
                                             RoundedRectangleBorder>(
                                         RoundedRectangleBorder(

@@ -132,7 +132,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: ColorApp.blue.withOpacity(0.1),
+                    color: ColorApp.orange.withOpacity(0.1),
                     spreadRadius: 1,
                     blurRadius: 3,
                     offset: Offset(0, 1), // changes position of shadow

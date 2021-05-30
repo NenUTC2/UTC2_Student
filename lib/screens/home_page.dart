@@ -45,11 +45,11 @@ class _HomePageState extends State<HomePage> {
           ],
           colors: [
             ColorApp.lightGrey,
-            ColorApp.lightBlue,
-            ColorApp.mediumBlue,
-            ColorApp.lightBlue,
-            ColorApp.lightBlue,
-            ColorApp.mediumBlue,
+            ColorApp.lightOrange,
+            ColorApp.mediumOrange,
+            ColorApp.lightOrange,
+            ColorApp.lightOrange,
+            ColorApp.mediumOrange,
           ],
         )),
         child: Column(
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
               Text('Công việc hiện tại'),
               Text(
                 'All(1)',
-                style: TextStyle(color: ColorApp.blue),
+                style: TextStyle(color: ColorApp.orange),
               )
             ],
           ),
@@ -113,7 +113,7 @@ class _HomePageState extends State<HomePage> {
                     Text(
                       'Lập trình di động',
                       style: TextStyle(
-                          color: ColorApp.mediumBlue,
+                          color: ColorApp.mediumOrange,
                           fontSize: size.width * 0.05,
                           letterSpacing: 1,
                           fontWeight: FontWeight.w600),
@@ -129,12 +129,12 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             'Hôm nay, 07:00 -11:30',
                             style: TextStyle(
-                              color: ColorApp.blue,
+                              color: ColorApp.orange,
                             ),
                           ),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(5),
-                              color: ColorApp.lightBlue.withOpacity(.1)),
+                              color: ColorApp.lightOrange.withOpacity(.1)),
                         ),
                         GestureDetector(
                           onTap: () {},
@@ -144,20 +144,20 @@ class _HomePageState extends State<HomePage> {
                               children: [
                                 Icon(
                                   Icons.place,
-                                  color: ColorApp.lightBlue,
+                                  color: ColorApp.lightOrange,
                                   size: 16,
                                 ),
                                 Text(
                                   '6E10',
                                   style: TextStyle(
-                                    color: ColorApp.blue,
+                                    color: ColorApp.orange,
                                   ),
                                 ),
                               ],
                             ),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: ColorApp.lightBlue.withOpacity(.1)),
+                                color: ColorApp.lightOrange.withOpacity(.1)),
                           ),
                         ),
                       ],
@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
                             return ListTile(
                               // leading: CircularCheckBox(
                               //   value: subTask[i]['isComplete'],
-                              //   activeColor: ColorApp.mediumBlue,
+                              //   activeColor: ColorApp.mediumOrange,
                               //   checkColor: ColorApp.lightGrey,
                               //   onChanged: (value) {
                               //     setState(() {
@@ -198,11 +198,11 @@ class _HomePageState extends State<HomePage> {
                       onPressed: () {},
                       icon: Icon(
                         Icons.add,
-                        color: ColorApp.blue,
+                        color: ColorApp.orange,
                       ),
                       label: Text(
                         "Thêm mô tả",
-                        style: TextStyle(color: ColorApp.blue),
+                        style: TextStyle(color: ColorApp.orange),
                       ),
                     ),
                   ],
@@ -218,7 +218,7 @@ class _HomePageState extends State<HomePage> {
   Widget taskToday(Size size, PageController pageController,
       ValueNotifier<int> _pageNotifier) {
     return Container(
-      // color: ColorApp.mediumBlue,
+      // color: ColorApp.mediumOrange,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -273,7 +273,7 @@ class _HomePageState extends State<HomePage> {
                                   Text(
                                     'Lập trình di động',
                                     style: TextStyle(
-                                        color: ColorApp.mediumBlue,
+                                        color: ColorApp.mediumOrange,
                                         fontSize: size.width * 0.045,
                                         letterSpacing: 1,
                                         fontWeight: FontWeight.w600),
@@ -305,13 +305,13 @@ class _HomePageState extends State<HomePage> {
                                           children: [
                                             Icon(
                                               Icons.place,
-                                              color: ColorApp.lightBlue,
+                                              color: ColorApp.lightOrange,
                                               size: 16,
                                             ),
                                             Text(
                                               '6E10',
                                               style: TextStyle(
-                                                color: ColorApp.blue,
+                                                color: ColorApp.orange,
                                               ),
                                             ),
                                           ],
@@ -319,7 +319,7 @@ class _HomePageState extends State<HomePage> {
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(5),
-                                            color: ColorApp.lightBlue
+                                            color: ColorApp.lightOrange
                                                 .withOpacity(.1)),
                                       ),
                                     ],
@@ -378,7 +378,7 @@ class _HomePageState extends State<HomePage> {
                                                           Colors.white),
                                                   backgroundColor:
                                                       MaterialStateProperty.all<Color>(
-                                                          ColorApp.mediumBlue),
+                                                          ColorApp.mediumOrange),
                                                   shape: MaterialStateProperty.all<
                                                           RoundedRectangleBorder>(
                                                       RoundedRectangleBorder(
@@ -406,7 +406,7 @@ class _HomePageState extends State<HomePage> {
               position: _pageNotifier.value.toDouble(),
               decorator: DotsDecorator(
                 color: Colors.white, // Inactive color
-                activeColor: ColorApp.lightBlue,
+                activeColor: ColorApp.lightOrange,
                 size: const Size.square(9.0),
                 activeSize: const Size(18.0, 9.0),
                 activeShape: RoundedRectangleBorder(

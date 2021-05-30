@@ -83,7 +83,7 @@ class _PayrollScreenState extends State<PayrollScreen>
               margin: EdgeInsets.all(size.width * 0.03),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
-                  color: ColorApp.blue.withOpacity(0.05),
+                  color: ColorApp.orange.withOpacity(0.05),
                   spreadRadius: 1,
                   blurRadius: 4,
                   offset: Offset(0, 1), // changes position of shadow
@@ -137,7 +137,7 @@ class _PayrollScreenState extends State<PayrollScreen>
               padding: EdgeInsets.all(size.width * 0.03),
               decoration: BoxDecoration(boxShadow: [
                 BoxShadow(
-                  color: ColorApp.blue.withOpacity(0.05),
+                  color: ColorApp.orange.withOpacity(0.05),
                   spreadRadius: 1,
                   blurRadius: 4,
                   offset: Offset(0, 1), // changes position of shadow
@@ -169,7 +169,7 @@ class _PayrollScreenState extends State<PayrollScreen>
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
-                                  color: ColorApp.mediumBlue),
+                                  color: ColorApp.mediumOrange),
                               softWrap: true,
                             ),
                           ],
@@ -181,7 +181,7 @@ class _PayrollScreenState extends State<PayrollScreen>
                             position: _pageNotifier.value.toDouble(),
                             decorator: DotsDecorator(
                               color: ColorApp.lightGrey, // Inactive color
-                              activeColor: ColorApp.lightBlue,
+                              activeColor: ColorApp.lightOrange,
                               size: const Size.square(9.0),
                               activeSize: const Size(15.0, 9.0),
                               activeShape: RoundedRectangleBorder(
@@ -212,7 +212,7 @@ class _PayrollScreenState extends State<PayrollScreen>
                                 decoration: BoxDecoration(
                                     boxShadow: [
                                       BoxShadow(
-                                        color: ColorApp.blue.withOpacity(0.1),
+                                        color: ColorApp.orange.withOpacity(0.1),
                                         spreadRadius: 2,
                                         blurRadius: 4,
                                         offset: Offset(
@@ -329,7 +329,7 @@ Widget level1(String name, String nomarl, String number) {
             textAlign: TextAlign.center,
             style: TextStyle(
                 fontSize: 15,
-                color: ColorApp.mediumBlue,
+                color: ColorApp.mediumOrange,
                 fontWeight: FontWeight.bold),
             softWrap: true,
           ),
@@ -366,7 +366,7 @@ Widget level1(String name, String nomarl, String number) {
                 nomarl,
                 style: TextStyle(
                     fontSize: 15,
-                    color: ColorApp.mediumBlue,
+                    color: ColorApp.mediumOrange,
                     fontWeight: FontWeight.w600),
                 softWrap: true,
               ),
@@ -393,7 +393,7 @@ Widget level1(String name, String nomarl, String number) {
                 number,
                 style: TextStyle(
                     fontSize: 15,
-                    color: ColorApp.mediumBlue,
+                    color: ColorApp.mediumOrange,
                     fontWeight: FontWeight.w600),
                 softWrap: true,
               )

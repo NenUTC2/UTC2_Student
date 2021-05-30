@@ -92,7 +92,7 @@ class _ActivityPageState extends State<ActivityPage> {
           builder: (context, state) {
             if (state is LoadingClass)
               return SpinKitChasingDots(
-                color: ColorApp.blue,
+                color: ColorApp.orange,
               );
             else if (state is LoadedClass) {
               print('loaded');
@@ -135,7 +135,7 @@ class _ActivityPageState extends State<ActivityPage> {
               );
             } else {
               return SpinKitChasingDots(
-                color: ColorApp.blue,
+                color: ColorApp.orange,
               );
             }
           },
@@ -145,9 +145,9 @@ class _ActivityPageState extends State<ActivityPage> {
           right: 10,
           child: FloatingActionButton(
             backgroundColor: Colors.white,
-            splashColor: ColorApp.blue.withOpacity(.4),
+            splashColor: ColorApp.orange.withOpacity(.4),
             hoverColor: ColorApp.lightGrey,
-            foregroundColor: ColorApp.blue,
+            foregroundColor: ColorApp.orange,
             onPressed: () {
               Navigator.push(context,
                       MaterialPageRoute(builder: (context) => NewClass()))

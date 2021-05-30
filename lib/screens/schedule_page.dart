@@ -34,7 +34,7 @@ class _SchedulePageState extends State<SchedulePage> {
                     indicatorColor: Colors.transparent,
                     indicator: new BubbleTabIndicator(
                       indicatorHeight: size.height * 0.05,
-                      indicatorColor: ColorApp.mediumBlue,
+                      indicatorColor: ColorApp.mediumOrange,
                       tabBarIndicatorSize: TabBarIndicatorSize.tab,
                     ),
                     tabs: [
