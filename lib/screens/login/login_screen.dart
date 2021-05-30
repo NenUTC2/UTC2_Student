@@ -19,7 +19,7 @@ class LoginScreen extends StatelessWidget {
     ));
     Size size = MediaQuery.of(context).size;
     return BlocProvider<LoginBloc>(
-        create: (context) => LoginBloc(userRepository: _userRepository),
+        create: (context) => LoginBloc(),
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SingleChildScrollView(
@@ -64,13 +64,6 @@ class LoginScreen extends StatelessWidget {
                           child: LoginForm(
                             userRepository: _userRepository,
                           )),
-                      Spacer(),
-                      Text(
-                        'Developed by KhanhTran',
-                        style: TextStyle(
-                          color: ColorApp.black,
-                        ),
-                      )
                     ],
                   ),
                   Positioned(
@@ -79,15 +72,15 @@ class LoginScreen extends StatelessWidget {
                       width: size.width,
                       child: Column(
                         children: [
-                          Text(
-                            'Trường đại học giao thông vận tải\nphân hiệu tại TP.Hồ Chí Minh',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: ColorApp.black,
-                                fontSize: size.width * 0.05),
-                          ),
+                          // Text(
+                          //   'Trường đại học giao thông vận tải\nphân hiệu tại TP.Hồ Chí Minh',
+                          //   textAlign: TextAlign.center,
+                          //   style: TextStyle(
+                          //       color: ColorApp.black,
+                          //       fontSize: size.width * 0.05),
+                          // ),
                           SizedBox(
-                            height: 7,
+                            height: 30,
                           ),
                           Center(
                             child: ClipOval(

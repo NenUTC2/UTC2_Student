@@ -7,7 +7,19 @@ class Validators {
   // );
 
   static isValidEmail(String email) {
-    return _emailRegExp.hasMatch(email);
+    try {
+      if (_emailRegExp.hasMatch(email)) {
+        int len = email.length;
+        print(email);
+        if (email.substring(len - 14) == 'st.utc2.edu.vn') {
+          return true;
+        } else
+          return false;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
 
   // static isValidPassword(String password) {

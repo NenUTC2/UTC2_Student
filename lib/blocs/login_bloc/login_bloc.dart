@@ -5,11 +5,9 @@ import 'package:utc2_student/utils/validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final UserRepository _userRepository;
+  final UserRepository _userRepository = UserRepository();
 
-  LoginBloc({UserRepository userRepository})
-      : _userRepository = userRepository,
-        super(LoginState.initial());
+  LoginBloc() : super(LoginState.initial());
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
@@ -35,7 +33,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       {String email, String password}) async* {
     yield LoginState.loading();
     try {
-      await _userRepository.signInWithCredentials(email, password);
+      await UserRepository.signInWithCredentials(email, password);
       yield LoginState.success();
     } catch (e) {
       print(e.toString());

@@ -5,10 +5,9 @@ import 'package:utc2_student/utils/validators.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final UserRepository _userRepository;
 
-  RegisterBloc({UserRepository userRepository})
-      : _userRepository = userRepository,
+  RegisterBloc()
+      : 
         super(RegisterState.initial());
 
   @override
@@ -36,7 +35,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       {String email, String password}) async* {
     yield RegisterState.loading();
     try {
-      await _userRepository.signUp(email, password);
+      await UserRepository.signUp(email, password);
       yield RegisterState.success();
     } catch (error) {
       print(error);

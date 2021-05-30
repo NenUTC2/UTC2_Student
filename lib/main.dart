@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:utc2_student/screens/login/login_screen.dart';
 import 'package:utc2_student/service/local_notification.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -101,7 +103,7 @@ class _HomePageState extends State<HomePage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<ClassBloc>(create: (context) => ClassBloc()),
-        BlocProvider<PostBloc>(create: (context) => PostBloc())
+        BlocProvider<PostBloc>(create: (context) => PostBloc()),
       ],
       child: GetMaterialApp(
         theme: ThemeData(
@@ -111,8 +113,7 @@ class _HomePageState extends State<HomePage> {
                 .appBarTheme
                 .copyWith(brightness: Brightness.light)),
         debugShowCheckedModeBanner: false,
-        // home: HomeScreen(),
-        home: HomeScreen(),
+        home: LoginScreen(),
       ),
     );
   }

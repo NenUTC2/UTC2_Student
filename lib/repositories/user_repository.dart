@@ -1,34 +1,34 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class UserRepository {
-  final FirebaseAuth _firebaseAuth;
+  // final FirebaseAuth FirebaseAuth.instance;
 
-  UserRepository()
-      : _firebaseAuth = FirebaseAuth.instance;
+  // UserRepository()
+  //     : FirebaseAuth.instance = FirebaseAuth.instance;
 
-  Future<void> signInWithCredentials(String email, String password) {
-    return _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
+  static Future<void> signInWithCredentials(
+      String email, String password) async {
+    return await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password);
   }
 
-  Future<void> signUp(String email, String password) async {
-    return await _firebaseAuth.createUserWithEmailAndPassword(
+  static Future<void> signUp(String email, String password) async {
+    return await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
   }
 
-  Future<void> signOut() async {
-    return Future.wait([_firebaseAuth.signOut()]);
+  static Future<void> signOut() async {
+    return Future.wait([FirebaseAuth.instance.signOut()]);
   }
 
-  Future<bool> isSignedIn() async {
-    final currentUser = _firebaseAuth.currentUser;
+  static Future<bool> isSignedIn() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
     return currentUser != null;
   }
 
-  Future<User> getUser() async {
-     return _firebaseAuth.currentUser;
+  static Future<User> getUser() async {
+    return FirebaseAuth.instance.currentUser;
   }
-
 }
