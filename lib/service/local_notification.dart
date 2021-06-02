@@ -17,10 +17,11 @@ class MyLocalNotification {
       String room,
       int maMon,
       int maLich) async {
+    String sem = em == 0 ? '00' : '$em';
     await notifications.zonedSchedule(
         int.parse('$maMon$maLich'),
         'Đến giờ học môn $tenMon - $room',
-        '$sh:$sm - $eh:$em',
+        '$sh:$sm - $eh:$sem',
         nextInstanceOfWeekDayTime(sh, sm, wd),
         NotificationDetails(
           android: AndroidNotificationDetails(
@@ -49,7 +50,7 @@ class MyLocalNotification {
     return scheduledDate;
   }
 
-   static tz.TZDateTime nextInstanceOfWeekDayTime(int h, int m, int wd) {
+  static tz.TZDateTime nextInstanceOfWeekDayTime(int h, int m, int wd) {
     tz.TZDateTime scheduledDate = nextInstanceOfTime(h, m);
     while (scheduledDate.weekday != wd) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
