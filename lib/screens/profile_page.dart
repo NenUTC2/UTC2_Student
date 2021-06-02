@@ -11,12 +11,16 @@ import 'package:utc2_student/screens/profile_screen/payroll_table_screen.dart';
 import 'package:utc2_student/screens/profile_screen/profile_info.dart';
 import 'package:utc2_student/screens/profile_screen/setting_screen.dart';
 import 'package:utc2_student/screens/profile_screen/work/performance_work_screen.dart';
+import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProFilePage extends StatefulWidget {
+  final Student student;
+
+  const ProFilePage({Key key, this.student}) : super(key: key);
   @override
   _ProFilePageState createState() => _ProFilePageState();
 }
@@ -24,8 +28,6 @@ class ProFilePage extends StatefulWidget {
 class _ProFilePageState extends State<ProFilePage> {
   GoogleSignInRepository _googleSignIn = GoogleSignInRepository();
   File _image;
-  String linkImage =
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png';
   final picker = ImagePicker();
   Future getImage(bool isCamere) async {
     final pickedFile = await picker.getImage(
@@ -266,13 +268,13 @@ class _ProFilePageState extends State<ProFilePage> {
                     _show(size);
                   },
                   child: Container(
-                      child: Center(child: _avatar(_image, size, linkImage))),
+                      child: Center(child: _avatar(_image, size, widget.student.avatar))),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                _name('Phan Thành Nên', size),
-                _email('5851071044', size),
+                _name(widget.student.name, size),
+                _email(widget.student.id, size),
               ],
             ),
           ),

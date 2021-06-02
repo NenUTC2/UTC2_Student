@@ -15,8 +15,6 @@ class GoogleSignInRepository {
   Future<GoogleSignInAccount> signIn() async {
     try {
       var ggUser = await _googleSignIn.signIn();
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('userEmail', ggUser.email);
       return ggUser;
     } catch (error) {
       print(error);

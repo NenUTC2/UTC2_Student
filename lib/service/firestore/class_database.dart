@@ -6,7 +6,10 @@ class ClassDatabase {
   }
 
   Future<void> deleteClass(String id) async {
-    await FirebaseFirestore.instance.collection('Class').doc(id).delete();
+    await FirebaseFirestore.instance
+        .collection('Class')
+        .doc(id)
+        .delete();
   }
 
   getClassData() async {

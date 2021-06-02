@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
+import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
 import 'package:utc2_student/repositories/google_signin_repo.dart';
 import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/screens/home_screen.dart';
@@ -124,6 +125,8 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<ClassBloc>(create: (context) => ClassBloc()),
         BlocProvider<PostBloc>(create: (context) => PostBloc()),
         BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
+        BlocProvider<StudentBloc>(create: (context) => StudentBloc()),
+
       ],
       child: GetMaterialApp(
         theme: ThemeData(
