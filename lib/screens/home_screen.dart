@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:utc2_student/screens/activity_page.dart';
 import 'package:utc2_student/screens/notify_page.dart';
 import 'package:utc2_student/screens/schedule_page.dart';
-import 'package:utc2_student/screens/web_view.dart';
+import 'package:utc2_student/widgets/web_view.dart';
 import 'package:utc2_student/utils/custom_glow.dart';
 import 'package:utc2_student/screens/home_page.dart';
 import 'package:utc2_student/screens/profile_page.dart';
