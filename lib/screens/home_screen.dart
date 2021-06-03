@@ -70,7 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
         endDrawer:
             BlocBuilder<StudentBloc, StudentState>(builder: (context, state) {
           if (state is StudentLoaded)
-            return Drawer(child: ProFilePage(student: state.student,));
+            return Drawer(
+                child: ProFilePage(
+              student: state.student,
+            ));
           else
             return Container();
         }),
@@ -150,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Scaffold.of(context).openEndDrawer();
               },
               child: CustomAvatarGlow(
-                glowColor: Colors.blue,
+                glowColor: ColorApp.lightOrange,
                 endRadius: 20.0,
                 duration: Duration(milliseconds: 1000),
                 repeat: true,

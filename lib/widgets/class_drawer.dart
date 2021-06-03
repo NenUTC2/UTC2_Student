@@ -98,6 +98,7 @@ class ClassDrawer extends StatelessWidget {
                     leading: Container(
                       width: 30,
                       child: CircleAvatar(
+                        backgroundColor: ColorApp.lightOrange.withOpacity(.3),
                         child: Text(
                             active[index].name.substring(0, 1).toUpperCase()),
                       ),

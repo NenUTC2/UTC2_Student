@@ -139,9 +139,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             onPressed: () {},
             icon: Icon(
               Icons.edit,
+              color: ColorApp.lightOrange,
               size: 16,
             ),
-            label: Text('Lịch sử'),
+            label: Text(
+              'Lịch sử',
+              style: TextStyle(color: ColorApp.lightOrange),
+            ),
           )
         ],
       ),
@@ -158,7 +162,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               CustomAvatarGlow(
-                glowColor: Colors.blue,
+                glowColor: ColorApp.lightOrange,
                 endRadius: 70.0,
                 duration: Duration(milliseconds: 2000),
                 repeat: true,
@@ -227,13 +231,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                             MaterialStateProperty.all<Color>(Colors.lightBlue),
                         foregroundColor:
                             MaterialStateProperty.all<Color>(Colors.white),
-                        backgroundColor:
-                            MaterialStateProperty.all<Color>(Colors.blue),
+                        backgroundColor: MaterialStateProperty.all<Color>(
+                            ColorApp.lightOrange),
                         shape:
                             MaterialStateProperty.all<RoundedRectangleBorder>(
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
-                                    side: BorderSide(color: Colors.red)))),
+                                    side: BorderSide(color: Colors.white)))),
                     onPressed: () {
                       if (_controller.text.isNotEmpty) {
                         search(_controller.text);
@@ -263,7 +267,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   // _scan();
                   _scan();
                 },
-                color: Colors.blue,
+                color: ColorApp.lightOrange,
                 textColor: Colors.white,
                 child: Icon(
                   Icons.qr_code_scanner_outlined,

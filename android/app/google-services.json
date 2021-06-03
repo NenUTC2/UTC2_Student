@@ -52,6 +52,14 @@
           }
         },
         {
+          "client_id": "423190494078-f238c0gc4kqdkh727vc0dgfa7r4cdnfg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.utc2_student",
+            "certificate_hash": "dfa31766d50edb53d5eaada542fc899149aac415"
+          }
+        },
+        {
           "client_id": "423190494078-d09ttrg4cdutjqmc63a9oq8m0tmal1ti.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -177,16 +177,17 @@ class _HomePageState extends State<HomePage> {
                           itemCount: subTask.length,
                           itemBuilder: (context, i) {
                             return ListTile(
-                              // leading: CircularCheckBox(
-                              //   value: subTask[i]['isComplete'],
-                              //   activeColor: ColorApp.mediumOrange,
-                              //   checkColor: ColorApp.lightGrey,
-                              //   onChanged: (value) {
-                              //     setState(() {
-                              //       subTask[i]['isComplete'] = value;
-                              //     });
-                              //   },
-                              // ),
+                              leading: Checkbox(
+                                value: subTask[i]['isComplete'],
+                                activeColor: ColorApp.mediumOrange,
+                                checkColor: ColorApp.lightGrey,
+                                shape: CircleBorder(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    subTask[i]['isComplete'] = value;
+                                  });
+                                },
+                              ),
                               title: Text(subTask[i]['title'].toString()),
                             );
                           },
@@ -376,13 +377,13 @@ class _HomePageState extends State<HomePage> {
                                                   foregroundColor:
                                                       MaterialStateProperty.all<Color>(
                                                           Colors.white),
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<Color>(
-                                                          ColorApp.mediumOrange),
+                                                  backgroundColor: MaterialStateProperty.all<Color>(
+                                                      ColorApp.mediumOrange),
                                                   shape: MaterialStateProperty.all<
                                                           RoundedRectangleBorder>(
                                                       RoundedRectangleBorder(
-                                                          borderRadius: BorderRadius.circular(10),
+                                                          borderRadius:
+                                                              BorderRadius.circular(10),
                                                           side: BorderSide(color: Colors.red)))),
                                               onPressed: () => null)
                                         ],

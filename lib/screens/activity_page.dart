@@ -1,9 +1,10 @@
 import 'dart:math';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
-import 'package:utc2_student/screens/classroom/new_class.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
 import 'package:utc2_student/utils/color_random.dart';
 import 'package:utc2_student/utils/utils.dart';
@@ -16,6 +17,8 @@ class ActivityPage extends StatefulWidget {
 
 class _ActivityPageState extends State<ActivityPage> {
   ClassDatabase classDatabase = ClassDatabase();
+  bool isErro = false;
+  TextEditingController _controller = TextEditingController();
   List activity = [
     {
       'title': 'Đồ án tốt nghiệp',
@@ -38,6 +41,99 @@ class _ActivityPageState extends State<ActivityPage> {
     },
     {'title': 'data minning 20-21', 'name': 'Trần Phong Nhã', 'subAct': []},
   ];
+  Future _scan() async {
+    await Permission.camera.request();
+    String barcode = await FlutterBarcodeScanner.scanBarcode(
+        "#ff6666", "Hủy", false, ScanMode.DEFAULT);
+    if (barcode == null) {
+      print('Không tìm thấy mã code');
+    } else {
+      _controller.text = barcode;
+    }
+  }
+
+  showNewClass(BuildContext context, String id) {
+    Size size = MediaQuery.of(context).size;
+    AlertDialog alert = AlertDialog(
+      title: Center(child: Text('Tham gia lớp học mới'.toUpperCase())),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            height: 50,
+            width: size.width,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: TextFormField(
+                controller: _controller,
+                decoration: InputDecoration(
+                    hintText: 'Mã lớp',
+                    errorText: isErro ? 'Vui lòng nhập mã' : null),
+                autocorrect: true,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Center(
+            child: ElevatedButton(
+                child: Container(
+                  margin: EdgeInsets.symmetric(
+                      horizontal: size.width * 0.2, vertical: 10),
+                  child: Text("Tham gia",
+                      style: TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.normal)),
+                ),
+                style: ButtonStyle(
+                    tapTargetSize: MaterialTapTargetSize.padded,
+                    shadowColor:
+                        MaterialStateProperty.all<Color>(Colors.lightBlue),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(ColorApp.lightOrange),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(color: Colors.white)))),
+                onPressed: () {}),
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Text(
+            'Hoặc quét mã Code',
+            style: TextStyle(fontSize: 16),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          MaterialButton(
+            onPressed: () {
+              _scan();
+            },
+            color: ColorApp.lightOrange,
+            textColor: Colors.white,
+            child: Icon(
+              Icons.qr_code_scanner_outlined,
+              size: 24,
+            ),
+            padding: EdgeInsets.all(16),
+            shape: CircleBorder(),
+          )
+        ],
+      ),
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   showAlertDialog(BuildContext context, String name, String id) {
     // set up the buttons
@@ -48,7 +144,7 @@ class _ActivityPageState extends State<ActivityPage> {
       },
     );
     Widget continueButton = TextButton(
-      child: Text("Kết thúc"),
+      child: Text("Rời Khỏi"),
       onPressed: () {
         Navigator.pop(context);
         classDatabase.deleteClass(id);
@@ -149,9 +245,7 @@ class _ActivityPageState extends State<ActivityPage> {
             hoverColor: ColorApp.lightGrey,
             foregroundColor: ColorApp.orange,
             onPressed: () {
-              Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => NewClass()))
-                  .then((value) => classBloc.add(GetClassEvent()));
+              showNewClass(context, '3');
             },
             child: Icon(Icons.add),
           ),
@@ -276,4 +370,3 @@ class _ActivityPageState extends State<ActivityPage> {
     );
   }
 }
-

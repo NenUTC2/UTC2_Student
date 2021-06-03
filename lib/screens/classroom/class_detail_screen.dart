@@ -138,7 +138,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                       margin: EdgeInsets.only(top: 10),
                       child: RefreshIndicator(
                         onRefresh: () async {
-                           postBloc.add(GetPostEvent(widget.idClass));
+                          postBloc.add(GetPostEvent(widget.idClass));
                         },
                         child: Scrollbar(
                           child: ListView.builder(
@@ -147,8 +147,14 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                                   horizontal: size.width * 0.03),
                               itemBuilder: (context, index) {
                                 var e = state.list[index];
-                                return customList(size, context, e.title,
-                                    'Đã đăng  ' + e.date, e.content, '2');
+                                return ItemNoti(
+                                  avatar: 'link avatar',
+                                  userName: 'Miên Phạm',
+                                  title: e.title,
+                                  time: e.date,
+                                  content: e.content,
+                                  numberFile: index,
+                                );
                               }),
                         ),
                       ),
@@ -307,7 +313,10 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
             SizedBox(
               width: 10,
             ),
-            Text('Thông báo gì đó cho lớp học của bạn...'),
+            Text(
+              'Thông báo gì đó cho lớp học của bạn...',
+              style: TextStyle(color: ColorApp.lightOrange),
+            ),
           ],
         ),
       ),
@@ -340,109 +349,136 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
   }
 }
 
-Widget customList(Size size, BuildContext context, String className,
-    String teacherName, String content, String number) {
-  return Container(
-    margin: EdgeInsets.symmetric(vertical: size.width * 0.03),
-    child: Column(
-      children: [
-        Container(
-          width: size.width,
-          padding: EdgeInsets.all(size.width * 0.03),
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(10.0),
-              ),
-              border: Border.all(color: ColorApp.lightGrey, width: 1)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Container(
-                    child: CircleAvatar(
-                      backgroundColor: ColorApp.lightGrey,
-                      radius: 15,
-                      backgroundImage: AssetImage('assets/images/logoUTC.png'),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 7,
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        className.toUpperCase(),
-                        softWrap: true,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: ColorApp.black, fontSize: 17),
-                      ),
-                      Text(
-                        teacherName,
-                        style: TextStyle(color: Colors.grey, fontSize: 13),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                content,
-                softWrap: true,
-                style: TextStyle(color: ColorApp.black, fontSize: 16),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                children: [
-                  Icon(
-                    Icons.attachment,
-                    color: Colors.grey,
-                    size: 15,
-                  ),
-                  SizedBox(
-                    width: 3,
-                  ),
-                  Text(
-                    number + ' Tệp đính kèm',
-                    softWrap: true,
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Container(
+class ItemNoti extends StatelessWidget {
+  final String avatar;
+  final String userName;
+  final String time;
+  final String title;
+  final String content;
+  final int numberFile;
+  ItemNoti(
+      {this.avatar,
+      this.userName,
+      this.time,
+      this.title,
+      this.content,
+      this.numberFile});
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: size.width * 0.03),
+      child: Column(
+        children: [
+          Container(
             width: size.width,
             padding: EdgeInsets.all(size.width * 0.03),
             decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10.0),
-                  bottomRight: Radius.circular(10.0),
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
                 ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.05),
-                    spreadRadius: 3,
-                    blurRadius: 5,
-                    offset: Offset(0, 3), // changes position of shadow
-                  ),
-                ],
                 border: Border.all(color: ColorApp.lightGrey, width: 1)),
-            child: Text(
-              'Thêm nhận xét lớp học',
-              style: TextStyle(color: Colors.grey),
-            ))
-      ],
-    ),
-  );
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      child: CircleAvatar(
+                        backgroundColor: ColorApp.lightGrey,
+                        radius: 15,
+                        backgroundImage:
+                            AssetImage('assets/images/logoUTC.png'),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 7,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          userName.toUpperCase(),
+                          softWrap: true,
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: ColorApp.black, fontSize: 17),
+                        ),
+                        Text(
+                          "Đã đăng  " + time,
+                          style: TextStyle(color: Colors.grey, fontSize: 13),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  title,
+                  softWrap: true,
+                  style: TextStyle(color: ColorApp.black, fontSize: 16),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  content,
+                  softWrap: true,
+                  style: TextStyle(
+                      color: ColorApp.black.withOpacity(.6), fontSize: 16),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.attachment,
+                      color: Colors.grey,
+                      size: 15,
+                    ),
+                    SizedBox(
+                      width: 3,
+                    ),
+                    Text(
+                      numberFile.toString() + ' Tệp đính kèm',
+                      softWrap: true,
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+              width: size.width,
+              padding: EdgeInsets.all(size.width * 0.03),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(10.0),
+                    bottomRight: Radius.circular(10.0),
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.05),
+                      spreadRadius: 3,
+                      blurRadius: 5,
+                      offset: Offset(0, 3), // changes position of shadow
+                    ),
+                  ],
+                  border: Border.all(color: ColorApp.lightGrey, width: 1)),
+              child: Text(
+                'Thêm nhận xét lớp học',
+                style: TextStyle(color: Colors.grey),
+              ))
+        ],
+      ),
+    );
+  }
 }

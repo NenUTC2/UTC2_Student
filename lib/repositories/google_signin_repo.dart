@@ -17,7 +17,7 @@ class GoogleSignInRepository {
       var ggUser = await _googleSignIn.signIn();
       return ggUser;
     } catch (error) {
-      print(error);
+      print("Lỗi đây ----------" + error.toString());
       return null;
     }
   }

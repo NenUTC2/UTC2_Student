@@ -79,7 +79,10 @@ class _NewNotifyState extends State<NewNotify> {
               postDatabase.createPost(dataPost, widget.idClass, idPost);
             },
             child: Text("Đăng    ",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                style: TextStyle(
+                    color: ColorApp.lightOrange,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold)),
           )
         ],
       ),
@@ -102,10 +105,10 @@ class _NewNotifyState extends State<NewNotify> {
                     Container(
                       width: 35,
                       child: CircleAvatar(
-                        backgroundColor: Colors.blue.withOpacity(.1),
+                        backgroundColor: ColorApp.lightOrange.withOpacity(.1),
                         child: Icon(
                           Icons.edit,
-                          color: Colors.blue,
+                          color: ColorApp.lightOrange,
                           size: 16,
                         ),
                       ),
@@ -150,10 +153,10 @@ class _NewNotifyState extends State<NewNotify> {
                     Container(
                       width: 35,
                       child: CircleAvatar(
-                        backgroundColor: Colors.blue.withOpacity(.1),
+                        backgroundColor: ColorApp.lightOrange.withOpacity(.1),
                         child: Icon(
                           Icons.note_add,
-                          color: Colors.blue,
+                          color: ColorApp.lightOrange,
                           size: 16,
                         ),
                       ),
@@ -201,10 +204,10 @@ class _NewNotifyState extends State<NewNotify> {
                     Container(
                       width: 35,
                       child: CircleAvatar(
-                        backgroundColor: Colors.blue.withOpacity(.1),
+                        backgroundColor: ColorApp.lightOrange.withOpacity(.1),
                         child: Icon(
                           Icons.attachment,
-                          color: Colors.blue,
+                          color: ColorApp.lightOrange,
                           size: 16,
                         ),
                       ),
@@ -221,206 +224,6 @@ class _NewNotifyState extends State<NewNotify> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: size.width * 0.02,
-              ),
-              // Container(
-              //   padding: EdgeInsets.symmetric(
-              //       vertical: size.width * 0.03, horizontal: size.width * 0.03),
-              //   decoration: BoxDecoration(
-              //     color: Colors.white,
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   child: Row(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     children: [
-              //       Container(
-              //         width: 35,
-              //         child: CircleAvatar(
-              //           backgroundColor: Colors.blue.withOpacity(.1),
-              //           child: Icon(
-              //             Icons.dns_rounded,
-              //             color: Colors.blue,
-              //             size: 16,
-              //           ),
-              //         ),
-              //       ),
-              //       SizedBox(
-              //         width: 15,
-              //       ),
-              //       Expanded(
-              //         child: Container(
-              //             alignment: Alignment.centerLeft,
-              //             height: 35,
-              //             child: Text('Bài tập trắc nghiệm')),
-              //       ),
-              //       IconButton(
-              //           onPressed: () {
-              //             setState(() {
-              //               expaned ? expaned = false : expaned = true;
-              //             });
-              //           },
-              //           icon: Icon(
-              //             expaned
-              //                 ? Icons.remove_circle
-              //                 : Icons.add_circle_rounded,
-              //             color: ColorApp.mediumOrange,
-              //           ))
-              //     ],
-              //   ),
-              // ),
-              AnimatedCrossFade(
-                firstChild: Container(
-                  height: 500,
-                  padding: EdgeInsets.symmetric(
-                      vertical: size.width * 0.03,
-                      horizontal: size.width * 0.03),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        TextFormField(
-                          validator: (val) =>
-                              val.isEmpty ? 'Nhập câu hỏi' : null,
-                          onChanged: (value) {},
-                          style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumOrange),
-                          decoration: InputDecoration(
-                              // border: InputBorder.none,
-                              isCollapsed: true,
-                              hintText: 'Câu hỏi 1',
-                              hintStyle: TextStyle(
-                                  fontSize: 16, color: ColorApp.black)),
-                        ),
-                        TextFormField(
-                          validator: (val) =>
-                              val.isEmpty ? 'Nhập câu trả lời đúng' : null,
-                          onChanged: (value) {},
-                          style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumOrange),
-                          decoration: InputDecoration(
-                              // border: InputBorder.none,
-                              isCollapsed: true,
-                              hintText: 'A --> Đán áp đúng',
-                              hintStyle: TextStyle(
-                                  fontSize: 16, color: ColorApp.black)),
-                        ),
-                        TextFormField(
-                          validator: (val) => val.isEmpty
-                              ? 'Nhập ít nhất 1 câu trả lời sai'
-                              : null,
-                          onChanged: (value) {},
-                          style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumOrange),
-                          decoration: InputDecoration(
-                              // border: InputBorder.none,
-                              isCollapsed: true,
-                              hintText: 'B',
-                              hintStyle: TextStyle(
-                                  fontSize: 16, color: ColorApp.black)),
-                        ),
-                        TextFormField(
-                          onChanged: (value) {},
-                          style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumOrange),
-                          decoration: InputDecoration(
-                              // border: InputBorder.none,
-                              isCollapsed: true,
-                              hintText: 'C',
-                              hintStyle: TextStyle(
-                                  fontSize: 16, color: ColorApp.black)),
-                        ),
-                        TextFormField(
-                          onChanged: (value) {},
-                          style: TextStyle(
-                              fontSize: 20, color: ColorApp.mediumOrange),
-                          decoration: InputDecoration(
-                              // border: InputBorder.none,
-                              isCollapsed: true,
-                              hintText: 'D',
-                              hintStyle: TextStyle(
-                                  fontSize: 16, color: ColorApp.black)),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            ElevatedButton(
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
-                                  child: Text("Hoàn thành",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.normal)),
-                                ),
-                                style: ButtonStyle(
-                                    tapTargetSize: MaterialTapTargetSize.padded,
-                                    shadowColor: MaterialStateProperty.all<Color>(
-                                        Colors.lightBlue),
-                                    foregroundColor: MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            ColorApp.mediumOrange),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            side: BorderSide(
-                                                color: Colors.transparent)))),
-                                onPressed: () async {
-                                  final pdfFile =
-                                      await PdfParagraphApi.generate();
-                                  PdfApi.openFile(pdfFile);
-                                }),
-                            ElevatedButton(
-                                child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
-                                  child: Text("Tiếp tục",
-                                      style: TextStyle(
-                                          fontSize: 18,
-                                          // letterSpacing: 1,
-                                          // wordSpacing: 1,
-                                          fontWeight: FontWeight.normal)),
-                                ),
-                                style: ButtonStyle(
-                                    tapTargetSize: MaterialTapTargetSize.padded,
-                                    shadowColor: MaterialStateProperty.all<Color>(
-                                        Colors.lightBlue),
-                                    foregroundColor: MaterialStateProperty.all<Color>(
-                                        Colors.white),
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                            ColorApp.mediumOrange),
-                                    shape: MaterialStateProperty.all<
-                                            RoundedRectangleBorder>(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            side: BorderSide(
-                                                color: Colors.transparent)))),
-                                onPressed: () async {
-                                  if (_formKey.currentState.validate()) {
-                                    print('validated');
-                                  }
-                                }),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                secondChild: Container(),
-                crossFadeState: expaned
-                    ? CrossFadeState.showFirst
-                    : CrossFadeState.showSecond,
-                duration: Duration(milliseconds: 300),
-              )
             ],
           ),
         ),
