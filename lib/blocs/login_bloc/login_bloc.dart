@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/repositories/google_signin_repo.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
@@ -12,7 +13,7 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc() : super(LoginInitial());
-  GoogleSignInRepository _googleSignIn = GoogleSignInRepository();
+
   final studentDB = StudentDatabase();
 
   @override
@@ -21,30 +22,33 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   ) async* {
     switch (event.runtimeType) {
       case SignInEvent:
+        GoogleSignInRepository _googleSignIn = GoogleSignInRepository();
         yield SigningState();
         var login = await _googleSignIn.signIn();
-        bool isRegister = await StudentDatabase.isRegister(login.email);
 
         if (login != null) {
-          if (!isRegister) {
-            String idStudent = generateRandomString(5);
-            Map<String, String> dataStudent = {
-              'id': idStudent,
-              'name': login.displayName,
-              'studentId': '',
-              'date': DateTime.now().toString(),
-              'email': login.email,
-              'avatar':login.photoUrl,
-            };
-            studentDB.createStudent(dataStudent, idStudent);
-          }
-
-          final SharedPreferences prefs = await SharedPreferences.getInstance();
-          prefs.setString('userEmail', login.email);
-          yield SignedInState();
+          bool isRegister = await StudentDatabase.isRegister(login.email);
+          yield SignedInState(login, isRegister);
         } else
           yield SignInErrorState();
 
+        break;
+      case EnterSIDEvent:
+        yield UpdatingSIDState();
+        GoogleSignInAccount ggLogin = event.props[0];
+        Map<String, String> dataStudent = {
+          'id': event.props[1],
+          'name': ggLogin.displayName,
+          'email': ggLogin.email,
+          'avatar': ggLogin.photoUrl,
+          'token': '',
+        };
+        try {
+          await studentDB.createStudent(dataStudent, event.props[1]);
+        } catch (e) {
+          print('Lỗi =====>' + e.toString());
+        }
+        yield EnteredSIDState();
         break;
       default:
     }

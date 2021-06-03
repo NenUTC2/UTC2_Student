@@ -45,13 +45,12 @@ class StudentDatabase {
 }
 
 class Student {
-  String id, name, date, studentId, email, avatar;
+  String id, name, token, email, avatar;
 
   Student(QueryDocumentSnapshot<Map<String, dynamic>> json) {
     this.id = json['id'];
     this.name = json['name'];
-    this.date = json['date'];
-    this.studentId = json['studentId'];
+    this.token = json['token'];
     this.email = json['email'];
     this.avatar = json['avatar'];
   }

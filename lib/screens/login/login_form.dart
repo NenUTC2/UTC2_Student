@@ -6,6 +6,7 @@ import 'package:utc2_student/repositories/google_signin_repo.dart';
 import 'package:utc2_student/repositories/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:utc2_student/screens/home_screen.dart';
+import 'package:utc2_student/screens/login/enter_student_id_screen.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -33,9 +34,11 @@ class _LoginFormState extends State<LoginForm> {
         else if (state is SignInErrorState)
           showSnackBar(context, 'Đăng nhập thất bại', false);
         else if (state is SignedInState) {
-          showSnackBar(context, 'Đăng nhập thành công', false);
-
-          Get.offAll(() => HomeScreen());
+          state.isRegister
+              ? Get.offAll(() => HomeScreen())
+              : Get.to(() => EnterSIDScreen(
+                    ggLogin: state.ggLogin,
+                  ));
         }
       },
       child: Container(

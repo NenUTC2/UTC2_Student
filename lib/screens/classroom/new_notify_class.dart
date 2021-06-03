@@ -73,7 +73,8 @@ class _NewNotifyState extends State<NewNotify> {
                 'idClass': widget.idClass,
                 'title': title,
                 'content': content,
-                'date': DateFormat('HH:mm –  dd-MM-yyyy').format(DateTime.now()),
+                'date':
+                    DateFormat('HH:mm –  dd-MM-yyyy').format(DateTime.now()),
               };
               postDatabase.createPost(dataPost, widget.idClass, idPost);
             },
@@ -223,51 +224,51 @@ class _NewNotifyState extends State<NewNotify> {
               SizedBox(
                 height: size.width * 0.02,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(
-                    vertical: size.width * 0.03, horizontal: size.width * 0.03),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 35,
-                      child: CircleAvatar(
-                        backgroundColor: Colors.blue.withOpacity(.1),
-                        child: Icon(
-                          Icons.dns_rounded,
-                          color: Colors.blue,
-                          size: 16,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Expanded(
-                      child: Container(
-                          alignment: Alignment.centerLeft,
-                          height: 35,
-                          child: Text('Bài tập trắc nghiệm')),
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          setState(() {
-                            expaned ? expaned = false : expaned = true;
-                          });
-                        },
-                        icon: Icon(
-                          expaned
-                              ? Icons.remove_circle
-                              : Icons.add_circle_rounded,
-                          color: ColorApp.mediumOrange,
-                        ))
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.symmetric(
+              //       vertical: size.width * 0.03, horizontal: size.width * 0.03),
+              //   decoration: BoxDecoration(
+              //     color: Colors.white,
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: Row(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Container(
+              //         width: 35,
+              //         child: CircleAvatar(
+              //           backgroundColor: Colors.blue.withOpacity(.1),
+              //           child: Icon(
+              //             Icons.dns_rounded,
+              //             color: Colors.blue,
+              //             size: 16,
+              //           ),
+              //         ),
+              //       ),
+              //       SizedBox(
+              //         width: 15,
+              //       ),
+              //       Expanded(
+              //         child: Container(
+              //             alignment: Alignment.centerLeft,
+              //             height: 35,
+              //             child: Text('Bài tập trắc nghiệm')),
+              //       ),
+              //       IconButton(
+              //           onPressed: () {
+              //             setState(() {
+              //               expaned ? expaned = false : expaned = true;
+              //             });
+              //           },
+              //           icon: Icon(
+              //             expaned
+              //                 ? Icons.remove_circle
+              //                 : Icons.add_circle_rounded,
+              //             color: ColorApp.mediumOrange,
+              //           ))
+              //     ],
+              //   ),
+              // ),
               AnimatedCrossFade(
                 firstChild: Container(
                   height: 500,

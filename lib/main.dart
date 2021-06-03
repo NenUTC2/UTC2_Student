@@ -126,7 +126,6 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<PostBloc>(create: (context) => PostBloc()),
         BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
         BlocProvider<StudentBloc>(create: (context) => StudentBloc()),
-
       ],
       child: GetMaterialApp(
         theme: ThemeData(

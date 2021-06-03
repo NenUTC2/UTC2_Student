@@ -11,6 +11,15 @@ class LoginInitial extends LoginState {}
 
 class SigningState extends LoginState {}
 
-class SignedInState extends LoginState {}
+class SignedInState extends LoginState {
+  final GoogleSignInAccount ggLogin;
+  final bool isRegister;
+
+  SignedInState(this.ggLogin, this.isRegister);
+}
 
 class SignInErrorState extends LoginState {}
+
+class UpdatingSIDState extends LoginState {}
+
+class EnteredSIDState extends LoginState {}
