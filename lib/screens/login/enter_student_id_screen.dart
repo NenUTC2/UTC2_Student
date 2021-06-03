@@ -90,7 +90,7 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
             BlocConsumer<LoginBloc, LoginState>(
               listener: (context, state) {
                 if (state is EnteredSIDState) {
-                  Get.to(() => HomeScreen());
+                  Get.offAll(() => HomeScreen());
                 }
               },
               builder: (context, state) {

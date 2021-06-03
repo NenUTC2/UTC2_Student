@@ -26,13 +26,14 @@ class StudentDatabase {
     }
   }
 
-  static Future<Student> getStudentsData(String email) async {
+  static Future<Student> getStudentData(String email) async {
     List<Student> list = [];
     var data = await FirebaseFirestore.instance
         .collection('Student')
         .where('email', isEqualTo: email)
         .get();
     list = data.docs.map((e) => Student(e)).toList();
+    print('Get student ' + list[0].email);
     return list[0];
   }
 

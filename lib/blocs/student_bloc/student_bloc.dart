@@ -17,10 +17,12 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
   ) async* {
     switch (event.runtimeType) {
       case GetStudent:
+        yield StudentLoading();
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var userEmail = prefs.getString('userEmail');
-        Student student = await StudentDatabase.getStudentsData(userEmail);
-
+        print('Prefs ' + userEmail.toString());
+        Student student = await StudentDatabase.getStudentData(userEmail);
+        print('student ' + student.email);
         if (student != null) {
           yield StudentLoaded(student);
         } else {

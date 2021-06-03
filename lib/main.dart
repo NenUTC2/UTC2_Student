@@ -140,12 +140,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  getTokenFCM() {
+  getTokenFCM() async {
     try {
-      FirebaseMessaging.instance.getToken().then((token) => {
-            // LoginEmailBloc.getInstance().setFCMToken = token,
-            print('token : ' + token)
-          });
+      FirebaseMessaging.instance.getToken().then((token) async {
+        print('token : ' + token);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setString('token', token);
+      });
     } catch (e) {
       print('get token exception : ' + e.toString());
     }
