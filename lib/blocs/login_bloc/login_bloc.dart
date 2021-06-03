@@ -27,9 +27,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         var login = await _googleSignIn.signIn();
 
         if (login != null) {
-          int len = login.email.length - 14;
-          if (login.email.substring(len) == 'st.utc2.edu.vn') {
-            print(login.email.substring(len) == 'st.utc2.edu.vn');
+          String emailLen = 'st.utc2.edu.vn';
+          int len = login.email.length - emailLen.length;
+          if (login.email.substring(len) == emailLen) {
+            print(login.email.substring(len) == emailLen);
 
             Map<String, String> dataStudent = {
               'id': login.email.substring(0, len - 1),
