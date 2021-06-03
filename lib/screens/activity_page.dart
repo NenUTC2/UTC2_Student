@@ -77,26 +77,22 @@ class _ActivityPageState extends State<ActivityPage> {
             height: 20,
           ),
           Center(
-            child: ElevatedButton(
+            child: MaterialButton(
                 child: Container(
                   margin: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.2, vertical: 10),
-                  child: Text("Tham gia",
-                      style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.normal)),
+                      horizontal: size.width * 0.1, vertical: 10),
+                  child: Text(
+                    "Tham gia",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
-                style: ButtonStyle(
-                    tapTargetSize: MaterialTapTargetSize.padded,
-                    shadowColor:
-                        MaterialStateProperty.all<Color>(Colors.lightBlue),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(ColorApp.lightOrange),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            side: BorderSide(color: Colors.white)))),
+                color: ColorApp.lightOrange,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
                 onPressed: () {}),
           ),
           SizedBox(

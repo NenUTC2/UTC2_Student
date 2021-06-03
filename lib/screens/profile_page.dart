@@ -263,18 +263,22 @@ class _ProFilePageState extends State<ProFilePage> {
           SafeArea(
             child: Column(
               children: [
+                SizedBox(
+                  height: 15,
+                ),
                 GestureDetector(
                   onTap: () {
                     _show(size);
                   },
                   child: Container(
-                      child: Center(child: _avatar(_image, size, widget.student.avatar))),
+                      child: Center(
+                          child: _avatar(_image, size, widget.student.avatar))),
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 15,
                 ),
                 _name(widget.student.name, size),
-                _email(widget.student.id, size),
+                _email(widget.student.email, size),
               ],
             ),
           ),

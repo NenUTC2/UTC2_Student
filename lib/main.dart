@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,8 +9,6 @@ import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
-import 'package:utc2_student/repositories/google_signin_repo.dart';
-import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -57,7 +53,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   FirebaseMessaging _fireBaseMessaging;
   final notifications = FlutterLocalNotificationsPlugin();
-  GoogleSignInRepository _googleSignIn = GoogleSignInRepository();
   Widget body = Scaffold(
   );
   @override

@@ -19,3 +19,10 @@ String generateRandomString(int len) {
       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
   return List.generate(len, (index) => _chars[r.nextInt(_chars.length)]).join();
 }
+
+void unfocus(BuildContext context) {
+  final FocusScopeNode currentScope = FocusScope.of(context);
+  if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
+    FocusManager.instance.primaryFocus.unfocus();
+  }
+}

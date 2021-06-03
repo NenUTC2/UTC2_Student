@@ -6,8 +6,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/repositories/google_signin_repo.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
-import 'package:utc2_student/utils/utils.dart';
-
 part 'login_event.dart';
 part 'login_state.dart';
 

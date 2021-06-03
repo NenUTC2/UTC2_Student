@@ -30,82 +30,87 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0,
+    return GestureDetector(
+      onTap: () {
+        unfocus(context);
+      },
+      child: Scaffold(
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Get.back();
-            ggSignIn.signOut();
-          },
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Get.back();
+              ggSignIn.signOut();
+            },
+          ),
         ),
-      ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Nhập mã sinh viên của bạn',
-              style: TextStyle(fontSize: 17, color: Colors.black54),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Form(
-              key: _formKey,
-              child: TextFormField(
-                controller: sIdController,
-                validator: (val) =>
-                    val.isEmpty ? 'Hãy nhập mã sinh viên' : null,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black87, width: 2),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide:
-                        BorderSide(color: ColorApp.mediumOrange, width: 3),
-                  ),
-                  errorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide:
-                        BorderSide(color: ColorApp.mediumOrange, width: 3),
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide(color: Colors.red, width: 3),
+        body: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Nhập mã sinh viên của bạn',
+                style: TextStyle(fontSize: 17, color: Colors.black54),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  controller: sIdController,
+                  validator: (val) =>
+                      val.isEmpty ? 'Hãy nhập mã sinh viên' : null,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black87, width: 2),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide:
+                          BorderSide(color: ColorApp.mediumOrange, width: 3),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide:
+                          BorderSide(color: ColorApp.mediumOrange, width: 3),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide(color: Colors.red, width: 3),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            BlocConsumer<LoginBloc, LoginState>(
-              listener: (context, state) {
-                if (state is EnteredSIDState) {
-                  Get.offAll(() => HomeScreen());
-                }
-              },
-              builder: (context, state) {
-                if (state is UpdatingSIDState)
-                  return SpinKitThreeBounce(
-                    color: ColorApp.lightOrange,
-                    size: 30,
-                  );
-                else
-                  return Container();
-              },
-            ),
-            Spacer(),
-            buttonSubmit(),
-          ],
+              SizedBox(
+                height: 10,
+              ),
+              BlocConsumer<LoginBloc, LoginState>(
+                listener: (context, state) {
+                  if (state is EnteredSIDState) {
+                    Get.offAll(() => HomeScreen());
+                  }
+                },
+                builder: (context, state) {
+                  if (state is UpdatingSIDState)
+                    return SpinKitThreeBounce(
+                      color: ColorApp.lightOrange,
+                      size: 30,
+                    );
+                  else
+                    return Container();
+                },
+              ),
+              Spacer(),
+              buttonSubmit(),
+            ],
+          ),
         ),
       ),
     );

@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                               leading: Checkbox(
                                 value: subTask[i]['isComplete'],
                                 activeColor: ColorApp.mediumOrange,
-                                checkColor: ColorApp.lightGrey,
+                                checkColor: Colors.white,
                                 shape: CircleBorder(),
                                 onChanged: (value) {
                                   setState(() {
