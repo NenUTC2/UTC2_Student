@@ -37,6 +37,12 @@ class StudentDatabase {
     return list[0];
   }
 
+  static Future<void> updateStudentData(
+      String msv, Map<String, String> data) async {
+    print(msv);
+    FirebaseFirestore.instance.collection('Student').doc(msv).update(data);
+  }
+
   getListStudentsData() async {
     List<Student> list = [];
     var data = await FirebaseFirestore.instance.collection('Student').get();

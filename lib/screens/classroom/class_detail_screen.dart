@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
+import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
 import 'package:utc2_student/screens/classroom/new_notify_class.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:utc2_student/service/local_notification.dart';
@@ -26,6 +28,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
   final notifications = FlutterLocalNotificationsPlugin();
   PostBloc postBloc;
   String className = '';
+  StudentBloc studentBloc;
   @override
   void initState() {
     super.initState();
@@ -41,7 +44,9 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
         InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
         onSelectNotification: onSelectNotification);
     postBloc = BlocProvider.of<PostBloc>(context);
+    studentBloc = BlocProvider.of<StudentBloc>(context);
     postBloc.add(GetPostEvent(widget.idClass));
+    studentBloc.add(GetStudent());
   }
 
   void sendNoti() async {
@@ -148,8 +153,8 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                               itemBuilder: (context, index) {
                                 var e = state.list[index];
                                 return ItemNoti(
-                                  avatar: 'link avatar',
-                                  userName: 'Miên Phạm',
+                                  avatar: e.avatar,
+                                  userName: e.name,
                                   title: e.title,
                                   time: e.date,
                                   content: e.content,
@@ -270,57 +275,67 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
     Size size,
   ) {
     return Container(
-      width: size.width,
-      alignment: Alignment.center,
-      padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-      decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: ColorApp.orange.withOpacity(0.05),
-              spreadRadius: 3,
-              blurRadius: 3,
-              offset: Offset(0, 1), // changes position of shadow
-            ),
-          ],
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: ColorApp.lightGrey)),
-      child: TextButton(
-        onPressed: () {
-          Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NewNotify(idClass: widget.idClass)))
-              .then((value) => postBloc.add(GetPostEvent(widget.idClass)));
-        },
-        child: Row(
-          children: [
-            CustomAvatarGlow(
-              glowColor: ColorApp.orange,
-              endRadius: 20.0,
-              duration: Duration(milliseconds: 1000),
-              repeat: true,
-              showTwoGlows: true,
-              repeatPauseDuration: Duration(milliseconds: 100),
-              child: Container(
-                padding: EdgeInsets.all(4),
-                child: CircleAvatar(
-                  backgroundColor: ColorApp.lightGrey,
-                  backgroundImage: AssetImage('assets/images/logoUTC.png'),
-                ),
+        width: size.width,
+        alignment: Alignment.center,
+        padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: ColorApp.orange.withOpacity(0.05),
+                spreadRadius: 3,
+                blurRadius: 3,
+                offset: Offset(0, 1), // changes position of shadow
               ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Thông báo gì đó cho lớp học của bạn...',
-              style: TextStyle(color: ColorApp.lightOrange),
-            ),
-          ],
-        ),
-      ),
-    );
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: ColorApp.lightGrey)),
+        child:
+            BlocBuilder<StudentBloc, StudentState>(builder: (context, state) {
+          if (state is StudentLoaded) {
+            return TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NewNotify(
+                              idClass: widget.idClass,
+                              student: state.student,
+                            ))).then(
+                    (value) => postBloc.add(GetPostEvent(widget.idClass)));
+              },
+              child: Row(
+                children: [
+                  CustomAvatarGlow(
+                    glowColor: ColorApp.orange,
+                    endRadius: 20.0,
+                    duration: Duration(milliseconds: 1000),
+                    repeat: true,
+                    showTwoGlows: true,
+                    repeatPauseDuration: Duration(milliseconds: 100),
+                    child: Container(
+                      padding: EdgeInsets.all(4),
+                      child: CircleAvatar(
+                        backgroundColor: ColorApp.lightGrey,
+                        backgroundImage:
+                            CachedNetworkImageProvider(state.student.avatar),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    'Thông báo gì đó cho lớp học của bạn...',
+                    style: TextStyle(color: ColorApp.lightOrange),
+                  ),
+                ],
+              ),
+            );
+          } else {
+            return Container();
+          }
+        }));
   }
 
   Widget title(Size size, String name) {
@@ -390,8 +405,7 @@ class ItemNoti extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundColor: ColorApp.lightGrey,
                         radius: 15,
-                        backgroundImage:
-                            AssetImage('assets/images/logoUTC.png'),
+                        backgroundImage: CachedNetworkImageProvider(avatar),
                       ),
                     ),
                     SizedBox(

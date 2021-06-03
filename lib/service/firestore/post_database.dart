@@ -29,7 +29,7 @@ class PostDatabase {
 }
 
 class Post {
-  String id, idClass, title, content, date, idGv, idSv;
+  String id, idClass, title, content, date, name, avatar;
   List file;
 
   Post(QueryDocumentSnapshot<Map<String, dynamic>> json) {
@@ -38,6 +38,8 @@ class Post {
     this.title = json['title'];
     this.content = json['content'];
     this.date = json['date'];
+    this.name = json['name'];
+    this.avatar = json['avatar'];
   }
 }
 

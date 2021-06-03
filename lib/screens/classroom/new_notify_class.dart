@@ -3,14 +3,16 @@ import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:utc2_student/service/firestore/post_database.dart';
+import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/pdf/pdf_api.dart';
 import 'package:utc2_student/service/pdf/pdf_class_detail.dart';
 import 'package:utc2_student/utils/utils.dart';
 
 class NewNotify extends StatefulWidget {
   final String idClass;
+  final Student student;
 
-  const NewNotify({Key key, this.idClass}) : super(key: key);
+  const NewNotify({Key key, this.idClass, this.student}) : super(key: key);
   @override
   _NewNotifyState createState() => _NewNotifyState();
 }
@@ -75,6 +77,8 @@ class _NewNotifyState extends State<NewNotify> {
                 'content': content,
                 'date':
                     DateFormat('HH:mm –  dd-MM-yyyy').format(DateTime.now()),
+                'name': widget.student.name,
+                'avatar': widget.student.avatar,
               };
               postDatabase.createPost(dataPost, widget.idClass, idPost);
             },

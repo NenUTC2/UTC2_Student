@@ -17,6 +17,7 @@ import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:utc2_student/screens/login/login_screen.dart';
+import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/local_notification.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -57,7 +58,8 @@ class _HomePageState extends State<HomePage> {
   FirebaseMessaging _fireBaseMessaging;
   final notifications = FlutterLocalNotificationsPlugin();
   GoogleSignInRepository _googleSignIn = GoogleSignInRepository();
-  Widget body = Container();
+  Widget body = Scaffold(
+  );
   @override
   void initState() {
     super.initState();
@@ -97,26 +99,12 @@ class _HomePageState extends State<HomePage> {
       Get.to(HomeScreen());
     });
     FirebaseMessaging.instance.subscribeToTopic('fcm_test');
-    login();
-  }
+    // login();
 
-  Future login() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    if (prefs.getString('userEmail') != null) {
-      setState(() {
-        body = HomeScreen();
-      });
-    } else
-      setState(() {
-        body = LoginScreen();
-      });
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
     getTokenFCM();
   }
+
+  // Future login() async {}
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +134,21 @@ class _HomePageState extends State<HomePage> {
         print('token : ' + token);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setString('token', token);
+        if (prefs.getString('userEmail') != null) {
+          setState(() {
+            body = HomeScreen();
+          });
+          var student = await StudentDatabase.getStudentData(
+              prefs.getString('userEmail'));
+
+          Map<String, String> data = {
+            'token': token,
+          };
+          StudentDatabase.updateStudentData(student.id, data);
+        } else
+          setState(() {
+            body = LoginScreen();
+          });
       });
     } catch (e) {
       print('get token exception : ' + e.toString());

@@ -34,7 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             print(login.email.substring(len) == 'st.utc2.edu.vn');
 
             Map<String, String> dataStudent = {
-              'id': login.email.substring(0, len),
+              'id': login.email.substring(0, len - 1),
               'name': login.displayName,
               'email': login.email,
               'avatar': login.photoUrl,
@@ -49,6 +49,19 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           }
           prefs.setString('userEmail', login.email);
           bool isRegister = await StudentDatabase.isRegister(login.email);
+          if (isRegister) {
+            print('update');
+            var student = await StudentDatabase.getStudentData(login.email);
+
+            Map<String, String> data = {
+              'id': student.id,
+              'name': login.displayName,
+              'email': login.email,
+              'avatar': login.photoUrl,
+              'token': prefs.getString('token'),
+            };
+            StudentDatabase.updateStudentData(student.id, data);
+          }
           yield SignedInState(login, isRegister);
         } else
           yield SignInErrorState();
