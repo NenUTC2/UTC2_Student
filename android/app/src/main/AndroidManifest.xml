@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.utc2_student">
    <application
-        android:label="utc2_student"
+        android:label="UTC2 Student"
         android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="true">
         <activity
