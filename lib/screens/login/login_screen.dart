@@ -57,8 +57,8 @@ class LoginScreen extends StatelessWidget {
                     Spacer(),
                     Image.asset(
                       'assets/images/teaching.png',
-                      width: size.width,
-                      height: 300,
+                      width: size.width / 1.5,
+                      // height: 300,
                       //  fit: BoxFit.fill,
                     ),
                     SizedBox(
@@ -85,7 +85,7 @@ class LoginScreen extends StatelessWidget {
                               fontSize: size.width * 0.05),
                         ),
                         SizedBox(
-                          height: 30,
+                          height: 20,
                         ),
                         Center(
                           child: ClipOval(
