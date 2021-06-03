@@ -17,85 +17,94 @@ class LoginScreen extends StatelessWidget {
       statusBarColor: Colors.transparent,
     ));
     Size size = MediaQuery.of(context).size;
-    return  Scaffold(
-          backgroundColor: Colors.white,
-          body: SingleChildScrollView(
-            child: Container(
-              height: size.height,
-              decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                      stops: [0.2, 0.9],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Colors.white, ColorApp.lightGrey])),
-              child: Stack(
-                // alignment: Alignment.topCenter,
-                // overflow: Overflow.clip,
-                children: [
-                  Column(
-                    children: [
-                      Stack(
-                        children: [
-                          Container(
-                            color: Colors.transparent,
-                            margin: EdgeInsets.only(top: 10),
-                            height: size.height * 0.32,
-                            width: size.width,
-                            child: CustomPaint(
-                              painter: CurvePainter1(),
-                            ),
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Container(
+            height: size.height,
+            decoration: BoxDecoration(),
+            child: Stack(
+              // alignment: Alignment.topCenter,
+              // overflow: Overflow.clip,
+              children: [
+                Column(
+                  children: [
+                    Stack(
+                      children: [
+                        Container(
+                          color: Colors.transparent,
+                          margin: EdgeInsets.only(top: 10),
+                          height: size.height * 0.32,
+                          width: size.width,
+                          child: CustomPaint(
+                            painter: CurvePainter1(),
                           ),
-                          Container(
-                            color: Colors.transparent,
-                            height: size.height * 0.32,
-                            width: size.width,
-                            child: CustomPaint(
-                              painter: CurvePainter(),
-                            ),
+                        ),
+                        Container(
+                          color: Colors.transparent,
+                          height: size.height * 0.32,
+                          width: size.width,
+                          child: CustomPaint(
+                            painter: CurvePainter(),
                           ),
-                        ],
-                      ),
-                      Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: size.width * 0.06),
-                          child: LoginForm(
-                          )),
-                    ],
-                  ),
-                  Positioned(
-                    top: 50,
-                    child: Container(
+                        ),
+                      ],
+                    ),
+                    Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: size.width * 0.06),
+                        child: LoginForm()),
+                    Spacer(),
+                    Image.asset(
+                      'assets/images/teaching.png',
                       width: size.width,
-                      child: Column(
-                        children: [
-                          // Text(
-                          //   'Trường đại học giao thông vận tải\nphân hiệu tại TP.Hồ Chí Minh',
-                          //   textAlign: TextAlign.center,
-                          //   style: TextStyle(
-                          //       color: ColorApp.black,
-                          //       fontSize: size.width * 0.05),
-                          // ),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          Center(
-                            child: ClipOval(
-                              child: Image.asset(
-                                "assets/images/logoUTC.png",
-                                height: size.width * 0.28,
-                                width: size.width * 0.28,
-                                fit: BoxFit.cover,
-                              ),
+                      height: 300,
+                      //  fit: BoxFit.fill,
+                    ),
+                    SizedBox(
+                      height: 30,
+                    ),
+                    Image.asset(
+                      'assets/images/path@2x.png',
+                      width: size.width,
+                      fit: BoxFit.fill,
+                    )
+                  ],
+                ),
+                Positioned(
+                  top: 50,
+                  child: Container(
+                    width: size.width,
+                    child: Column(
+                      children: [
+                        Text(
+                          'Trường đại học giao thông vận tải\nphân hiệu tại TP.Hồ Chí Minh',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: ColorApp.black,
+                              fontSize: size.width * 0.05),
+                        ),
+                        SizedBox(
+                          height: 30,
+                        ),
+                        Center(
+                          child: ClipOval(
+                            child: Image.asset(
+                              "assets/images/logoUTC.png",
+                              height: size.width * 0.28,
+                              width: size.width * 0.28,
+                              fit: BoxFit.cover,
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ));
+          ),
+        ));
   }
 }
 
@@ -127,7 +136,7 @@ class CurvePainter1 extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = ColorApp.lightGrey;
+    paint.color = Colors.grey[400];
     paint.style = PaintingStyle.fill; // Change this to fill
 
     var path = Path();
