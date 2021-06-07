@@ -22,4 +22,14 @@ class SignInErrorState extends LoginState {}
 
 class UpdatingSIDState extends LoginState {}
 
-class EnteredSIDState extends LoginState {}
+class EnteredSIDState extends LoginState {
+  final SinhVien sinhvienInfo;
+
+  EnteredSIDState(this.sinhvienInfo);
+}
+
+class WrongSIDState extends LoginState {}
+
+class SubmittedSIDState extends LoginState {}
+
+class SubmittingSIDState extends LoginState {}

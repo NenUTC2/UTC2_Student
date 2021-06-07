@@ -22,6 +22,7 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
   TextEditingController sIdController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   LoginBloc loginBloc;
+  bool isError = true;
   @override
   void initState() {
     super.initState();
@@ -47,6 +48,8 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
             },
           ),
         ),
+        floatingActionButton: buttonSubmit(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: Container(
           padding: EdgeInsets.all(20),
           child: Column(
@@ -63,8 +66,9 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
                 key: _formKey,
                 child: TextFormField(
                   controller: sIdController,
-                  validator: (val) =>
-                      val.isEmpty ? 'Hãy nhập mã sinh viên' : null,
+                  // validator: (val) => val.isEmpty || val.length != 10
+                  //     ? 'Mã sinh viên bao gồm 10 kí tự'
+                  //     : null,
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   decoration: InputDecoration(
                     enabledBorder: OutlineInputBorder(
@@ -86,6 +90,11 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
                       borderSide: BorderSide(color: Colors.red, width: 3),
                     ),
                   ),
+                  onChanged: (val) {
+                    if (val.length == 10) {
+                      loginBloc.add(EnterSIDEvent(val.trim()));
+                    }
+                  },
                 ),
               ),
               SizedBox(
@@ -94,21 +103,62 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
               BlocConsumer<LoginBloc, LoginState>(
                 listener: (context, state) {
                   if (state is EnteredSIDState) {
-                    Get.offAll(() => HomeScreen());
+                    setState(() {
+                      isError = false;
+                    });
+                  } else if (state is WrongSIDState) {
+                    setState(() {
+                      isError = true;
+                    });
+                  } else if (state is SubmittedSIDState) {
+                    Get.to(() => HomeScreen());
                   }
                 },
                 builder: (context, state) {
-                  if (state is UpdatingSIDState)
+                  if (state is UpdatingSIDState || state is SubmittingSIDState)
                     return SpinKitThreeBounce(
                       color: ColorApp.lightOrange,
                       size: 30,
+                    );
+                  else if (state is EnteredSIDState) {
+                    return Column(children: [
+                      Row(
+                        children: [
+                          Text('Họ tên: '),
+                          Text(state.sinhvienInfo.hoten),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Ngày sinh: '),
+                          Text(state.sinhvienInfo.ngaysinh),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Khoá: '),
+                          Text(state.sinhvienInfo.khoa),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text('Lớp: '),
+                          Text(state.sinhvienInfo.lop),
+                        ],
+                      ),
+                    ]);
+                  } else if (state is WrongSIDState)
+                    return Text(
+                      '   Sai mã sinh viên',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 14,
+                      ),
                     );
                   else
                     return Container();
                 },
               ),
-              Spacer(),
-              buttonSubmit(),
             ],
           ),
         ),
@@ -125,9 +175,8 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
             child: MaterialButton(
               color: Colors.black87,
               onPressed: () {
-                if (_formKey.currentState.validate())
-                  loginBloc.add(
-                      EnterSIDEvent(widget.ggLogin, sIdController.text.trim()));
+                loginBloc.add(
+                    SubmitSIDEvent(widget.ggLogin, sIdController.text.trim()));
               },
               child: Padding(
                 padding: const EdgeInsets.all(15.0),

@@ -9,6 +9,7 @@ import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
+import 'package:utc2_student/scraper/student_info_scraper.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -53,11 +54,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   FirebaseMessaging _fireBaseMessaging;
   final notifications = FlutterLocalNotificationsPlugin();
-  Widget body = Scaffold(
-  );
+  Widget body = Scaffold();
   @override
   void initState() {
     super.initState();
+
     final settingsAndroid = AndroidInitializationSettings('app_icon');
 
     final settingsIOS = IOSInitializationSettings(
@@ -86,8 +87,28 @@ class _HomePageState extends State<HomePage> {
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print('>>>>>>>>>>A new onMessage event' + message.notification.body);
-      MyLocalNotification.showNotification(notifications,
-          message.notification.title, message.notification.body, message.data);
+      // MyLocalNotification.showNotification(notifications,
+      //     message.notification.title, message.notification.body, message.data);
+      print('Có điểm danh hông ????????????' + message.data['isAtten']);
+      message.data['isAtten'] == 'false'
+          ? MyLocalNotification.showNotification(
+              notifications,
+              message.data['idChannel'],
+              message.data['className'],
+              message.data['classDescription'],
+              message.notification.title,
+              message.notification.body,
+            )
+          : MyLocalNotification.showNotificationAttenden(
+              notifications,
+              message.data['msg'],
+              message.data['idChannel'],
+              message.data['className'],
+              message.data['classDescription'],
+              message.notification.title,
+              message.notification.body,
+              message.data['timeAtten'],
+            );
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('>>>>>>>>>>A new onMessageOpenedApp event');
@@ -128,6 +149,7 @@ class _HomePageState extends State<HomePage> {
       FirebaseMessaging.instance.getToken().then((token) async {
         print('token : ' + token);
         SharedPreferences prefs = await SharedPreferences.getInstance();
+        // prefs.remove('userEmail');
         prefs.setString('token', token);
         if (prefs.getString('userEmail') != null) {
           setState(() {

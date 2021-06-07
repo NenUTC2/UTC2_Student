@@ -10,10 +10,18 @@ abstract class LoginEvent extends Equatable {
 class SignInEvent extends LoginEvent {}
 
 class EnterSIDEvent extends LoginEvent {
+  final String sID;
+
+  EnterSIDEvent(this.sID);
+  @override
+  List<Object> get props => [this.sID];
+}
+
+class SubmitSIDEvent extends LoginEvent {
   final GoogleSignInAccount ggLogin;
   final String sID;
 
-  EnterSIDEvent(this.ggLogin, this.sID);
+  SubmitSIDEvent(this.ggLogin, this.sID);
   @override
   List<Object> get props => [this.ggLogin, this.sID];
 }

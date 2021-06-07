@@ -52,7 +52,16 @@ class StudentDatabase {
 }
 
 class Student {
-  String id, name, token, email, avatar;
+  String id,
+      name,
+      token,
+      email,
+      avatar,
+      birthDate,
+      birthPlace,
+      heDaoTao,
+      lop,
+      khoa;
 
   Student(QueryDocumentSnapshot<Map<String, dynamic>> json) {
     this.id = json['id'];
@@ -60,5 +69,10 @@ class Student {
     this.token = json['token'];
     this.email = json['email'];
     this.avatar = json['avatar'];
+    this.birthDate = json['birthDate'];
+    this.birthPlace = json['birthPlace'];
+    this.heDaoTao = json['heDaoTao'];
+    this.lop = json['lop'];
+    this.khoa = json['khoa'];
   }
 }
