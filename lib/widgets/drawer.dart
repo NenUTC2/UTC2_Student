@@ -23,16 +23,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
       'link':
           'http://xemdiem.utc2.edu.vn/svxemdiem.aspx?ID=5851071044&m_lopID=C%C3%B4ng%20ngh%E1%BB%87%20th%C3%B4ng%20tin%20K58&m_lopID_ID=5321&istinchi=1'
     },
-     {
+    {
       'title': 'Đánh giá rèn luyện',
       'icon': Icons.night_shelter,
-      'link': 'http://smart.utc2.edu.vn:8383/HTDRL/login.jsp;jsessionid=9F42BD32BC8BD2542813A97D57DA101A'
+      'link':
+          'http://smart.utc2.edu.vn:8383/HTDRL/login.jsp;jsessionid=9F42BD32BC8BD2542813A97D57DA101A'
     },
-     {
+    {
       'title': 'Đóng học phí',
       'icon': Icons.table_view,
-      'link':
-          'http://nophocphi.utc2.edu.vn/'
+      'link': 'http://nophocphi.utc2.edu.vn/'
     },
     {
       'title': 'Đánh giá công tác Cố vấn học tập, Chủ nhiệm lớp',
@@ -49,17 +49,17 @@ class _CustomDrawerState extends State<CustomDrawer> {
       'icon': Icons.storage,
       'link': 'http://ktx.utc2.edu.vn/Default/Login'
     },
-     {
+    {
       'title': 'Tra cứu phòng ở ký túc xá',
       'icon': Icons.storage,
       'link': 'http://nophocphi.utc2.edu.vn/tracuu_ktx.aspx'
     },
-     {
+    {
       'title': 'Đăng ký cấp lại thẻ sinh viên',
       'icon': Icons.storage,
       'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
     },
-     {
+    {
       'title': 'Đăng ký cấp bảng điểm',
       'icon': Icons.storage,
       'link': 'http://smart.utc2.edu.vn/dvsv/vi-vn'
@@ -103,12 +103,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
       'title': 'Đăng ký thi lần 2, 3',
       'icon': Icons.night_shelter,
       'link': 'http://thidilan2.utc2.edu.vn/'
-    },{
+    },
+    {
       'title': 'Đăng ký học kỳ phụ',
       'icon': Icons.night_shelter,
       'link': 'http://dangkyhoclai.utc2.edu.vn/'
     },
-   
   ];
 
   @override
@@ -151,7 +151,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Colors.white, ColorApp.lightGrey])),
+                    colors: [
+                  Colors.white,
+                  ColorApp.lightGrey.withOpacity(.4)
+                ])),
             child: ListView.builder(
               itemCount: service.length,
               physics: BouncingScrollPhysics(),

@@ -78,7 +78,7 @@ class _NewNotifyState extends State<NewNotify> {
                   'title': title,
                   'content': content,
                   'date':
-                      DateFormat('HH:mm –  dd-MM-yyyy').format(DateTime.now()),
+                     DateTime.now().toString(),
                   'name': widget.student.name,
                   'avatar': widget.student.avatar,
                 };

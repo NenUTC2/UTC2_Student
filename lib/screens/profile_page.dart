@@ -157,12 +157,21 @@ class _ProFilePageState extends State<ProFilePage> {
                                                     ? Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                ProfileInfo()))
+                                                            builder:
+                                                                (context) =>
+                                                                    ProfileInfo(
+                                                                      student:
+                                                                          widget
+                                                                              .student,
+                                                                    )))
                                                     : Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder: (context) =>
+                                                            builder: (context) => index == 1
+                                                                    ? AttendanceScreen(
+                                                                        student:
+                                                                            widget.student,
+                                                                      ):
                                                                 screen[index]));
                                               }
                                             : () async {

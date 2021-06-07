@@ -1,14 +1,20 @@
-import 'package:utc2_student/service/geo_service.dart';
-import 'package:utc2_student/utils/custom_glow.dart';
-import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/services/base.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
+import 'package:utc2_student/service/firestore/student_database.dart';
+import 'package:utc2_student/service/geo_service.dart';
+import 'package:utc2_student/utils/custom_glow.dart';
+import 'package:utc2_student/utils/utils.dart';
 
 class AttendanceScreen extends StatefulWidget {
+  final Student student;
+  AttendanceScreen({
+    this.student,
+  });
   @override
   _AttendanceScreenState createState() => _AttendanceScreenState();
 }
@@ -157,7 +163,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [Colors.white, ColorApp.lightGrey])),
+                  colors: [Colors.white, ColorApp.lightGrey.withOpacity(.4)])),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -174,8 +180,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                   child: CircleAvatar(
                     radius: 100,
                     backgroundColor: ColorApp.lightGrey,
-                    backgroundImage: NetworkImage(
-                        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png"),
+                    backgroundImage: NetworkImage(widget.student.avatar),
                   ),
                 ),
               ),
@@ -227,8 +232,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     ),
                     style: ButtonStyle(
                         tapTargetSize: MaterialTapTargetSize.padded,
-                        shadowColor:
-                            MaterialStateProperty.all<Color>(Colors.lightBlue),
+                        shadowColor: MaterialStateProperty.all<Color>(
+                            ColorApp.lightOrange),
                         foregroundColor:
                             MaterialStateProperty.all<Color>(Colors.white),
                         backgroundColor: MaterialStateProperty.all<Color>(

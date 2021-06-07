@@ -48,8 +48,8 @@ class _HomePageState extends State<HomePage> {
             ColorApp.lightOrange,
             ColorApp.mediumOrange,
             ColorApp.lightOrange,
-            ColorApp.lightOrange,
-            ColorApp.mediumOrange,
+            ColorApp.lightOrange.withOpacity(.4),
+            ColorApp.mediumOrange.withOpacity(.4),
           ],
         )),
         child: Column(

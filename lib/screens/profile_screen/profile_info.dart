@@ -1,18 +1,30 @@
 import 'dart:io';
 
-import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:utc2_student/service/firestore/student_database.dart';
+import 'package:utc2_student/utils/utils.dart';
+
 class ProfileInfo extends StatefulWidget {
+  final Student student;
+  ProfileInfo({
+    this.student,
+  });
   @override
   _ProfileInfoState createState() => _ProfileInfoState();
 }
 
 class _ProfileInfoState extends State<ProfileInfo> {
   File _image;
-  String linkImage =
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png';
+  String linkImage;
+  @override
+  void initState() {
+    linkImage = widget.student.avatar;
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -42,7 +54,7 @@ class _ProfileInfoState extends State<ProfileInfo> {
             gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Colors.white, ColorApp.lightGrey])),
+                colors: [Colors.white, ColorApp.lightGrey.withOpacity(.4)])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -52,23 +64,35 @@ class _ProfileInfoState extends State<ProfileInfo> {
             SizedBox(
               height: 20,
             ),
-            _name('Phan Thành Nên', size),
+            _name(widget.student.name, size),
             SizedBox(
               height: 7,
             ),
-            info('Ngày sinh : ', '00/00/2021', size),
+            info('Ngày sinh : ', widget.student.birthDate, size),
             SizedBox(
               height: 7,
             ),
-            info('Mã : ', 'GV36515', size),
+            info('Nơi sinh : ', widget.student.birthPlace, size),
             SizedBox(
               height: 7,
             ),
-            info('Chức vụ: ', 'Giảng viên', size),
+            info('Mã sinh viên : ', widget.student.id, size),
             SizedBox(
               height: 7,
             ),
-            _email('5851071044', size),
+            info('Khóa : ', widget.student.khoa, size),
+            SizedBox(
+              height: 7,
+            ),
+            info('Lớp : ', widget.student.lop, size),
+            SizedBox(
+              height: 7,
+            ),
+            info('Hệ đào tạo : ', widget.student.heDaoTao, size),
+            SizedBox(
+              height: 7,
+            ),
+            _email(widget.student.email, size),
           ],
         ),
       ),
@@ -80,11 +104,15 @@ Widget info(String info, String day, Size size) {
   return Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: [
-      Text(info),
+      Text(info,
+          style: TextStyle(
+              color: ColorApp.black,
+              fontSize: 15,
+              fontWeight: FontWeight.normal)),
       Text(day,
           style: TextStyle(
               color: ColorApp.black,
-              fontSize: size.width * 0.05,
+              fontSize: 16,
               fontWeight: FontWeight.normal)),
     ],
   );

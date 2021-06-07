@@ -12,9 +12,14 @@ class PostDatabase {
         .set(dataPost);
   }
 
-  // Future<void> deleteClass(String id) async {
-  //   await FirebaseFirestore.instance.collection('Class').doc(id).delete();
-  // }
+  Future<void> deletePost(String idClass, String idPost) async {
+    await FirebaseFirestore.instance
+        .collection('Class')
+        .doc(idClass)
+        .collection('Post')
+        .doc(idPost)
+        .delete();
+  }
 
   getClassData(String idClass) async {
     List<Post> list = [];
@@ -26,10 +31,11 @@ class PostDatabase {
     list = data.docs.map((e) => Post(e)).toList();
     return list;
   }
+
 }
 
 class Post {
-  String id, idClass, title, content, date, name, avatar;
+  String id, idClass, title, content, date, name, avatar, idAtten, timeAtten;
   List file;
 
   Post(QueryDocumentSnapshot<Map<String, dynamic>> json) {
@@ -40,6 +46,8 @@ class Post {
     this.date = json['date'];
     this.name = json['name'];
     this.avatar = json['avatar'];
+    this.idAtten = json['idAtten'];
+    this.timeAtten = json['timeAtten'];
   }
 }
 

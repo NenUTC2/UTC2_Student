@@ -4,7 +4,7 @@ import 'package:utc2_student/utils/utils.dart';
 
 class ClassDrawer extends StatelessWidget {
   final List<Class> active;
-  final Function(String classId, String name) change;
+  final Function(String classId) change;
   ClassDrawer({this.active, this.change});
   @override
   Widget build(BuildContext context) {
@@ -93,7 +93,7 @@ class ClassDrawer extends StatelessWidget {
                   child: ListTile(
                     onTap: () {
                       Navigator.of(context).pop();
-                      change(active[index].id, active[index].name);
+                      change(active[index].id,);
                     },
                     leading: Container(
                       width: 30,

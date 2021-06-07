@@ -4,10 +4,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
 import 'package:utc2_student/screens/classroom/new_notify_class.dart';
 import 'package:utc2_student/screens/home_screen.dart';
+import 'package:utc2_student/service/firestore/class_database.dart';
+import 'package:utc2_student/service/firestore/teaacher_database.dart';
 import 'package:utc2_student/service/local_notification.dart';
 import 'package:utc2_student/utils/custom_glow.dart';
 import 'package:utc2_student/utils/utils.dart';
@@ -27,13 +31,19 @@ class DetailClassScreen extends StatefulWidget {
 class _DetailClassScreenState extends State<DetailClassScreen> {
   final notifications = FlutterLocalNotificationsPlugin();
   PostBloc postBloc;
-  String className = '';
   StudentBloc studentBloc;
+  Class _class;
+  Teacher teacher;
   @override
   void initState() {
     super.initState();
     sendNoti();
-    className = widget.className;
+    _class = widget.listClass
+        .where((element) => element.id.contains(widget.idClass))
+        .toList()
+        .first;
+    if (_class != null) getTeacher();
+
     final settingsAndroid = AndroidInitializationSettings('app_icon');
 
     final settingsIOS = IOSInitializationSettings(
@@ -49,8 +59,12 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
     studentBloc.add(GetStudent());
   }
 
+  getTeacher() async {
+    teacher = await TeacherDatabase.getTeacherData(_class.teacherId);
+  }
+
   void sendNoti() async {
-     MyLocalNotification.configureLocalTimeZone();
+    MyLocalNotification.configureLocalTimeZone();
     // await MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
     //   notifications, 14, 46);
     // await MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
@@ -86,7 +100,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
               width: 40,
               child: IconButton(
                   onPressed: () => _showBottomSheet(context, size,
-                      widget.className.toUpperCase(), 'Thông tin lớp'),
+                      _class.name.toUpperCase(), _class.note, teacher),
                   icon: Icon(
                     Icons.info,
                     color: Colors.grey,
@@ -97,10 +111,14 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
       ),
       drawer: ClassDrawer(
         active: widget.listClass,
-        change: (id, name) {
+        change: (id) {
           postBloc.add(GetPostEvent(id));
           setState(() {
-            className = name;
+            _class = widget.listClass
+                .where((element) => element.id.contains(id))
+                .toList()
+                .first;
+            getTeacher();
           });
         },
       ),
@@ -111,7 +129,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
         padding: EdgeInsets.all(size.width * 0.03),
         child: Column(
           children: [
-            Flexible(flex: 3, child: title(size, className.toUpperCase())),
+            Flexible(flex: 3, child: title(size, _class.name.toUpperCase())),
             SizedBox(
               height: 7,
             ),
@@ -152,13 +170,23 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                                   horizontal: size.width * 0.03),
                               itemBuilder: (context, index) {
                                 var e = state.list[index];
+                                DateTime parseDate =
+                                    new DateFormat("yyyy-MM-dd HH:mm:ss")
+                                        .parse(e.date);
                                 return ItemNoti(
                                   avatar: e.avatar,
                                   userName: e.name,
                                   title: e.title,
-                                  time: e.date,
-                                  content: e.content,
+                                  time: DateFormat('HH:mm - dd-MM-yyyy')
+                                      .format(parseDate),
+                                  content: e.content != null ? e.content : '',
                                   numberFile: index,
+                                  idAttendend: e.idAtten,
+                                  timeAttendend: e.timeAtten != null
+                                      ? DateFormat('HH:mm').format(
+                                          DateFormat("yyyy-MM-dd HH:mm:ss")
+                                              .parse(e.timeAtten))
+                                      : null,
                                 );
                               }),
                         ),
@@ -189,8 +217,8 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
     );
   }
 
-  void _showBottomSheet(
-      BuildContext context, Size size, String title, String description) {
+  void _showBottomSheet(BuildContext context, Size size, String title,
+      String description, Teacher teacher) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -232,7 +260,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Center(
                           child: Text(
-                            title,
+                            'Thông tin lớp',
                             textAlign: TextAlign.justify,
                             style: TextStyle(
                                 color: Colors.black,
@@ -254,8 +282,124 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 8, horizontal: 16),
                                 // child:
-                                child: Text(
-                                  description,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(4),
+                                          child: CircleAvatar(
+                                            backgroundColor: ColorApp.lightGrey,
+                                            backgroundImage:
+                                                CachedNetworkImageProvider(
+                                                    // widget.teacher.avatar,
+                                                    teacher.avatar != null
+                                                        ? teacher.avatar
+                                                        : ''),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text('Giảng viên phụ trách : ' +
+                                                teacher.name),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text('Email giảng viên : ' +
+                                                teacher.email),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              _class.name != null
+                                                  ? 'Tên lớp : ' + _class.name
+                                                  : '',
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              _class.id != null
+                                                  ? 'Mã lớp : ' + _class.id
+                                                  : '',
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              _class.note != null
+                                                  ? 'Mô tả : ' + _class.note
+                                                  : '',
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              _class.date != null
+                                                  ? 'Ngày tạo : ' +
+                                                      DateFormat(
+                                                              'HH:mm - dd-MM-yyyy')
+                                                          .format(DateFormat(
+                                                                  "yyyy-MM-dd HH:mm:ss")
+                                                              .parse(
+                                                                  _class.date))
+                                                  : '',
+                                            ),
+                                          ],
+                                        ),
+                                        //qr
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: ColorApp.lightOrange
+                                                    .withOpacity(0.09),
+                                                spreadRadius: 3,
+                                                blurRadius: 5,
+                                                offset: Offset(2,
+                                                    3), // changes position of shadow
+                                              ),
+                                            ],
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                            // border:
+                                            //     Border.all(color: ColorApp.lightGrey)
+                                          ),
+                                          child: QrImage(
+                                            data: _class.id,
+                                            embeddedImage: AssetImage(
+                                                'assets/images/logoUTC.png'),
+                                            version: QrVersions.auto,
+                                            size: 100,
+                                            gapless: false,
+                                            embeddedImageStyle:
+                                                QrEmbeddedImageStyle(
+                                              size: Size(15, 15),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ));
                           },
                         ),
@@ -371,13 +515,17 @@ class ItemNoti extends StatelessWidget {
   final String title;
   final String content;
   final int numberFile;
+  final String idAttendend;
+  final String timeAttendend;
   ItemNoti(
       {this.avatar,
       this.userName,
       this.time,
       this.title,
       this.content,
-      this.numberFile});
+      this.numberFile,
+      this.idAttendend,
+      this.timeAttendend});
 
   @override
   Widget build(BuildContext context) {
@@ -409,7 +557,7 @@ class ItemNoti extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      width: 7,
+                      width: 10,
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -440,12 +588,91 @@ class ItemNoti extends StatelessWidget {
                 SizedBox(
                   height: 5,
                 ),
-                Text(
-                  content,
-                  softWrap: true,
-                  style: TextStyle(
-                      color: ColorApp.black.withOpacity(.6), fontSize: 16),
+                content != null
+                    ? Text(
+                        content,
+                        softWrap: true,
+                        style: TextStyle(
+                            color: ColorApp.black.withOpacity(.6),
+                            fontSize: 16),
+                      )
+                    : Container(),
+                SizedBox(
+                  height: 10,
                 ),
+                idAttendend != null
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              RichText(
+                                text: TextSpan(
+                                  text: 'Mã điểm danh: ',
+                                  style: TextStyle(
+                                      color: ColorApp.black,
+                                      fontWeight: FontWeight.normal),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: idAttendend,
+                                        style: TextStyle(
+                                          color: ColorApp.red,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              RichText(
+                                text: TextSpan(
+                                  text: 'Hạn: ',
+                                  style: TextStyle(
+                                      color: ColorApp.black,
+                                      fontWeight: FontWeight.normal),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                        text: timeAttendend,
+                                        style: TextStyle(
+                                          color: ColorApp.red,
+                                        )),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ColorApp.lightOrange.withOpacity(0.09),
+                                  spreadRadius: 3,
+                                  blurRadius: 5,
+                                  offset: Offset(
+                                      2, 3), // changes position of shadow
+                                ),
+                              ],
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5),
+                              // border:
+                              //     Border.all(color: ColorApp.lightGrey)
+                            ),
+                            child: QrImage(
+                              data: idAttendend,
+                              embeddedImage:
+                                  AssetImage('assets/images/logoUTC.png'),
+                              version: QrVersions.auto,
+                              size: 80,
+                              gapless: false,
+                              embeddedImageStyle: QrEmbeddedImageStyle(
+                                size: Size(15, 15),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Container(),
                 SizedBox(
                   height: 10,
                 ),

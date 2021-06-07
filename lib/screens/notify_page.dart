@@ -78,7 +78,10 @@ class _NotifyPageState extends State<NotifyPage>
                       stops: [0.2, 0.9],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: [Colors.white, ColorApp.lightGrey])),
+                      colors: [
+                        Colors.white,
+                        ColorApp.lightGrey.withOpacity(.4)
+                      ])),
               child: Column(
                 children: [
                   Expanded(

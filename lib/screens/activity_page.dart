@@ -77,7 +77,7 @@ class _ActivityPageState extends State<ActivityPage> {
             height: 20,
           ),
           Center(
-            child: MaterialButton(
+            child: ElevatedButton(
                 child: Container(
                   margin: EdgeInsets.symmetric(
                       horizontal: size.width * 0.1, vertical: 10),
@@ -90,9 +90,21 @@ class _ActivityPageState extends State<ActivityPage> {
                     ),
                   ),
                 ),
-                color: ColorApp.lightOrange,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
+                style: ButtonStyle(
+                    tapTargetSize: MaterialTapTargetSize.padded,
+                    shadowColor:
+                        MaterialStateProperty.all<Color>(ColorApp.lightOrange),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.white),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(ColorApp.lightOrange),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            side: BorderSide(color: Colors.white)))),
+                // color: ColorApp.lightOrange,
+                // shape: RoundedRectangleBorder(
+                //     borderRadius: BorderRadius.circular(20)),
                 onPressed: () {}),
           ),
           SizedBox(
