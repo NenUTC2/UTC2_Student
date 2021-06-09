@@ -443,7 +443,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => NewNotify(
-                              idClass: widget.idClass,
+                              idClass: _class,
                               student: state.student,
                             ))).then(
                     (value) => postBloc.add(GetPostEvent(widget.idClass)));

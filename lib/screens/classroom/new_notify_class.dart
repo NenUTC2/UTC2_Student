@@ -2,12 +2,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:utc2_student/service/firestore/class_database.dart';
 import 'package:utc2_student/service/firestore/post_database.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 
 class NewNotify extends StatefulWidget {
-  final String idClass;
+  final Class idClass;
   final Student student;
 
   const NewNotify({Key key, this.idClass, this.student}) : super(key: key);
@@ -58,8 +59,14 @@ class _NewNotifyState extends State<NewNotify> {
                           'key=AAAAYogee34:APA91bFuj23NLRj88uqP9J-aRCehCgVSo8QgUOIPZy8CzBE-Xbubx58trUepsb2SABoIGsPYbONqa2jjS03l1fW5r2aQywmKkYN6L3RXHIML6795xTHyamls_ZwLSt-_n3AJ8av82CiW',
                     },
                     body: jsonEncode({
-                      "to": "/topics/fcm_test",
-                      "data": {"msg": "Hello"},
+                      "to": "/topics/${widget.idClass.id}",
+                      "data": {
+                        'idNoti': 'newNoti',
+                        "msg": widget.idClass.id,
+                        "idChannel": widget.idClass.id,
+                        "className": widget.idClass.name,
+                        "classDescription": widget.idClass.note,
+                      },
                       "notification": {
                         "title": title,
                         "body": content,
@@ -74,15 +81,14 @@ class _NewNotifyState extends State<NewNotify> {
 
                 Map<String, String> dataPost = {
                   'id': idPost,
-                  'idClass': widget.idClass,
+                  'idClass': widget.idClass.id,
                   'title': title,
                   'content': content,
-                  'date':
-                     DateTime.now().toString(),
+                  'date': DateTime.now().toString(),
                   'name': widget.student.name,
                   'avatar': widget.student.avatar,
                 };
-                postDatabase.createPost(dataPost, widget.idClass, idPost);
+                postDatabase.createPost(dataPost, widget.idClass.id, idPost);
               },
               child: Text("Đăng    ",
                   style: TextStyle(
