@@ -1,12 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:http/http.dart' as http;
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:http/http.dart' as http;
 
 class MyLocalNotification {
   static Future<void> scheduleWeeklyMondayTenAMNotification(
@@ -50,6 +49,7 @@ class MyLocalNotification {
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
+    print(scheduledDate);
     return scheduledDate;
   }
 
@@ -139,18 +139,15 @@ class MyLocalNotification {
         'https://chart.googleapis.com/chart?chs=85x85&cht=qr&chl=$idQR',
         idQR + 'big');
     final BigPictureStyleInformation bigPictureStyleInformation =
-        BigPictureStyleInformation(
-      FilePathAndroidBitmap(bigPicturePath),
-      hideExpandedLargeIcon: true,
-      contentTitle:
-          'Mã điểm danh : ' +
-          '<b>$idQR</b> ' +
-          ' - Hạn : ' +
-          '<b>$timeAtten</b>',
-      htmlFormatContentTitle: true,
-      summaryText: body,
-      htmlFormatContent: true
-    );
+        BigPictureStyleInformation(FilePathAndroidBitmap(bigPicturePath),
+            hideExpandedLargeIcon: true,
+            contentTitle: 'Mã điểm danh : ' +
+                '<b>$idQR</b> ' +
+                ' - Hạn : ' +
+                '<b>$timeAtten</b>',
+            htmlFormatContentTitle: true,
+            summaryText: body,
+            htmlFormatContent: true);
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(idChannel, chanelName, chanelDescription,
             largeIcon: FilePathAndroidBitmap(largeIconPath),
@@ -162,6 +159,39 @@ class MyLocalNotification {
         chanelName,
         title + '  -   Mã điểm danh: ' + idQR + '  -   Hạn: ' + timeAtten,
         platformChannelSpecifics);
+  }
+
+  static Future<void> showNotificationNewClass(
+    FlutterLocalNotificationsPlugin notifications,
+    String nameTeacher,
+    String idQR, //mã lớp
+    String idChannel, //id lớp học
+    String chanelName, //tên lớp học
+    String chanelDescription, //miêu tả của lớp
+    String title, //Tiêu đề thông báo
+    String body, //Nội dung
+  ) async {
+    final String largeIconPath = await _downloadAndSaveFile(
+        'https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=$idQR',
+        idQR + 'small');
+    final String bigPicturePath = await _downloadAndSaveFile(
+        'https://chart.googleapis.com/chart?chs=85x85&cht=qr&chl=$idQR',
+        idQR + 'big');
+    final BigPictureStyleInformation bigPictureStyleInformation =
+        BigPictureStyleInformation(FilePathAndroidBitmap(bigPicturePath),
+            hideExpandedLargeIcon: true,
+            contentTitle: 'Mã lớp : ' + '<b>$idQR</b> ',
+            htmlFormatContentTitle: true,
+            summaryText: 'Miêu tả : ' + chanelDescription,
+            htmlFormatContent: true);
+    final AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(idChannel, chanelName, chanelDescription,
+            largeIcon: FilePathAndroidBitmap(largeIconPath),
+            styleInformation: bigPictureStyleInformation);
+    final NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await notifications.show(0, nameTeacher + ' - ' + chanelName,
+        title + '  -   Mã lớp: ' + idQR, platformChannelSpecifics);
   }
 
   static Future<String> _downloadAndSaveFile(
