@@ -4,13 +4,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
 import 'package:utc2_student/screens/classroom/new_notify_class.dart';
 import 'package:utc2_student/screens/home_screen.dart';
+import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
+import 'package:utc2_student/service/firestore/post_database.dart';
+import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/firestore/teaacher_database.dart';
 import 'package:utc2_student/service/local_notification.dart';
 import 'package:utc2_student/utils/custom_glow.dart';
@@ -23,7 +27,9 @@ import 'package:utc2_student/utils/color_random.dart';
 class DetailClassScreen extends StatefulWidget {
   final String className, idClass;
   final List listClass;
-  DetailClassScreen({this.className, this.listClass, this.idClass});
+  final Student student;
+  DetailClassScreen(
+      {this.className, this.listClass, this.idClass, this.student});
   @override
   _DetailClassScreenState createState() => _DetailClassScreenState();
 }
@@ -187,6 +193,9 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                                           DateFormat("yyyy-MM-dd HH:mm:ss")
                                               .parse(e.timeAtten))
                                       : null,
+                                  student: widget.student,
+                                  idClass: widget.idClass,
+                                  post: e,
                                 );
                               }),
                         ),
@@ -517,15 +526,22 @@ class ItemNoti extends StatelessWidget {
   final int numberFile;
   final String idAttendend;
   final String timeAttendend;
-  ItemNoti(
-      {this.avatar,
-      this.userName,
-      this.time,
-      this.title,
-      this.content,
-      this.numberFile,
-      this.idAttendend,
-      this.timeAttendend});
+  final Student student;
+  final String idClass;
+  final Post post;
+  ItemNoti({
+    this.avatar,
+    this.userName,
+    this.time,
+    this.title,
+    this.content,
+    this.numberFile,
+    this.idAttendend,
+    this.timeAttendend,
+    this.student,
+    this.idClass,
+    this.post,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -543,7 +559,7 @@ class ItemNoti extends StatelessWidget {
                   topLeft: Radius.circular(10.0),
                   topRight: Radius.circular(10.0),
                 ),
-                border: Border.all(color: ColorApp.lightGrey, width: 1)),
+                border: Border.all(color: ColorApp.lightGrey, width: 0.4)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -601,13 +617,26 @@ class ItemNoti extends StatelessWidget {
                   height: 10,
                 ),
                 idAttendend != null
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    ? GestureDetector(
+                        onTap: () {
+                          Get.to(() => AttendanceScreen(
+                                student: student,
+                                idClass: idClass,
+                                idPost: post.id,
+                                input: post.idAtten,
+                                time: post.timeAtten,
+                              ));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                              color: Colors.orangeAccent.withOpacity(.4),
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   RichText(
                                     text: TextSpan(
@@ -624,60 +653,58 @@ class ItemNoti extends StatelessWidget {
                                       ],
                                     ),
                                   ),
-                                  IconButton(
-                                      onPressed: () {},
-                                      icon: Icon(Icons.check_circle_rounded)),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Hạn: ',
+                                      style: TextStyle(
+                                          color: ColorApp.black,
+                                          fontWeight: FontWeight.normal),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: timeAttendend,
+                                            style: TextStyle(
+                                              color: ColorApp.red,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               ),
-                              SizedBox(
-                                height: 4,
-                              ),
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Hạn: ',
-                                  style: TextStyle(
-                                      color: ColorApp.black,
-                                      fontWeight: FontWeight.normal),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: timeAttendend,
-                                        style: TextStyle(
-                                          color: ColorApp.red,
-                                        )),
+                              Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: ColorApp.lightOrange
+                                          .withOpacity(0.09),
+                                      spreadRadius: 3,
+                                      blurRadius: 5,
+                                      offset: Offset(
+                                          2, 3), // changes position of shadow
+                                    ),
                                   ],
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  // border:
+                                  //     Border.all(color: ColorApp.lightGrey)
+                                ),
+                                child: QrImage(
+                                  data: idAttendend,
+                                  embeddedImage:
+                                      AssetImage('assets/images/logoUTC.png'),
+                                  version: QrVersions.auto,
+                                  size: 80,
+                                  gapless: false,
+                                  embeddedImageStyle: QrEmbeddedImageStyle(
+                                    size: Size(15, 15),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: ColorApp.lightOrange.withOpacity(0.09),
-                                  spreadRadius: 3,
-                                  blurRadius: 5,
-                                  offset: Offset(
-                                      2, 3), // changes position of shadow
-                                ),
-                              ],
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                              // border:
-                              //     Border.all(color: ColorApp.lightGrey)
-                            ),
-                            child: QrImage(
-                              data: idAttendend,
-                              embeddedImage:
-                                  AssetImage('assets/images/logoUTC.png'),
-                              version: QrVersions.auto,
-                              size: 80,
-                              gapless: false,
-                              embeddedImageStyle: QrEmbeddedImageStyle(
-                                size: Size(15, 15),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       )
                     : Container(),
                 SizedBox(

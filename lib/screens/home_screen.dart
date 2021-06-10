@@ -77,17 +77,22 @@ class _HomeScreenState extends State<HomeScreen> {
           else
             return Container();
         }),
-        body: SizedBox.expand(
+        body: BlocBuilder<StudentBloc, StudentState>(builder: (context, state) {
+          if (state is StudentLoaded)
+            return SizedBox.expand(
           child: IndexedStack(
             index: _selectedIndex,
             children: <Widget>[
               utc2,
               NotifyPage(),
               SchedulePage(),
-              ActivityPage(),
+              ActivityPage(student:state.student),
             ],
           ),
-        ),
+        );
+          else
+            return Container();
+        }),
         bottomNavigationBar: BottomNavyBar(
           selectedIndex: _selectedIndex,
           showElevation: true, // use this to remove appBar's elevation

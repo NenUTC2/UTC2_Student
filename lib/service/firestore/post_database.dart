@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class PostDatabase {
   Future<void> createPost(
@@ -32,6 +33,15 @@ class PostDatabase {
     return list;
   }
 
+  static Future<dynamic> getPost(String idClass, String idPost) async {
+    var data = await FirebaseFirestore.instance
+        .collection('Class')
+        .doc(idClass)
+        .collection('Post')
+        .doc(idPost)
+        .get();
+    return data;
+  }
 }
 
 class Post {

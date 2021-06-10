@@ -3,7 +3,9 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:geocoder/services/base.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:utc2_student/service/firestore/post_database.dart';
 
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/geo_service.dart';
@@ -12,9 +14,11 @@ import 'package:utc2_student/utils/utils.dart';
 
 class AttendanceScreen extends StatefulWidget {
   final Student student;
-  AttendanceScreen({
-    this.student,
-  });
+  final String idClass, idPost, input, time;
+
+  const AttendanceScreen(
+      {Key key, this.student, this.idClass, this.idPost, this.input, this.time})
+      : super(key: key);
   @override
   _AttendanceScreenState createState() => _AttendanceScreenState();
 }
@@ -45,40 +49,60 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         error = 'Bật dịch vụ vị trí và thử lại';
       });
     } else {
-      if (code == '123') {
-        setState(() {
-          isLoading = false;
+      // if (code == '123') {
+      setState(() {
+        isLoading = false;
+      });
+      try {
+        var geocoding = Geocoder.local;
+        var longitude = location.longitude;
+        var latitude = location.latitude;
+        var results = await geocoding
+            .findAddressesFromCoordinates(new Coordinates(latitude, longitude));
+        this.setState(() {
+          this.results = results;
         });
-        try {
-          var geocoding = Geocoder.local;
-          var longitude = location.longitude;
-          var latitude = location.latitude;
-          var results = await geocoding.findAddressesFromCoordinates(
-              new Coordinates(latitude, longitude));
-          this.setState(() {
-            this.results = results;
-          });
-          print(results[0].addressLine);
-        } catch (e) {
-          print("Error occured: $e");
-        }
-        // finally {
-        //   setState(() {
-        //     isLoading = false;
-        //   });
-        // }
-      } else {
-        setState(() {
-          isLoading = false;
-        });
-        showError('2');
+        var post = await PostDatabase.getPost(widget.idClass, widget.idPost);
+        print(post['idAtten']);
+        var status = '';
+        var now =
+            DateFormat("yyyy-MM-dd HH:mm:ss").parse(DateTime.now().toString());
+        var attenTime = DateFormat("yyyy-MM-dd HH:mm:ss").parse(widget.time);
+        if (code == post['idAtten'] &&
+            now.difference(attenTime).inMinutes < 1) {
+          status = 'Thành công';
+        } else
+          status = 'Thất bại';
+        StudentDatabase.attend(
+            widget.idClass,
+            widget.idPost,
+            widget.student.id,
+            results[0].addressLine.toString(),
+            latitude.toString() + ', ' + longitude.toString(),
+            status);
+
+        print(results[0].addressLine);
+      } catch (e) {
+        print("Error occured: $e");
       }
+      // finally {
+      //   setState(() {
+      //     isLoading = false;
+      //   });
+      // }
+      // } else {
+      //   setState(() {
+      //     isLoading = false;
+      //   });
+      //   showError('2');
+      // }
     }
   }
 
   @override
   void initState() {
     super.initState();
+    _controller.text = widget.input;
   }
 
   void showError(String result) {
@@ -243,7 +267,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(30),
                                     side: BorderSide(color: Colors.white)))),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_controller.text.isNotEmpty) {
                         search(_controller.text);
                         setState(() {

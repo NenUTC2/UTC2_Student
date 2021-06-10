@@ -169,8 +169,7 @@ class _ProFilePageState extends State<ProFilePage> {
                                                         MaterialPageRoute(
                                                             builder: (context) => index == 1
                                                                     ? AttendanceScreen(
-                                                                        student:
-                                                                            widget.student,
+                                                                      student: widget.student,
                                                                       ):
                                                                 screen[index]));
                                               }

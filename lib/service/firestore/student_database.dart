@@ -110,6 +110,25 @@ class StudentDatabase {
     list = data.docs.map((e) => e['id'].toString()).toList();
     return list;
   }
+
+  static Future attend(String idClass, String idPost, String idStudent,
+      String address, String location,String status) async {
+    var attendData = {
+      'idStudent': idStudent,
+      'time': DateTime.now().toString(),
+      'address': address,
+      'location': location,
+      'status': status,
+    };
+    FirebaseFirestore.instance
+        .collection('Class')
+        .doc(idClass)
+        .collection('Post')
+        .doc(idPost)
+        .collection('Student')
+        .doc(idStudent)
+        .set(attendData);
+  }
 }
 
 class Student {

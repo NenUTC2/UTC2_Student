@@ -15,6 +15,9 @@ import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class ActivityPage extends StatefulWidget {
+  final Student student;
+
+  const ActivityPage({Key key, this.student}) : super(key: key);
   @override
   _ActivityPageState createState() => _ActivityPageState();
 }
@@ -227,8 +230,6 @@ class _ActivityPageState extends State<ActivityPage> {
                 color: ColorApp.orange,
               );
             else if (state is LoadedClass) {
-              print('loaded');
-
               return Container(
                 child: RefreshIndicator(
                   displacement: 20,
@@ -320,6 +321,7 @@ class _ActivityPageState extends State<ActivityPage> {
                             className: className,
                             listClass: listClass,
                             idClass: id,
+                            student:widget.student
                           )));
             },
             child: Container(
