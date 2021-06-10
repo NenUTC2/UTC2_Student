@@ -9,6 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
+import 'package:utc2_student/screens/classroom/new_comment.dart';
 import 'package:utc2_student/screens/classroom/new_notify_class.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
@@ -730,28 +731,33 @@ class ItemNoti extends StatelessWidget {
               ],
             ),
           ),
-          Container(
-              width: size.width,
-              padding: EdgeInsets.all(size.width * 0.03),
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.0),
-                    bottomRight: Radius.circular(10.0),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.05),
-                      spreadRadius: 3,
-                      blurRadius: 5,
-                      offset: Offset(0, 3), // changes position of shadow
+          GestureDetector(
+            onTap: () {
+              Get.to(() => NewCommentClass());
+            },
+            child: Container(
+                width: size.width,
+                padding: EdgeInsets.all(size.width * 0.03),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(10.0),
+                      bottomRight: Radius.circular(10.0),
                     ),
-                  ],
-                  border: Border.all(color: ColorApp.lightGrey, width: 1)),
-              child: Text(
-                'Thêm nhận xét lớp học',
-                style: TextStyle(color: Colors.grey),
-              ))
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.05),
+                        spreadRadius: 3,
+                        blurRadius: 5,
+                        offset: Offset(0, 3), // changes position of shadow
+                      ),
+                    ],
+                    border: Border.all(color: ColorApp.lightGrey, width: 1)),
+                child: Text(
+                  'Thêm nhận xét lớp học',
+                  style: TextStyle(color: Colors.grey),
+                )),
+          )
         ],
       ),
     );
