@@ -607,20 +607,27 @@ class ItemNoti extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              RichText(
-                                text: TextSpan(
-                                  text: 'Mã điểm danh: ',
-                                  style: TextStyle(
-                                      color: ColorApp.black,
-                                      fontWeight: FontWeight.normal),
-                                  children: <TextSpan>[
-                                    TextSpan(
-                                        text: idAttendend,
-                                        style: TextStyle(
-                                          color: ColorApp.red,
-                                        )),
-                                  ],
-                                ),
+                              Row(
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Mã điểm danh: ',
+                                      style: TextStyle(
+                                          color: ColorApp.black,
+                                          fontWeight: FontWeight.normal),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: idAttendend,
+                                            style: TextStyle(
+                                              color: ColorApp.red,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: Icon(Icons.check_circle_rounded)),
+                                ],
                               ),
                               SizedBox(
                                 height: 4,

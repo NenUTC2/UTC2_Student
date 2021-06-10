@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
 import 'package:utc2_student/service/firestore/post_database.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
@@ -51,6 +52,9 @@ class _NewNotifyState extends State<NewNotify> {
           actions: [
             TextButton(
               onPressed: () async {
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                var token = prefs.getString('token');
+
                 final response = await http.post(
                     Uri.parse('https://fcm.googleapis.com/fcm/send'),
                     headers: <String, String>{
@@ -66,6 +70,8 @@ class _NewNotifyState extends State<NewNotify> {
                         "idChannel": widget.idClass.id,
                         "className": widget.idClass.name,
                         "classDescription": widget.idClass.note,
+                        'isAtten': 'false',
+                        'token': token,
                       },
                       "notification": {
                         "title": title,
@@ -87,6 +93,8 @@ class _NewNotifyState extends State<NewNotify> {
                   'date': DateTime.now().toString(),
                   'name': widget.student.name,
                   'avatar': widget.student.avatar,
+                  'idAtten': null,
+                  'timeAtten': null,
                 };
                 postDatabase.createPost(dataPost, widget.idClass.id, idPost);
               },

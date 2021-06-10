@@ -1,11 +1,15 @@
 import 'dart:math';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
+import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/color_random.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +52,11 @@ class _ActivityPageState extends State<ActivityPage> {
     if (barcode == null) {
       print('Không tìm thấy mã code');
     } else {
-      _controller.text = barcode;
+      Get.back();
+
+      var dataClass = {'id': barcode.trim()};
+      await StudentDatabase.joinClass(barcode.trim(), dataClass);
+      classBloc.add(GetClassEvent());
     }
   }
 
@@ -65,10 +73,12 @@ class _ActivityPageState extends State<ActivityPage> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: TextFormField(
+                autofocus: true,
                 controller: _controller,
                 decoration: InputDecoration(
-                    hintText: 'Mã lớp',
-                    errorText: isErro ? 'Vui lòng nhập mã' : null),
+                  hintText: 'Mã lớp',
+                  // errorText: isErro ? 'Vui lòng nhập mã' : null,
+                ),
                 autocorrect: true,
               ),
             ),
@@ -78,34 +88,52 @@ class _ActivityPageState extends State<ActivityPage> {
           ),
           Center(
             child: ElevatedButton(
-                child: Container(
-                  margin: EdgeInsets.symmetric(
-                      horizontal: size.width * 0.1, vertical: 10),
-                  child: Text(
-                    "Tham gia",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
+              child: Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: size.width * 0.1, vertical: 10),
+                child: Text(
+                  "Tham gia",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
                   ),
                 ),
-                style: ButtonStyle(
-                    tapTargetSize: MaterialTapTargetSize.padded,
-                    shadowColor:
-                        MaterialStateProperty.all<Color>(ColorApp.lightOrange),
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.white),
-                    backgroundColor:
-                        MaterialStateProperty.all<Color>(ColorApp.lightOrange),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            side: BorderSide(color: Colors.white)))),
-                // color: ColorApp.lightOrange,
-                // shape: RoundedRectangleBorder(
-                //     borderRadius: BorderRadius.circular(20)),
-                onPressed: () {}),
+              ),
+              style: ButtonStyle(
+                  tapTargetSize: MaterialTapTargetSize.padded,
+                  shadowColor:
+                      MaterialStateProperty.all<Color>(ColorApp.lightOrange),
+                  foregroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(ColorApp.lightOrange),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          side: BorderSide(color: Colors.white)))),
+              // color: ColorApp.lightOrange,
+              // shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(20)),
+              onPressed: () async {
+                if (_controller.text.length < 1) {
+                  Get.snackbar('Thông báo', 'Nhập mã lớp',
+                      snackPosition: SnackPosition.BOTTOM);
+                } else {
+                  Get.back();
+
+                  var dataClass = {'id': _controller.text.trim()};
+                  var result = await StudentDatabase.joinClass(
+                      _controller.text.trim(), dataClass);
+                  if (!result) {
+                    Get.snackbar('Thông báo', 'Bạn đã tham gia lớp này',
+                        snackPosition: SnackPosition.BOTTOM);
+                  } else
+                    classBloc.add(GetClassEvent());
+                  _controller.clear();
+                }
+              },
+            ),
           ),
           SizedBox(
             height: 30,
@@ -143,7 +171,7 @@ class _ActivityPageState extends State<ActivityPage> {
     );
   }
 
-  showAlertDialog(BuildContext context, String name, String id) {
+  showAlertDialog(BuildContext context, String name, String idClass) {
     // set up the buttons
     Widget cancelButton = TextButton(
       child: Text("Thoát"),
@@ -155,7 +183,7 @@ class _ActivityPageState extends State<ActivityPage> {
       child: Text("Rời Khỏi"),
       onPressed: () {
         Navigator.pop(context);
-        classDatabase.deleteClass(id);
+        StudentDatabase.leaveClass(idClass);
         classBloc.add(GetClassEvent());
       },
     );
@@ -207,28 +235,34 @@ class _ActivityPageState extends State<ActivityPage> {
                   onRefresh: () async {
                     classBloc.add(GetClassEvent());
                   },
-                  child: Scrollbar(
-                    child: ListView.builder(
-                      itemCount: state.list.length + 1,
-                      physics: BouncingScrollPhysics(),
-                      // itemCount: snapshot.data.length,
-                      itemBuilder: ((context, index) {
-                      
-                        return index == state.list.length
-                            ? Container(
-                                height: 200,
-                              )
-                            : customList(
-                                size,
-                                context,
-                                state.list[index].name,
-                                state.list[index].teacherId,
-                                activity[1]['subAct'],
-                                state.list[index].id,
-                                state.list);
-                      }),
-                    ),
-                  ),
+                  child: state.list.isEmpty
+                      ? Center(
+                          child: Text(
+                            'Chưa có lớp học nào.',
+                            style: TextStyle(color: Colors.black, fontSize: 17),
+                          ),
+                        )
+                      : Scrollbar(
+                          child: ListView.builder(
+                            itemCount: state.list.length + 1,
+                            physics: BouncingScrollPhysics(),
+                            // itemCount: snapshot.data.length,
+                            itemBuilder: ((context, index) {
+                              return index == state.list.length
+                                  ? Container(
+                                      height: 200,
+                                    )
+                                  : customList(
+                                      size,
+                                      context,
+                                      state.list[index].name,
+                                      state.list[index].teacherId,
+                                      activity[1]['subAct'],
+                                      state.list[index].id,
+                                      state.list);
+                            }),
+                          ),
+                        ),
                 ),
               );
             } else if (state is LoadErrorClass) {
@@ -241,6 +275,7 @@ class _ActivityPageState extends State<ActivityPage> {
             } else {
               return SpinKitChasingDots(
                 color: ColorApp.orange,
+                size: 30,
               );
             }
           },

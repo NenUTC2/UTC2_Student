@@ -27,26 +27,30 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
-  http: ^0.13.3
-  dots_indicator: ^2.0.0
-  cached_network_image: ^3.0.0
-  flutter_spinkit: ^5.0.0
-  geolocator: ^7.0.3
-  geocoder: ^0.2.1
-  google_sign_in: ^5.0.4
-  shared_preferences: ^2.0.5
-  pin_code_fields: ^7.1.0
-  permission_handler: ^7.1.0
-  intl: ^0.17.0
-  fluttertoast: ^8.0.7
-  image_picker: ^0.7.5+2
-  # tabbar: ^0.1.1
+  #A
+  avatar_glow: ^2.0.1
+
+  #B
   barcode: ^2.1.0
   bubble_tab_indicator: ^0.1.6
+  bottom_navy_bar: ^6.0.0
+
+  #C
+  cached_network_image: ^3.0.0
+  cupertino_icons: ^1.0.0
   connectivity: ^3.0.3
-  web_scraper: ^0.1.4
+
+  #D
+  dots_indicator: ^2.0.0
+
+  #E
   equatable: ^2.0.0
+  # esys_flutter_share: ^1.0.2
+
+  #F
+  flutter_spinkit: ^5.0.0
+  flutter_local_notifications: ^6.0.0
+  flutter_native_timezone: ^1.0.10
   # firebase_analytics: ^8.1.0
   # firebase_crashlytics: ^2.0.4
   cloud_firestore: ^2.2.0
@@ -57,25 +61,63 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   flutter_svg: ^0.22.0
   flutter_html: ^2.0.0
+  fluttertoast: ^8.0.7
+  flutter_share: ^2.0.0
+  fl_chart: ^0.36.1
+
+  #G
+  geolocator: ^7.0.3
+  geocoder: ^0.2.1
+  google_sign_in: ^5.0.4
+  get: ^4.1.4
+
+  #H
+  http: ^0.13.3
   html: ^0.15.0
   html_unescape: ^2.0.0
-  wifi_iot: ^0.3.3
-  get: ^4.1.4
-  provider: ^5.0.0
-  bottom_navy_bar: ^6.0.0
-  avatar_glow: ^2.0.1
-  syncfusion_flutter_calendar: ^19.1.64
-  syncfusion_flutter_charts: ^19.1.64
-  fl_chart: ^0.36.1
-  qr_flutter: ^4.0.0
+
+  #I
+  intl: ^0.17.0
+  image_picker: ^0.7.5+2
   image_gallery_saver: ^1.6.9
-  flutter_share: ^2.0.0
-  # esys_flutter_share: ^1.0.2
+  
+  #J
+  #K
+  #L
+  #M
+  #N
+
+  #O
+  open_file: ^3.2.1
+
+  #P
+  pin_code_fields: ^7.1.0
+  permission_handler: ^7.1.0
   pdf: ^3.3.0
   path_provider: ^2.0.1
-  open_file: ^3.2.1
-  flutter_local_notifications: ^6.0.0
-  flutter_native_timezone: ^1.0.10
+  provider: ^5.0.0
+
+  #Q
+  qr_flutter: ^4.0.0
+
+  #R
+
+  #S
+  shared_preferences: ^2.0.5
+  syncfusion_flutter_calendar: ^19.1.64
+  syncfusion_flutter_charts: ^19.1.64
+
+  #T
+  #U
+  #V
+  
+  #W
+  web_scraper: ^0.1.4
+  wifi_iot: ^0.3.3
+
+  #X
+  #Y
+  #Z
 
 dev_dependencies:
   flutter_test:

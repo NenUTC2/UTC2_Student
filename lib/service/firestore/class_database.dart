@@ -9,7 +9,10 @@ class ClassDatabase {
     await FirebaseFirestore.instance
         .collection('Class')
         .doc(id)
+        .collection('Post')
+        .doc()
         .delete();
+    await FirebaseFirestore.instance.collection('Class').doc(id).delete();
   }
 
   getClassData() async {

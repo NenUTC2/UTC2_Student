@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StudentDatabase {
   Future<void> createStudent(Map<String, String> dataStudent, String id) async {
@@ -47,6 +49,65 @@ class StudentDatabase {
     List<Student> list = [];
     var data = await FirebaseFirestore.instance.collection('Student').get();
     list = data.docs.map((e) => Student(e)).toList();
+    return list;
+  }
+
+  static Future<dynamic> joinClass(
+      String idClass, Map<String, String> dataClass) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userEmail = prefs.getString('userEmail');
+
+    Student student = await StudentDatabase.getStudentData(userEmail);
+    var list = await StudentDatabase.getListClassStudent(student.id);
+    var dataStu = {'id': student.id};
+    if (!list.contains(idClass)) {
+      await FirebaseFirestore.instance
+          .collection('Student')
+          .doc(student.id)
+          .collection('Class')
+          .doc(idClass)
+          .set(dataClass);
+      await FirebaseFirestore.instance
+          .collection('Class')
+          .doc(idClass)
+          .collection('Student')
+          .doc(student.id)
+          .set(dataStu);
+
+      await FirebaseMessaging.instance.subscribeToTopic(idClass);
+      return true;
+    } else
+      return false;
+  }
+
+  static Future<void> leaveClass(String idClass) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userEmail = prefs.getString('userEmail');
+
+    Student student = await StudentDatabase.getStudentData(userEmail);
+    await FirebaseFirestore.instance
+        .collection('Student')
+        .doc(student.id)
+        .collection('Class')
+        .doc(idClass)
+        .delete();
+    await FirebaseFirestore.instance
+        .collection('Class')
+        .doc(idClass)
+        .collection('Student')
+        .doc(student.id)
+        .delete();
+    await FirebaseMessaging.instance.unsubscribeFromTopic(idClass);
+  }
+
+  static Future<List<String>> getListClassStudent(String idStu) async {
+    List<String> list = [];
+    var data = await FirebaseFirestore.instance
+        .collection('Student')
+        .doc(idStu)
+        .collection('Class')
+        .get();
+    list = data.docs.map((e) => e['id'].toString()).toList();
     return list;
   }
 }

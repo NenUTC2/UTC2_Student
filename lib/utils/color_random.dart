@@ -13,7 +13,7 @@ class ColorRandom {
     ],
     [
       Color(0xffFF416C),
-      Color(0xffFF4B2B),
+      Color(0xFFFFCD27),
     ],
     [
       Color(0xfff5af19),
@@ -25,7 +25,7 @@ class ColorRandom {
     ],
     [
       Color(0xffc31432),
-      Color(0xfff12711),
+      Color(0xFFF17D11),
     ],
     [
       Color(0xff659999),
