@@ -114,6 +114,7 @@ dependencies:
   #W
   web_scraper: ^0.1.4
   wifi_iot: ^0.3.3
+  url_launcher: ^6.0.6
 
   #X
   #Y

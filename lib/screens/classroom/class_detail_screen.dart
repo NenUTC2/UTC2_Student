@@ -519,6 +519,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
 }
 
 class ItemNoti extends StatelessWidget {
+ 
   final String avatar;
   final String userName;
   final String time;
@@ -733,7 +734,7 @@ class ItemNoti extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(() => NewCommentClass());
+              Get.to(() => NewCommentClass(teacher: student,idClass: idClass,idPost: post.id,));
             },
             child: Container(
                 width: size.width,

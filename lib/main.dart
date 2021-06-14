@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
+import 'package:utc2_student/blocs/comment_bloc/comment_bloc.dart';
 import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
@@ -108,6 +109,7 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<PostBloc>(create: (context) => PostBloc()),
         BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
         BlocProvider<StudentBloc>(create: (context) => StudentBloc()),
+         BlocProvider<CommentBloc>(create: (context) => CommentBloc()),
       ],
       child: GetMaterialApp(
         theme: ThemeData(
