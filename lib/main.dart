@@ -57,8 +57,8 @@ class _HomePageState extends State<HomePage> {
   FirebaseMessaging _fireBaseMessaging;
   final notifications = FlutterLocalNotificationsPlugin();
   Widget body = Scaffold();
-  NotifyAppDatabase notifyAppDatabase=new NotifyAppDatabase();
-  
+  NotifyAppDatabase notifyAppDatabase = new NotifyAppDatabase();
+
   @override
   void initState() {
     super.initState();
@@ -89,18 +89,28 @@ class _HomePageState extends State<HomePage> {
         print('MESSAGE>>>>' + message.toString());
       }
     });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //     Map<String, String> dataNotifyApp = {
-    //                     'id': message.data['idNotifyApp']??'',
-    //                     'idUser':  message.data['idUser']??'',//user đăng nhập
-    //                     'content':  message.data['content']??'',
-    //                     'name':  message.data['name']??'',//người đăng
-    //                     'avatar':  message.data['avatar']??'',//người đăng
-    //                     'date': DateTime.now().toString(),//time nhận được
-    //                   };
-    //                   SharedPreferences prefs = await SharedPreferences.getInstance();
-    // var userEmail = prefs.getString('userEmail');
-    //                  notifyAppDatabase.createNotifyApp(dataNotifyApp, userEmail , generateRandomString(5),);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var userEmail = prefs.getString('userEmail');
+      print('emaillll ' + userEmail);
+      Student student = await StudentDatabase.getStudentData(userEmail);
+      String random = generateRandomString(5);
+      Map<String, String> dataNotifyApp = {
+        'id': random ?? '',
+        'idUser': student.id ?? '', //user đăng nhập
+        'content': message.data['content'] ?? '',
+        'name': message.data['name'] ?? '', //người đăng
+        'avatar': message.data['avatar'] ?? '', //người đăng
+        'date': DateTime.now().toString(), //time nhận được
+      };
+
+      print(student.id);
+
+      notifyAppDatabase.createNotifyApp(
+        dataNotifyApp,
+        student.id,
+        random,
+      );
       setUpNoti(message);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
@@ -123,7 +133,7 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<PostBloc>(create: (context) => PostBloc()),
         BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
         BlocProvider<StudentBloc>(create: (context) => StudentBloc()),
-         BlocProvider<CommentBloc>(create: (context) => CommentBloc()),
+        BlocProvider<CommentBloc>(create: (context) => CommentBloc()),
       ],
       child: GetMaterialApp(
         theme: ThemeData(

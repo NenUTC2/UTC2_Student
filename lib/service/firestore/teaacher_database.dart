@@ -43,7 +43,7 @@ class TeacherDatabase {
     FirebaseFirestore.instance.collection('Teacher').doc(msv).update(data);
   }
 
-   getListTeachersData(String id) async {
+  getListTeachersData(String id) async {
     List<Teacher> list = [];
     var data = await FirebaseFirestore.instance
         .collection('Teacher')

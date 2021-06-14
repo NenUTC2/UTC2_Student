@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NotifyAppDatabase {
-  Future<void> createNotifyApp(Map<String, String> dataNotifyApp, String idUser,
-      String idNotify) async {
+  Future<void> createNotifyApp(
+      Map<String, String> dataNotifyApp, String idUser, String idNotify) async {
     await FirebaseFirestore.instance
         .collection('Student')
         .doc(idUser)
@@ -12,7 +12,7 @@ class NotifyAppDatabase {
   }
 
   Future<void> deleteNotifyApp(
-      String  idUser, String idPost, String idNotifyApp) async {
+      String idUser, String idPost, String idNotifyApp) async {
     await FirebaseFirestore.instance
         .collection('Student')
         .doc(idUser)
