@@ -89,7 +89,7 @@ class _HomePageState extends State<HomePage> {
         print('MESSAGE>>>>' + message.toString());
       }
     });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     //     Map<String, String> dataNotifyApp = {
     //                     'id': message.data['idNotifyApp']??'',
     //                     'idUser':  message.data['idUser']??'',//user đăng nhập
