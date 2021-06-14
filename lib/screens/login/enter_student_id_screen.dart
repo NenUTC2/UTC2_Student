@@ -235,8 +235,8 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
                 builder: (context, state) {
                   if (state is UpdatingSIDState || state is SubmittingSIDState)
                     return SpinKitThreeBounce(
+                      size: 25,
                       color: ColorApp.lightOrange,
-                      size: 30,
                     );
                   else if (state is EnteredSIDState) {
                     student = state.sinhvienInfo;

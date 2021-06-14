@@ -49,7 +49,6 @@ class MyLocalNotification {
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
-    print(scheduledDate);
     return scheduledDate;
   }
 
@@ -146,8 +145,9 @@ class MyLocalNotification {
                 ' - Hạn : ' +
                 '<b>$timeAtten</b>',
             htmlFormatContentTitle: true,
+            htmlFormatSummaryText: true,
             summaryText: body,
-            htmlFormatContent: true);
+            htmlFormatContent: true); 
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(idChannel, chanelName, chanelDescription,
             largeIcon: FilePathAndroidBitmap(largeIconPath),

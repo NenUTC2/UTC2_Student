@@ -27,26 +27,26 @@ class _ActivityPageState extends State<ActivityPage> {
   bool isErro = false;
   TextEditingController _controller = TextEditingController();
   List activity = [
-    {
-      'title': 'Đồ án tốt nghiệp',
-      'name': 'Phạm Thị Miên',
-      'subAct': ['Báo Cáo tiến độ']
-    },
-    {
-      'title': 'AI.GTVT.2.20-21',
-      'name': 'Nguyễn Đình Hiển',
-      'subAct': [
-        'BT1 (Nhóm) : Tìm hiểu về AI',
-        'BT2 (Nhóm) : Thuật Giải Heuristic',
-        'BT3 (Nhóm) : Phương pháp tìm kiếm'
-      ]
-    },
-    {
-      'title': 'Phân tích thiết kế hướng đối tượng (k58-utc2)',
-      'name': 'Nguyễn Quang Phúc',
-      'subAct': []
-    },
-    {'title': 'data minning 20-21', 'name': 'Trần Phong Nhã', 'subAct': []},
+    // {
+    //   'title': 'Đồ án tốt nghiệp',
+    //   'name': 'Phạm Thị Miên',
+    //   'subAct': ['Báo Cáo tiến độ']
+    // },
+    // {
+    //   'title': 'AI.GTVT.2.20-21',
+    //   'name': 'Nguyễn Đình Hiển',
+    //   'subAct': [
+    //     'BT1 (Nhóm) : Tìm hiểu về AI',
+    //     'BT2 (Nhóm) : Thuật Giải Heuristic',
+    //     'BT3 (Nhóm) : Phương pháp tìm kiếm'
+    //   ]
+    // },
+    // {
+    //   'title': 'Phân tích thiết kế hướng đối tượng (k58-utc2)',
+    //   'name': 'Nguyễn Quang Phúc',
+    //   'subAct': []
+    // },
+    // {'title': 'data minning 20-21', 'name': 'Trần Phong Nhã', 'subAct': []},
   ];
   Future _scan() async {
     await Permission.camera.request();
@@ -194,7 +194,7 @@ class _ActivityPageState extends State<ActivityPage> {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text(name),
-      content: Text("Bạn có muốn rời khỏi lớp học này ?"),
+      content: Text("Bạn có muốn rời khỏi lớp học này?"),
       actions: [
         continueButton,
         cancelButton,
@@ -226,7 +226,8 @@ class _ActivityPageState extends State<ActivityPage> {
         BlocBuilder<ClassBloc, ClassState>(
           builder: (context, state) {
             if (state is LoadingClass)
-              return SpinKitChasingDots(
+              return SpinKitThreeBounce(
+                size: 25,
                 color: ColorApp.orange,
               );
             else if (state is LoadedClass) {
@@ -258,7 +259,7 @@ class _ActivityPageState extends State<ActivityPage> {
                                       context,
                                       state.list[index].name,
                                       state.list[index].teacherId,
-                                      activity[1]['subAct'],
+                                      [],
                                       state.list[index].id,
                                       state.list);
                             }),
@@ -274,9 +275,9 @@ class _ActivityPageState extends State<ActivityPage> {
                 ),
               );
             } else {
-              return SpinKitChasingDots(
+              return SpinKitThreeBounce(
                 color: ColorApp.orange,
-                size: 30,
+                size: 25,
               );
             }
           },
@@ -305,10 +306,11 @@ class _ActivityPageState extends State<ActivityPage> {
       margin: EdgeInsets.all(size.width * 0.03),
       padding: EdgeInsets.all(size.width * 0.03),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10.0),
-            topRight: Radius.circular(10.0),
-          ),
+          // borderRadius: BorderRadius.only(
+          //   topLeft: Radius.circular(10.0),
+          //   topRight: Radius.circular(10.0),
+          // ),
+          borderRadius: BorderRadius.circular(10),
           border: Border.all(color: ColorApp.lightGrey, width: 1.5)),
       child: Column(
         children: [
@@ -318,11 +320,10 @@ class _ActivityPageState extends State<ActivityPage> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => DetailClassScreen(
-                            className: className,
-                            listClass: listClass,
-                            idClass: id,
-                            student:widget.student
-                          )));
+                          className: className,
+                          listClass: listClass,
+                          idClass: id,
+                          student: widget.student)));
             },
             child: Container(
               height: 150,
@@ -336,10 +337,11 @@ class _ActivityPageState extends State<ActivityPage> {
                     begin: FractionalOffset.topCenter,
                     end: FractionalOffset.bottomRight,
                     tileMode: TileMode.repeated),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
-                ),
+                // borderRadius: BorderRadius.only(
+                //   topLeft: Radius.circular(10.0),
+                //   topRight: Radius.circular(10.0),
+                // ),
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

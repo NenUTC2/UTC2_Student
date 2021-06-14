@@ -92,7 +92,6 @@ class _HomePageState extends State<HomePage> {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       var userEmail = prefs.getString('userEmail');
-      print('emaillll ' + userEmail);
       Student student = await StudentDatabase.getStudentData(userEmail);
       String random = generateRandomString(5);
       Map<String, String> dataNotifyApp = {
@@ -103,8 +102,6 @@ class _HomePageState extends State<HomePage> {
         'avatar': message.data['avatar'] ?? '', //người đăng
         'date': DateTime.now().toString(), //time nhận được
       };
-
-      print(student.id);
 
       notifyAppDatabase.createNotifyApp(
         dataNotifyApp,

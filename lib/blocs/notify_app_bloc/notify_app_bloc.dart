@@ -19,7 +19,7 @@ class NotifyAppBloc extends Bloc<NotifyAppEvent, NotifyAppState> {
             event.props[0],);
         if (list.isNotEmpty) {
           //sort
-          print('có chưa-có rồi');
+          // print('có chưa-có rồi');
           yield LoadedNotifyApp(sapXepGiamDan(list));
         } else
           yield LoadErrorNotifyApp('Chưa có bài nhận xét nào nào');

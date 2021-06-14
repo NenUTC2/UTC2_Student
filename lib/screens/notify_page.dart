@@ -367,7 +367,8 @@ class _NotiWebState extends State<NotiWeb> with AutomaticKeepAliveClientMixin {
                                         },
                                       ),
                                     )
-                                  : SpinKitChasingDots(
+                                  : SpinKitThreeBounce(
+                size: 25,
                                       color: ColorApp.lightOrange,
                                     );
                             }),
@@ -443,7 +444,8 @@ class _NotiWebState extends State<NotiWeb> with AutomaticKeepAliveClientMixin {
                           ),
                         );
                       })
-                  : SpinKitChasingDots(
+                  : SpinKitThreeBounce(
+                size: 25,
                       color: ColorApp.lightOrange,
                     );
             }),

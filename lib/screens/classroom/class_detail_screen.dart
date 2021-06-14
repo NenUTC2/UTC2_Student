@@ -203,7 +203,8 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                       ),
                     );
                   } else if (state is LoadingPost) {
-                    return SpinKitChasingDots(
+                    return SpinKitThreeBounce(
+                size: 25,
                       color: ColorApp.orange,
                     );
                   } else if (state is LoadErrorPost) {
@@ -214,7 +215,8 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                       ),
                     );
                   } else {
-                    return SpinKitChasingDots(
+                    return SpinKitThreeBounce(
+                size: 25,
                       color: ColorApp.orange,
                     );
                   }
@@ -519,7 +521,6 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
 }
 
 class ItemNoti extends StatelessWidget {
- 
   final String avatar;
   final String userName;
   final String time;
@@ -734,7 +735,11 @@ class ItemNoti extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Get.to(() => NewCommentClass(teacher: student,idClass: idClass,idPost: post.id,));
+              Get.to(() => NewCommentClass(
+                    teacher: student,
+                    idClass: idClass,
+                    idPost: post.id,
+                  ));
             },
             child: Container(
                 width: size.width,

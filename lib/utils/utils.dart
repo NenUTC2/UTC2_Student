@@ -1,14 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:utc2_student/service/firestore/student_database.dart';
 
 class ColorApp {
   static const Color lightOrange = Color(0xFFFF9046);
   static const Color orange = Color(0xFFFF6600);
   static const Color mediumOrange = Color(0xFFCE4302);
   static const Color grey = Color(0xFFE4BFA6);
-  static const Color lightGrey = Color(0xFFD8B39A);
+  static const Color lightGrey = Color(0xFFE4E4E4);
   static const Color black = Color(0xFF221502);
   static const Color red = Color(0xffD94A50);
 }

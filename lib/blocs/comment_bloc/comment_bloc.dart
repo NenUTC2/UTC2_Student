@@ -19,7 +19,7 @@ class CommentBloc extends Bloc<CommentEvent, CommentState> {
             event.props[0], event.props[1]);
         if (list.isNotEmpty) {
           //sort
-          print('có chưa-có rồi');
+          // print('có chưa-có rồi');
           yield LoadedComment(sapXepGiamDan(list));
         } else
           yield LoadErrorComment('Chưa có bài nhận xét nào nào');

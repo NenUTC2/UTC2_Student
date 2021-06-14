@@ -4,7 +4,6 @@ import 'package:flutter/foundation.dart';
 class PostDatabase {
   Future<void> createPost(
       Map<String, String> dataPost, String idClass, String idPost) async {
-    print(idClass);
     await FirebaseFirestore.instance
         .collection('Class')
         .doc(idClass)
