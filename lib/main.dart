@@ -10,13 +10,14 @@ import 'package:utc2_student/blocs/comment_bloc/comment_bloc.dart';
 import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
-import 'package:utc2_student/scraper/student_info_scraper.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:utc2_student/screens/login/login_screen.dart';
+import 'package:utc2_student/service/firestore/notify_app_database.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/local_notification.dart';
+import 'package:utc2_student/utils/utils.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -56,6 +57,8 @@ class _HomePageState extends State<HomePage> {
   FirebaseMessaging _fireBaseMessaging;
   final notifications = FlutterLocalNotificationsPlugin();
   Widget body = Scaffold();
+  NotifyAppDatabase notifyAppDatabase=new NotifyAppDatabase();
+  
   @override
   void initState() {
     super.initState();
@@ -86,7 +89,18 @@ class _HomePageState extends State<HomePage> {
         print('MESSAGE>>>>' + message.toString());
       }
     });
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async{
+    //     Map<String, String> dataNotifyApp = {
+    //                     'id': message.data['idNotifyApp']??'',
+    //                     'idUser':  message.data['idUser']??'',//user đăng nhập
+    //                     'content':  message.data['content']??'',
+    //                     'name':  message.data['name']??'',//người đăng
+    //                     'avatar':  message.data['avatar']??'',//người đăng
+    //                     'date': DateTime.now().toString(),//time nhận được
+    //                   };
+    //                   SharedPreferences prefs = await SharedPreferences.getInstance();
+    // var userEmail = prefs.getString('userEmail');
+    //                  notifyAppDatabase.createNotifyApp(dataNotifyApp, userEmail , generateRandomString(5),);
       setUpNoti(message);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {

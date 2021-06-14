@@ -2,7 +2,7 @@ import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:utc2_student/models/notify.dart';
+import 'package:utc2_student/models/notify_web.dart';
 import 'package:utc2_student/service/web_wraper_utc/notify_utc_web.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
