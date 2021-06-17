@@ -702,7 +702,8 @@ class ItemNoti extends StatelessWidget {
                               quizId: post.idQuiz, idTeacher: idTeacher));
                         },
                         child: Container(
-                          padding: EdgeInsets.all(4),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 10),
                           decoration: BoxDecoration(
                               color: Colors.orangeAccent.withOpacity(.4),
                               borderRadius: BorderRadius.circular(4)),
