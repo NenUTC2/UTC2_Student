@@ -11,6 +11,7 @@ import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
 import 'package:utc2_student/screens/classroom/new_comment.dart';
 import 'package:utc2_student/screens/classroom/new_notify_class.dart';
+import 'package:utc2_student/screens/classroom/quiz_screen.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
@@ -177,26 +178,13 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                                   horizontal: size.width * 0.03),
                               itemBuilder: (context, index) {
                                 var e = state.list[index];
-                                DateTime parseDate =
-                                    new DateFormat("yyyy-MM-dd HH:mm:ss")
-                                        .parse(e.date);
+                                // DateTime parseDate =
+                                //     new DateFormat("yyyy-MM-dd HH:mm:ss")
+                                //         .parse(e.date);
                                 return ItemNoti(
-                                  avatar: e.avatar,
-                                  userName: e.name,
-                                  title: e.title,
-                                  time: DateFormat('HH:mm - dd-MM-yyyy')
-                                      .format(parseDate),
-                                  content: e.content != null ? e.content : '',
-                                  numberFile: index,
-                                  idAttendend: e.idAtten,
-                                  timeAttendend: e.timeAtten != null
-                                      ? DateFormat('HH:mm').format(
-                                          DateFormat("yyyy-MM-dd HH:mm:ss")
-                                              .parse(e.timeAtten))
-                                      : null,
                                   student: widget.student,
-                                  idClass: widget.idClass,
                                   post: e,
+                                  idTeacher: _class.teacherId,
                                 );
                               }),
                         ),
@@ -204,7 +192,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                     );
                   } else if (state is LoadingPost) {
                     return SpinKitThreeBounce(
-                size: 25,
+                      size: 25,
                       color: ColorApp.orange,
                     );
                   } else if (state is LoadErrorPost) {
@@ -216,7 +204,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                     );
                   } else {
                     return SpinKitThreeBounce(
-                size: 25,
+                      size: 25,
                       color: ColorApp.orange,
                     );
                   }
@@ -521,30 +509,20 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
 }
 
 class ItemNoti extends StatelessWidget {
-  final String avatar;
-  final String userName;
-  final String time;
-  final String title;
-  final String content;
-  final int numberFile;
-  final String idAttendend;
-  final String timeAttendend;
   final Student student;
-  final String idClass;
+  final int numberFile;
+  final Function function;
+  final int numberComment;
   final Post post;
-  ItemNoti({
-    this.avatar,
-    this.userName,
-    this.time,
-    this.title,
-    this.content,
-    this.numberFile,
-    this.idAttendend,
-    this.timeAttendend,
-    this.student,
-    this.idClass,
-    this.post,
-  });
+  final String idTeacher;
+
+  ItemNoti(
+      {this.student,
+      this.numberFile,
+      this.function,
+      this.numberComment,
+      this.post,
+      this.idTeacher});
 
   @override
   Widget build(BuildContext context) {
@@ -572,7 +550,8 @@ class ItemNoti extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundColor: ColorApp.lightGrey,
                         radius: 15,
-                        backgroundImage: CachedNetworkImageProvider(avatar),
+                        backgroundImage:
+                            CachedNetworkImageProvider(post.avatar),
                       ),
                     ),
                     SizedBox(
@@ -582,14 +561,17 @@ class ItemNoti extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          userName.toUpperCase(),
+                          post.name.toUpperCase(),
                           softWrap: true,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: ColorApp.black, fontSize: 17),
                         ),
                         Text(
-                          "Đã đăng  " + time,
+                          "Đã đăng  " +
+                              DateFormat('HH:mm - dd-MM-yyyy').format(
+                                  DateFormat("yyyy-MM-dd HH:mm:ss")
+                                      .parse(post.date)),
                           style: TextStyle(color: Colors.grey, fontSize: 13),
                         ),
                       ],
@@ -600,16 +582,16 @@ class ItemNoti extends StatelessWidget {
                   height: 10,
                 ),
                 Text(
-                  title,
+                  post.title,
                   softWrap: true,
                   style: TextStyle(color: ColorApp.black, fontSize: 16),
                 ),
                 SizedBox(
                   height: 5,
                 ),
-                content != null
+                post.content != null
                     ? Text(
-                        content,
+                        post.content,
                         softWrap: true,
                         style: TextStyle(
                             color: ColorApp.black.withOpacity(.6),
@@ -619,12 +601,12 @@ class ItemNoti extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                idAttendend != null
+                post.idAtten != null
                     ? GestureDetector(
                         onTap: () {
                           Get.to(() => AttendanceScreen(
                                 student: student,
-                                idClass: idClass,
+                                idClass: post.idClass,
                                 idPost: post.id,
                                 input: post.idAtten,
                                 time: post.timeAtten,
@@ -649,7 +631,7 @@ class ItemNoti extends StatelessWidget {
                                           fontWeight: FontWeight.normal),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: idAttendend,
+                                            text: post.idAtten,
                                             style: TextStyle(
                                               color: ColorApp.red,
                                             )),
@@ -667,7 +649,7 @@ class ItemNoti extends StatelessWidget {
                                           fontWeight: FontWeight.normal),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: timeAttendend,
+                                            text: post.timeAtten,
                                             style: TextStyle(
                                               color: ColorApp.red,
                                             )),
@@ -694,7 +676,7 @@ class ItemNoti extends StatelessWidget {
                                   //     Border.all(color: ColorApp.lightGrey)
                                 ),
                                 child: QrImage(
-                                  data: idAttendend,
+                                  data: post.idAtten,
                                   embeddedImage:
                                       AssetImage('assets/images/logoUTC.png'),
                                   version: QrVersions.auto,
@@ -704,6 +686,66 @@ class ItemNoti extends StatelessWidget {
                                     size: Size(15, 15),
                                   ),
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : Container(),
+                SizedBox(
+                  height: 10,
+                ),
+                post.idQuiz != null
+                    ? GestureDetector(
+                        onTap: () {
+                          Get.to(() => QuizSreen(
+                              quizId: post.idQuiz, idTeacher: idTeacher));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                              color: Colors.orangeAccent.withOpacity(.4),
+                              borderRadius: BorderRadius.circular(4)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                    text: TextSpan(
+                                      text: 'Bài kiểm tra: ',
+                                      style: TextStyle(
+                                          color: ColorApp.black,
+                                          fontWeight: FontWeight.normal),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: post.idQuiz,
+                                            style: TextStyle(
+                                              color: ColorApp.red,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 4,
+                                  ),
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '',
+                                      style: TextStyle(
+                                          color: ColorApp.black,
+                                          fontWeight: FontWeight.normal),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: post.quizContent,
+                                            style: TextStyle(
+                                              color: ColorApp.red,
+                                            )),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -737,7 +779,7 @@ class ItemNoti extends StatelessWidget {
             onTap: () {
               Get.to(() => NewCommentClass(
                     teacher: student,
-                    idClass: idClass,
+                    idClass: post.idClass,
                     idPost: post.id,
                   ));
             },

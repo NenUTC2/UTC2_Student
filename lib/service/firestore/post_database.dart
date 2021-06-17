@@ -44,7 +44,17 @@ class PostDatabase {
 }
 
 class Post {
-  String id, idClass, title, content, date, name, avatar, idAtten, timeAtten;
+  String id,
+      idClass,
+      title,
+      content,
+      date,
+      name,
+      avatar,
+      idAtten,
+      timeAtten,
+      idQuiz,
+      quizContent;
   List file;
 
   Post(QueryDocumentSnapshot<Map<String, dynamic>> json) {
@@ -57,17 +67,7 @@ class Post {
     this.avatar = json['avatar'];
     this.idAtten = json['idAtten'];
     this.timeAtten = json['timeAtten'];
+    this.idQuiz = json['idQuiz'];
+    this.quizContent = json['quizContent'];
   }
-}
-
-class Comment {
-  String id, idPost, comment, time;
-}
-
-class File {
-  String id, idPost, title;
-}
-
-class Quiz {
-  String id, idPost, ques, correct, o1, o2, o3;
 }
