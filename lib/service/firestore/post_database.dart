@@ -41,6 +41,22 @@ class PostDatabase {
         .get();
     return data;
   }
+
+  static Future<bool> checkTestStudent(
+      String idClass, String idPost, String idStudent) async {
+    bool check = false;
+    var data = await FirebaseFirestore.instance
+        .collection('Class')
+        .doc(idClass)
+        .collection('Post')
+        .doc(idPost)
+        .collection('Quiz')
+        .get();
+    data.docs.map((e) {
+      if (e['idStudent' == idStudent]) check = true;
+    });
+    return check;
+  }
 }
 
 class Post {

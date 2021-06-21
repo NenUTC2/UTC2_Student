@@ -9,17 +9,22 @@ import 'package:utc2_student/blocs/question_bloc/question_state.dart';
 import 'package:utc2_student/blocs/quiz_bloc/quiz_bloc.dart';
 import 'package:utc2_student/blocs/quiz_bloc/quiz_event.dart';
 import 'package:utc2_student/blocs/quiz_bloc/quiz_state.dart';
-import 'package:utc2_student/service/firestore/quiz_database.dart';
-import 'package:utc2_student/service/pdf/pdf_api.dart';
-import 'package:utc2_student/service/pdf/pdf_class_detail.dart';
+import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:utc2_student/widgets/loading_widget.dart';
 
 class QuizSreen extends StatefulWidget {
   final String quizId;
-  final String idTeacher;
+  final String idTeacher, idClass, idPost, idStudent;
 
-  QuizSreen({this.quizId, this.idTeacher});
+  const QuizSreen(
+      {Key key,
+      this.quizId,
+      this.idTeacher,
+      this.idClass,
+      this.idPost,
+      this.idStudent})
+      : super(key: key);
   @override
   _QuizSreenState createState() => _QuizSreenState();
 }
@@ -38,27 +43,41 @@ class _QuizSreenState extends State<QuizSreen> {
   String get timerText =>
       '${((timerMaxSeconds - currentSeconds) ~/ 60).toString().padLeft(2, '0')}: ${((timerMaxSeconds - currentSeconds) % 60).toString().padLeft(2, '0')}';
   Timer _timer;
+
+  //Start Timer
   startTimeout([int milliseconds]) {
     var duration = interval;
     _timer = Timer.periodic(duration, (timer) {
       setState(() {
         currentSeconds = timer.tick;
-        if (timer.tick >= timerMaxSeconds) {
-          setState(() {
-            status = 'end';
-          });
-          for (var item in listCorrect) {
-            if (item == listAnswer[listCorrect.indexOf(item)]) {
-              setState(() {
-                totalCorrect += 1;
-              });
-            }
-          }
-
-          _timer.cancel();
+        if (timer.tick >= 10) {
+          submitTest();
         }
       });
     });
+  }
+
+  void submitTest() {
+    setState(() {
+      status = 'end';
+    });
+
+    _timer.cancel();
+    for (var item in listCorrect) {
+      if (item == listAnswer[listCorrect.indexOf(item)]) {
+        setState(() {
+          totalCorrect += 1;
+        });
+      }
+    }
+
+    StudentDatabase.submitTest(
+        widget.idClass,
+        widget.idPost,
+        widget.idStudent,
+        totalCorrect.toString() + '/' + listAnswer.length.toString(),
+        (totalCorrect / listAnswer.length * 10).toString(),
+        widget.quizId);
   }
 
   showAlertDialog(BuildContext context) {
@@ -109,8 +128,6 @@ class _QuizSreenState extends State<QuizSreen> {
   @override
   void initState() {
     super.initState();
-    // selectedRadio = 0;
-    // timerMaxSeconds = int.parse(widget.quiz.timePlay.toString()) * 60;
     questionBloc = BlocProvider.of<QuestionBloc>(context);
     questionBloc.add(GetQuestionEvent(widget.idTeacher, widget.quizId));
     quizBloc = BlocProvider.of<QuizBloc>(context);
@@ -421,18 +438,7 @@ class _QuizSreenState extends State<QuizSreen> {
                       });
                       startTimeout();
                     } else if (status == 'start') {
-                      setState(() {
-                        status = 'end';
-                      });
-                      for (var item in listCorrect) {
-                        if (item == listAnswer[listCorrect.indexOf(item)]) {
-                          setState(() {
-                            totalCorrect += 1;
-                          });
-                        }
-                      }
-
-                      _timer.cancel();
+                      submitTest();
                     } else if (status == 'end') {}
                   }),
             ],

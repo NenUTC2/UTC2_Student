@@ -112,7 +112,7 @@ class StudentDatabase {
   }
 
   static Future attend(String idClass, String idPost, String idStudent,
-      String address, String location,String status) async {
+      String address, String location, String status) async {
     var attendData = {
       'idStudent': idStudent,
       'time': DateTime.now().toString(),
@@ -128,6 +128,25 @@ class StudentDatabase {
         .collection('Student')
         .doc(idStudent)
         .set(attendData);
+  }
+
+  static Future submitTest(String idClass, String idPost, String idStudent,
+      String totalAnswer, String score, String idQuiz) async {
+    var submitQuizData = {
+      'idStudent': idStudent,
+      'idQuiz': idQuiz,
+      'time': DateTime.now().toString(),
+      'totalAnswer': totalAnswer,
+      'score': score,
+    };
+    FirebaseFirestore.instance
+        .collection('Class')
+        .doc(idClass)
+        .collection('Post')
+        .doc(idPost)
+        .collection('Quiz')
+        .doc(idStudent)
+        .set(submitQuizData);
   }
 }
 

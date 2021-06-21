@@ -438,7 +438,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => NewNotify(
-                              idClass: _class,
+                              classUtc: _class,
                               student: state.student,
                             ))).then(
                     (value) => postBloc.add(GetPostEvent(widget.idClass)));
@@ -698,7 +698,12 @@ class ItemNoti extends StatelessWidget {
                     ? GestureDetector(
                         onTap: () {
                           Get.to(() => QuizSreen(
-                              quizId: post.idQuiz, idTeacher: idTeacher));
+                                quizId: post.idQuiz,
+                                idTeacher: idTeacher,
+                                idClass: post.idClass,
+                                idPost: post.id,
+                                idStudent: student.id,
+                              ));
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(
@@ -747,6 +752,7 @@ class ItemNoti extends StatelessWidget {
                                   ),
                                 ],
                               ),
+                              SpinKitCircle(size: 25,color: Colors.white,)
                             ],
                           ),
                         ),

@@ -5,14 +5,16 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
 import 'package:utc2_student/service/firestore/post_database.dart';
+import 'package:utc2_student/service/firestore/push_noti_firebase.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
+import 'package:utc2_student/service/firestore/teaacher_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 
 class NewNotify extends StatefulWidget {
-  final Class idClass;
   final Student student;
+  final Class classUtc;
 
-  const NewNotify({Key key, this.idClass, this.student}) : super(key: key);
+  const NewNotify({Key key, this.student, this.classUtc}) : super(key: key);
   @override
   _NewNotifyState createState() => _NewNotifyState();
 }
@@ -21,6 +23,7 @@ class _NewNotifyState extends State<NewNotify> {
   bool expaned = false;
   PostDatabase postDatabase = PostDatabase();
   String title, content;
+  TextEditingController _controller = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -52,51 +55,43 @@ class _NewNotifyState extends State<NewNotify> {
           actions: [
             TextButton(
               onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                var token = prefs.getString('token');
-
-                final response = await http.post(
-                    Uri.parse('https://fcm.googleapis.com/fcm/send'),
-                    headers: <String, String>{
-                      'Content-Type': 'application/json; charset=UTF-8',
-                      'Authorization':
-                          'key=AAAAYogee34:APA91bFuj23NLRj88uqP9J-aRCehCgVSo8QgUOIPZy8CzBE-Xbubx58trUepsb2SABoIGsPYbONqa2jjS03l1fW5r2aQywmKkYN6L3RXHIML6795xTHyamls_ZwLSt-_n3AJ8av82CiW',
-                    },
-                    body: jsonEncode({
-                      "to": "/topics/${widget.idClass.id}",
-                      "data": {
+                if (_formKey.currentState.validate()) {
+                  var response = await PushNotiFireBaseAPI.pushNotiTopic(
+                      title,
+                      content,
+                      {
                         'idNoti': 'newNoti',
-                        "msg": widget.idClass.id,
-                        "idChannel": widget.idClass.id,
-                        "className": widget.idClass.name,
-                        "classDescription": widget.idClass.note,
-                        'isAtten': 'false',
-                        'token': token,
+                        "isAtten": expaned,
+                        "msg": 'student post',
+                        "idChannel": widget.classUtc.id,
+                        "className": widget.classUtc.name,
+                        "classDescription": widget.classUtc.note,
+                        "timeAtten": null,
+                        "idQuiz": null,
                       },
-                      "notification": {
-                        "title": title,
-                        "body": content,
-                      }
-                    }));
-                if (response.statusCode == 200) {
-                  print('success');
-                  Navigator.pop(context);
-                } else
-                  print('faile');
-                var idPost = generateRandomString(5);
+                      widget.classUtc.id);
+                  if (response.statusCode == 200) {
+                    print('success');
+                    Navigator.pop(context);
+                  } else
+                    print('fail');
+                  var idPost = generateRandomString(5);
 
-                Map<String, String> dataPost = {
-                  'id': idPost,
-                  'idClass': widget.idClass.id,
-                  'title': title,
-                  'content': content,
-                  'date': DateTime.now().toString(),
-                  'name': widget.student.name,
-                  'avatar': widget.student.avatar,
-                  'idAtten': null,
-                  'timeAtten': null,
-                };
-                postDatabase.createPost(dataPost, widget.idClass.id, idPost);
+                  Map<String, String> dataPost = {
+                    'id': idPost,
+                    'idClass': widget.classUtc.id,
+                    'title': title,
+                    'content': content,
+                    'name': widget.student.name,
+                    'avatar': widget.student.avatar,
+                    'date': DateTime.now().toString(),
+                    'idAtten': null,
+                    'timeAtten': null,
+                    "idQuiz": null,
+                    "quizContent": null,
+                  };
+                  postDatabase.createPost(dataPost, widget.classUtc.id, idPost);
+                }
               },
               child: Text("Đăng    ",
                   style: TextStyle(
@@ -141,20 +136,29 @@ class _NewNotifyState extends State<NewNotify> {
                         child: Container(
                           alignment: Alignment.centerLeft,
                           height: 35,
-                          child: TextField(
-                            onChanged: (val) {
-                              setState(() {
-                                title = val;
-                              });
-                            },
-                            style: TextStyle(
-                                fontSize: 20, color: ColorApp.mediumOrange),
-                            decoration: InputDecoration(
-                                // border: InputBorder.none,
-                                isCollapsed: true,
-                                hintText: 'Tiêu đề',
-                                hintStyle: TextStyle(
-                                    fontSize: 16, color: ColorApp.black)),
+                          child: Form(
+                            key: _formKey,
+                            child: TextFormField(
+                              validator: (value) {
+                                if (value.isEmpty) {
+                                  return 'Vui lòng nhập tiêu đề';
+                                }
+                                return null;
+                              },
+                              onChanged: (val) {
+                                setState(() {
+                                  title = val;
+                                });
+                              },
+                              style: TextStyle(
+                                  fontSize: 20, color: ColorApp.mediumOrange),
+                              decoration: InputDecoration(
+                                  // border: InputBorder.none,
+                                  isCollapsed: true,
+                                  hintText: 'Tiêu đề',
+                                  hintStyle: TextStyle(
+                                      fontSize: 16, color: ColorApp.black)),
+                            ),
                           ),
                         ),
                       ),
