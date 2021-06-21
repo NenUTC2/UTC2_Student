@@ -20,6 +20,7 @@ class MyLocalNotification {
       int maMon,
       int maLich) async {
     String sem = em == 0 ? '00' : '$em';
+    print(nextInstanceOfWeekDayTime(sh, sm, wd));
     await notifications.zonedSchedule(
         int.parse('$maMon$maLich'),
         'Đến giờ học môn $tenMon - $room',
@@ -147,7 +148,7 @@ class MyLocalNotification {
             htmlFormatContentTitle: true,
             htmlFormatSummaryText: true,
             summaryText: body,
-            htmlFormatContent: true); 
+            htmlFormatContent: true);
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(idChannel, chanelName, chanelDescription,
             largeIcon: FilePathAndroidBitmap(largeIconPath),

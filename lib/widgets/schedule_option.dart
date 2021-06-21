@@ -56,7 +56,7 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
         "userId": "userId 1",
         "TenMon": "Trí tuệ nhân tạo",
         "StartDate": "2021-05-01",
-        "EndDate": "2021-05-30"
+        "EndDate": "2021-06-30"
       },
     ];
     List lichHoc = [
@@ -143,50 +143,48 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
                   endTime,
                   ColorRandom.colors[int.parse(monHoc[i]['id'])][0],
                   false));
-              if (date.day == today.day &&
-                  date.month == today.month &&
-                  date.year == today.year) {
-                if (sh > today.hour) {
-                  MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
-                      notifications,
-                      wd,
-                      sh,
-                      sm,
-                      eh,
-                      em,
-                      tenMon,
-                      room,
-                      maMon,
-                      maLich);
-                } else if (sh == today.hour) {
-                  if (sm > today.minute) {
-                    print(2);
-                    MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
-                        notifications,
-                        wd,
-                        sh,
-                        sm,
-                        eh,
-                        em,
-                        tenMon,
-                        room,
-                        maMon,
-                        maLich);
-                  }
-                }
-              } else {
-                MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
-                    notifications,
-                    wd,
-                    sh,
-                    sm,
-                    eh,
-                    em,
-                    tenMon,
-                    room,
-                    maMon,
-                    maLich);
-              }
+              MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
+                  notifications,
+                  wd,
+                  sh,
+                  sm,
+                  eh,
+                  em,
+                  tenMon,
+                  room,
+                  maMon,
+                  maLich);
+              // if (date.day == today.day &&
+              //     date.month == today.month &&
+              //     date.year == today.year) {
+              //   if (sh > today.hour) {
+              //     MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
+              //         notifications,
+              //         wd,
+              //         sh,
+              //         sm,
+              //         eh,
+              //         em,
+              //         tenMon,
+              //         room,
+              //         maMon,
+              //         maLich);
+              //   } else if (sh == today.hour) {
+              //     if (sm > today.minute) {
+              //       MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
+              //           notifications,
+              //           wd,
+              //           sh,
+              //           sm,
+              //           eh,
+              //           em,
+              //           tenMon,
+              //           room,
+              //           maMon,
+              //           maLich);
+              //     }
+              //   }
+              // }
             }
           }
         }
