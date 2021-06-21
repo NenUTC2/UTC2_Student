@@ -326,8 +326,8 @@ class _ActivityPageState extends State<ActivityPage> {
               padding: EdgeInsets.all(size.width * 0.03),
               decoration: BoxDecoration(
                 gradient: new LinearGradient(
-                    colors: ColorRandom
-                        .colors[Random().nextInt(ColorRandom.colors.length)],
+                    colors: ColorRandom.colorRandom[
+                        Random().nextInt(ColorRandom.colorRandom.length)],
                     stops: [0.0, 1.0],
                     begin: FractionalOffset.topCenter,
                     end: FractionalOffset.bottomRight,
@@ -351,7 +351,10 @@ class _ActivityPageState extends State<ActivityPage> {
                           softWrap: true,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
                         ),
                       ),
                       IconButton(

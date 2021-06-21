@@ -45,6 +45,7 @@ class PostDatabase {
   static Future<bool> checkTestStudent(
       String idClass, String idPost, String idStudent) async {
     bool check = false;
+    List<String> listStudent = [];
     var data = await FirebaseFirestore.instance
         .collection('Class')
         .doc(idClass)
@@ -52,9 +53,10 @@ class PostDatabase {
         .doc(idPost)
         .collection('Quiz')
         .get();
-    data.docs.map((e) {
-      if (e['idStudent' == idStudent]) check = true;
-    });
+    listStudent = data.docs.map((e) => e['idStudent'].toString()).toList();
+    for (var stu in listStudent) {
+      if (stu == idStudent) check = true;
+    }
     return check;
   }
 }

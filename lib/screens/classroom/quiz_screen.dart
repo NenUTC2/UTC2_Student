@@ -468,7 +468,7 @@ class _QuizSreenState extends State<QuizSreen> {
                     children: [
                       Text(
                         'Kết quả: ',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: TextStyle(fontSize: 20, color: Colors.grey[800]),
                       ),
                       Text(
                         totalCorrect.toString() +
@@ -477,7 +477,7 @@ class _QuizSreenState extends State<QuizSreen> {
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            color: Colors.grey[800]),
                       ),
                     ],
                   ),
@@ -488,14 +488,14 @@ class _QuizSreenState extends State<QuizSreen> {
                     children: [
                       Text(
                         'Điểm: ',
-                        style: TextStyle(fontSize: 20, color: Colors.white),
+                        style: TextStyle(fontSize: 20, color: Colors.grey[800]),
                       ),
                       Text(
                         (totalCorrect / listAnswer.length * 10).toString(),
                         style: TextStyle(
                             fontSize: 30,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white),
+                            color: Colors.grey[800]),
                       ),
                     ],
                   ),

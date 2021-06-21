@@ -141,7 +141,7 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
                   monHoc[i]['TenMon'] + '\n\n' + lichHoc[j]['Room'],
                   startTime,
                   endTime,
-                  ColorRandom.colors[int.parse(monHoc[i]['id'])][0],
+                  ColorRandom.colorRandom[int.parse(monHoc[i]['id'])][0],
                   false));
               MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
                   notifications,

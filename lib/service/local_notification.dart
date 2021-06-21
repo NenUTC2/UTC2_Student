@@ -20,7 +20,7 @@ class MyLocalNotification {
       int maMon,
       int maLich) async {
     String sem = em == 0 ? '00' : '$em';
-    print(nextInstanceOfWeekDayTime(sh, sm, wd));
+    // print(nextInstanceOfWeekDayTime(sh, sm, wd));
     await notifications.zonedSchedule(
         int.parse('$maMon$maLich'),
         'Đến giờ học môn $tenMon - $room',

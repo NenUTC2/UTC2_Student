@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class ColorApp {
-  static const Color lightOrange = Color(0xFFFF9046);
+  static const Color lightOrange = Color(0xFFFA8D45);
   static const Color orange = Color(0xFFFF6600);
   static const Color mediumOrange = Color(0xFFCE4302);
   static const Color grey = Color(0xFFE4BFA6);
