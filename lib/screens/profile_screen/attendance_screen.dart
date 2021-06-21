@@ -1,3 +1,5 @@
+import 'package:avatar_glow/avatar_glow.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:geocoder/geocoder.dart';
@@ -191,23 +193,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomAvatarGlow(
-                glowColor: ColorApp.lightOrange,
-                endRadius: 70.0,
-                duration: Duration(milliseconds: 2000),
-                repeat: true,
-                showTwoGlows: true,
-                repeatPauseDuration: Duration(milliseconds: 100),
-                child: Container(
-                  padding: EdgeInsets.all(4),
-                  width: 120,
-                  child: CircleAvatar(
-                    radius: 100,
-                    backgroundColor: ColorApp.lightGrey,
-                    backgroundImage: NetworkImage(widget.student.avatar),
-                  ),
-                ),
-              ),
+              avatar(),
               SizedBox(
                 height: 20,
               ),
@@ -307,6 +293,33 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               )
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget avatar() {
+    return AvatarGlow(
+      glowColor: ColorApp.lightOrange,
+      endRadius: 120.0,
+      duration: Duration(milliseconds: 3000),
+      showTwoGlows: true,
+      // repeatPauseDuration: Duration(milliseconds: 100),
+      child: Material(
+        elevation: 8.0,
+        shape: CircleBorder(),
+        child: Container(
+          width: 120,
+          height: 120,
+          decoration: BoxDecoration(
+              color: ColorApp.lightGrey,
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                fit: BoxFit.fill,
+                image: CachedNetworkImageProvider(
+                  widget.student.avatar,
+                ),
+              )),
         ),
       ),
     );

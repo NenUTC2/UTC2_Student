@@ -25,6 +25,7 @@ import 'package:utc2_student/widgets/class_drawer.dart';
 import 'package:flutter/material.dart';
 
 import 'package:utc2_student/utils/color_random.dart';
+import 'package:utc2_student/widgets/loading_widget.dart';
 
 class DetailClassScreen extends StatefulWidget {
   final String className, idClass;
@@ -191,10 +192,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                       ),
                     );
                   } else if (state is LoadingPost) {
-                    return SpinKitThreeBounce(
-                      size: 25,
-                      color: ColorApp.orange,
-                    );
+                    return loadingWidget();
                   } else if (state is LoadErrorPost) {
                     return Center(
                       child: Text(
@@ -203,10 +201,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                       ),
                     );
                   } else {
-                    return SpinKitThreeBounce(
-                      size: 25,
-                      color: ColorApp.orange,
-                    );
+                    return loadingWidget();
                   }
                 },
               ),
@@ -613,7 +608,7 @@ class ItemNoti extends StatelessWidget {
                               ));
                         },
                         child: Container(
-                          padding: EdgeInsets.all(4),
+                          padding: EdgeInsets.all(5),
                           decoration: BoxDecoration(
                               color: Colors.orangeAccent.withOpacity(.4),
                               borderRadius: BorderRadius.circular(4)),
@@ -649,7 +644,11 @@ class ItemNoti extends StatelessWidget {
                                           fontWeight: FontWeight.normal),
                                       children: <TextSpan>[
                                         TextSpan(
-                                            text: post.timeAtten,
+                                            text: DateFormat(
+                                                    'HH:mm - dd-MM-yyyy')
+                                                .format(DateFormat(
+                                                        "yyyy-MM-dd HH:mm:ss")
+                                                    .parse(post.timeAtten)),
                                             style: TextStyle(
                                               color: ColorApp.red,
                                             )),
@@ -680,7 +679,7 @@ class ItemNoti extends StatelessWidget {
                                   embeddedImage:
                                       AssetImage('assets/images/logoUTC.png'),
                                   version: QrVersions.auto,
-                                  size: 80,
+                                  size: 70,
                                   gapless: false,
                                   embeddedImageStyle: QrEmbeddedImageStyle(
                                     size: Size(15, 15),

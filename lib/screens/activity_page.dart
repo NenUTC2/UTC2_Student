@@ -13,6 +13,7 @@ import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/color_random.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:utc2_student/widgets/loading_widget.dart';
 
 class ActivityPage extends StatefulWidget {
   final Student student;
@@ -226,10 +227,7 @@ class _ActivityPageState extends State<ActivityPage> {
         BlocBuilder<ClassBloc, ClassState>(
           builder: (context, state) {
             if (state is LoadingClass)
-              return SpinKitThreeBounce(
-                size: 25,
-                color: ColorApp.orange,
-              );
+              return loadingWidget();
             else if (state is LoadedClass) {
               return Container(
                 child: RefreshIndicator(
@@ -275,10 +273,7 @@ class _ActivityPageState extends State<ActivityPage> {
                 ),
               );
             } else {
-              return SpinKitThreeBounce(
-                color: ColorApp.orange,
-                size: 25,
-              );
+              return loadingWidget();
             }
           },
         ),

@@ -9,6 +9,7 @@ import 'package:utc2_student/scraper/student_info_scraper.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
+import 'package:utc2_student/widgets/loading_widget.dart';
 
 class EnterSIDScreen extends StatefulWidget {
   final GoogleSignInAccount ggLogin;
@@ -234,10 +235,7 @@ class _EnterSIDScreenState extends State<EnterSIDScreen> {
                 },
                 builder: (context, state) {
                   if (state is UpdatingSIDState || state is SubmittingSIDState)
-                    return SpinKitThreeBounce(
-                      size: 25,
-                      color: ColorApp.lightOrange,
-                    );
+                    return loadingWidget();
                   else if (state is EnteredSIDState) {
                     student = state.sinhvienInfo;
                     return Column(children: [

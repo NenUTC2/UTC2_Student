@@ -6,6 +6,7 @@ import 'package:utc2_student/models/notify_web.dart';
 import 'package:utc2_student/service/web_wraper_utc/notify_utc_web.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:utc2_student/widgets/loading_widget.dart';
 
 class NotifyPage extends StatefulWidget {
   @override
@@ -367,10 +368,7 @@ class _NotiWebState extends State<NotiWeb> with AutomaticKeepAliveClientMixin {
                                         },
                                       ),
                                     )
-                                  : SpinKitThreeBounce(
-                size: 25,
-                                      color: ColorApp.lightOrange,
-                                    );
+                                  : loadingWidget();
                             }),
                       ],
                     ),
@@ -444,10 +442,7 @@ class _NotiWebState extends State<NotiWeb> with AutomaticKeepAliveClientMixin {
                           ),
                         );
                       })
-                  : SpinKitThreeBounce(
-                size: 25,
-                      color: ColorApp.lightOrange,
-                    );
+                  : loadingWidget();
             }),
       ),
     );

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:utc2_student/blocs/question_bloc/question_bloc.dart';
 import 'package:utc2_student/blocs/question_bloc/question_event.dart';
 import 'package:utc2_student/blocs/question_bloc/question_state.dart';
@@ -12,6 +13,7 @@ import 'package:utc2_student/service/firestore/quiz_database.dart';
 import 'package:utc2_student/service/pdf/pdf_api.dart';
 import 'package:utc2_student/service/pdf/pdf_class_detail.dart';
 import 'package:utc2_student/utils/utils.dart';
+import 'package:utc2_student/widgets/loading_widget.dart';
 
 class QuizSreen extends StatefulWidget {
   final String quizId;
@@ -182,39 +184,9 @@ class _QuizSreenState extends State<QuizSreen> {
               },
               builder: (context, state) {
                 if (state is LoadedQuiz)
-                  return Container(
-                    child: QuizTitle(
-                      title: state.list[0].titleQuiz,
-                      time: timerText,
-                      totalQuestion: totalAnswer.toString() +
-                          "/" +
-                          state.list[0].totalQuestion,
-                      start: () {
-                        if (status == 'not start') {
-                          setState(() {
-                            status = 'start';
-                          });
-                          startTimeout();
-                        } else if (status == 'start') {
-                          setState(() {
-                            status = 'end';
-                          });
-                          for (var item in listCorrect) {
-                            if (item == listAnswer[listCorrect.indexOf(item)]) {
-                              setState(() {
-                                totalCorrect += 1;
-                              });
-                            }
-                          }
-
-                          _timer.cancel();
-                        } else if (status == 'end') {}
-                      },
-                      isStart: status,
-                    ),
-                  );
+                  return quizTitle(size, state.list[0].titleQuiz);
                 else
-                  return Container();
+                  return loadingWidget();
               },
             ),
             SizedBox(
@@ -222,21 +194,7 @@ class _QuizSreenState extends State<QuizSreen> {
             ),
             Expanded(
               child: AnimatedCrossFade(
-                secondChild: status == 'end'
-                    ? Container(
-                        height: 100,
-                        width: size.width,
-                        child: Center(
-                          child: Text(
-                            'Kết quả: ' +
-                                totalCorrect.toString() +
-                                '/' +
-                                listAnswer.length.toString(),
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                      )
-                    : Container(),
+                secondChild: status == 'end' ? resultWidget(size) : Container(),
                 firstCurve: Curves.easeInOutSine,
                 crossFadeState: status == 'start'
                     ? CrossFadeState.showFirst
@@ -278,9 +236,7 @@ class _QuizSreenState extends State<QuizSreen> {
                     },
                     builder: (context, state) {
                       if (state is LoadingQuestion)
-                        return SpinKitThreeBounce(
-                          color: ColorApp.lightOrange,
-                        );
+                        return loadingWidget();
                       else if (state is LoadedQuestion) {
                         if (listRandom.isNotEmpty && listAnswer.isNotEmpty)
                           return RefreshIndicator(
@@ -365,14 +321,188 @@ class _QuizSreenState extends State<QuizSreen> {
                           ),
                         );
                       } else {
-                        return SpinKitThreeBounce(
-                          color: ColorApp.lightOrange,
-                        );
+                        return loadingWidget();
                       }
                     },
                   ),
                 ),
               ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget quizTitle(Size size, String title) {
+    return Container(
+        width: size.width,
+        alignment: Alignment.center,
+        padding: EdgeInsets.all(size.width * 0.03),
+        decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: ColorApp.orange.withOpacity(0.05),
+                spreadRadius: 3,
+                blurRadius: 3,
+                offset: Offset(0, 1), // changes position of shadow
+              ),
+            ],
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: ColorApp.lightGrey)),
+        child: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(title),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      text: 'Thời gian:  ',
+                      style: TextStyle(
+                          color: ColorApp.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: timerText,
+                            style: TextStyle(
+                                color: ColorApp.red,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  ),
+                  RichText(
+                    text: TextSpan(
+                      text: 'Câu hỏi:  ',
+                      style: TextStyle(
+                          color: ColorApp.black,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: totalAnswer.toString() +
+                                "/" +
+                                listAnswer.length.toString(),
+                            style: TextStyle(
+                                color: ColorApp.red,
+                                fontWeight: FontWeight.bold)),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              ElevatedButton(
+                  child: Container(
+                    //  margin: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(status == 'start' ? 'Kết thúc' : "Bắt đầu",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.normal)),
+                  ),
+                  style: ButtonStyle(
+                      tapTargetSize: MaterialTapTargetSize.padded,
+                      shadowColor: MaterialStateProperty.all<Color>(
+                          ColorApp.lightOrange),
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.white),
+                      backgroundColor: MaterialStateProperty.all<Color>(
+                          ColorApp.mediumOrange),
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: BorderSide(color: Colors.transparent)))),
+                  onPressed: () {
+                    if (status == 'not start') {
+                      setState(() {
+                        status = 'start';
+                      });
+                      startTimeout();
+                    } else if (status == 'start') {
+                      setState(() {
+                        status = 'end';
+                      });
+                      for (var item in listCorrect) {
+                        if (item == listAnswer[listCorrect.indexOf(item)]) {
+                          setState(() {
+                            totalCorrect += 1;
+                          });
+                        }
+                      }
+
+                      _timer.cancel();
+                    } else if (status == 'end') {}
+                  }),
+            ],
+          ),
+        ));
+  }
+
+  Widget resultWidget(Size size) {
+    return Container(
+      // height: 100,
+      width: size.width,
+      // padding: EdgeInsets.only(left: 20),
+      child: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 100,
+              width: size.width,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: ColorApp.lightOrange),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Kết quả: ',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                      Text(
+                        totalCorrect.toString() +
+                            '/' +
+                            listAnswer.length.toString(),
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        'Điểm: ',
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                      Text(
+                        (totalCorrect / listAnswer.length * 10).toString(),
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            SvgPicture.asset(
+              'assets/images/Grades.svg',
+              width: size.width * 0.8,
+              // height: 200,
             )
           ],
         ),

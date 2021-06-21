@@ -9,6 +9,7 @@ import 'package:utc2_student/blocs/comment_bloc/comment_state.dart';
 import 'package:utc2_student/service/firestore/comment_database.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
+import 'package:utc2_student/widgets/loading_widget.dart';
 
 class NewCommentClass extends StatefulWidget {
   final Student teacher;
@@ -145,10 +146,7 @@ class _NewCommentClassState extends State<NewCommentClass> {
             child: BlocBuilder<CommentBloc, CommentState>(
                 builder: (context, state) {
               if (state is LoadingComment)
-                return SpinKitThreeBounce(
-                size: 25,
-                  color: ColorApp.lightOrange,
-                );
+                return loadingWidget();
               else if (state is LoadedComment) {
                 return ListView.builder(
                     physics: BouncingScrollPhysics(),
@@ -238,10 +236,7 @@ class _NewCommentClassState extends State<NewCommentClass> {
                   ),
                 );
               } else {
-                return SpinKitThreeBounce(
-                size: 25,
-                  color: ColorApp.lightOrange,
-                );
+                return loadingWidget();
               }
             }),
           ),
