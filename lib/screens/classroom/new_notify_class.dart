@@ -56,23 +56,32 @@ class _NewNotifyState extends State<NewNotify> {
             TextButton(
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
+                  final prefs = await SharedPreferences.getInstance();
+                  String token = prefs.getString('token');
+                  print(token);
                   var response = await PushNotiFireBaseAPI.pushNotiTopic(
                       title,
                       content,
                       {
                         'idNoti': 'newNoti',
-                        "isAtten": expaned,
+                        "isAtten": false,
                         "msg": 'student post',
                         "idChannel": widget.classUtc.id,
                         "className": widget.classUtc.name,
                         "classDescription": widget.classUtc.note,
                         "timeAtten": null,
                         "idQuiz": null,
+                        "token": token,
+                        'name': widget.student.name,
+                        'avatar': widget.student.avatar,
+                        "content": "Đã đăng trong lớp: " +
+                            widget.classUtc.name +
+                            '\n' +
+                            _controller.text.trim(),
                       },
                       widget.classUtc.id);
                   if (response.statusCode == 200) {
                     print('success');
-                    Navigator.pop(context);
                   } else
                     print('fail');
                   var idPost = generateRandomString(5);
@@ -91,6 +100,8 @@ class _NewNotifyState extends State<NewNotify> {
                     "quizContent": null,
                   };
                   postDatabase.createPost(dataPost, widget.classUtc.id, idPost);
+
+                  Navigator.pop(context);
                 }
               },
               child: Text("Đăng    ",
@@ -195,6 +206,7 @@ class _NewNotifyState extends State<NewNotify> {
                           alignment: Alignment.centerLeft,
                           height: 35,
                           child: TextField(
+                            controller: _controller,
                             onChanged: (val) {
                               setState(() {
                                 content = val;

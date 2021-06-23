@@ -186,6 +186,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                                   student: widget.student,
                                   post: e,
                                   idTeacher: _class.teacherId,
+                                  utcClass: _class,
                                 );
                               }),
                         ),
@@ -510,6 +511,7 @@ class ItemNoti extends StatefulWidget {
   final int numberComment;
   final Post post;
   final String idTeacher;
+  final Class utcClass;
 
   ItemNoti(
       {this.student,
@@ -517,7 +519,8 @@ class ItemNoti extends StatefulWidget {
       this.function,
       this.numberComment,
       this.post,
-      this.idTeacher});
+      this.idTeacher,
+      this.utcClass});
 
   @override
   _ItemNotiState createState() => _ItemNotiState();
@@ -817,9 +820,9 @@ class _ItemNotiState extends State<ItemNoti> {
           GestureDetector(
             onTap: () {
               Get.to(() => NewCommentClass(
-                    teacher: widget.student,
-                    idClass: widget.post.idClass,
-                    idPost: widget.post.id,
+                    student: widget.student,
+                    utcClass: widget.utcClass,
+                    post: widget.post,
                   ));
             },
             child: Container(
