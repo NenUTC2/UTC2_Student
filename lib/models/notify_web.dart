@@ -15,7 +15,4 @@ class Noti {
     return 'Tieu de: ${this.tieude}\nThoi gian: ${this.thoigian}\nLink: ${this.link}\nLuot xem: ${this.luotxem}';
   }
 }
-class Block {
-  String text, imgLink, luotxem, link;
-  Block({this.text, this.imgLink, this.luotxem, this.link});
-}
+

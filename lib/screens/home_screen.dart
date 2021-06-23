@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             index: _selectedIndex,
             children: <Widget>[
               utc2,
-              NotifyPage(),
+              NotifyPage(idUser: state.student.id,),
               SchedulePage(),
               ActivityPage(student:state.student),
             ],

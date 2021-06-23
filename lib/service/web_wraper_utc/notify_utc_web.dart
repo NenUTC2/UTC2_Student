@@ -1,3 +1,4 @@
+import 'package:utc2_student/models/content_utc_web.dart';
 import 'package:utc2_student/models/notify_web.dart';
 import 'package:web_scraper/web_scraper.dart';
 import 'package:rxdart/rxdart.dart';
