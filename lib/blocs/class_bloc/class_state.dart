@@ -11,6 +11,8 @@ class ClassInitial extends ClassState {}
 
 class LoadingClass extends ClassState {}
 
+class ReloadClass extends ClassState {}
+
 class LoadedClass extends ClassState {
   final List<Class> list;
 

@@ -219,12 +219,20 @@ class _ActivityPageState extends State<ActivityPage> {
     classBloc.add(GetClassEvent());
   }
 
+  List<Class> listClass = [];
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: [
-        BlocBuilder<ClassBloc, ClassState>(
+        BlocConsumer<ClassBloc, ClassState>(
+          listener: (context, state) {
+            if (state is LoadedClass) {
+              setState(() {
+                listClass = state.list;
+              });
+            }
+          },
           builder: (context, state) {
             if (state is LoadingClass)
               return loadingWidget();
@@ -272,9 +280,47 @@ class _ActivityPageState extends State<ActivityPage> {
                   style: TextStyle(color: Colors.black, fontSize: 20),
                 ),
               );
-            } else {
+            } else if (state is LoadingClass) {
               return loadingWidget();
-            }
+            } else if (state is ReloadClass) {
+              return Container(
+                child: RefreshIndicator(
+                  displacement: 20,
+                  onRefresh: () async {
+                    classBloc.add(GetClassEvent());
+                  },
+                  child: listClass.isEmpty
+                      ? Center(
+                          child: Text(
+                            'Chưa có lớp học nào.',
+                            style: TextStyle(color: Colors.black, fontSize: 17),
+                          ),
+                        )
+                      : Scrollbar(
+                          child: ListView.builder(
+                            itemCount: listClass.length + 1,
+                            physics: BouncingScrollPhysics(),
+                            // itemCount: snapshot.data.length,
+                            itemBuilder: ((context, index) {
+                              return index == listClass.length
+                                  ? Container(
+                                      height: 200,
+                                    )
+                                  : customList(
+                                      size,
+                                      context,
+                                      listClass[index].name,
+                                      listClass[index].teacherId,
+                                      [],
+                                      listClass[index].id,
+                                      listClass);
+                            }),
+                          ),
+                        ),
+                ),
+              );
+            } else
+              return Container();
           },
         ),
         Positioned(

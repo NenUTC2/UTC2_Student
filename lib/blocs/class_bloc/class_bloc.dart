@@ -13,13 +13,17 @@ class ClassBloc extends Bloc<ClassEvent, ClassState> {
   ClassBloc() : super(ClassInitial());
 
   ClassDatabase classDatabase = ClassDatabase();
+  bool showLoading = true;
   @override
   Stream<ClassState> mapEventToState(
     ClassEvent event,
   ) async* {
     switch (event.runtimeType) {
       case GetClassEvent:
-        yield LoadingClass();
+        if (showLoading)
+          yield LoadingClass();
+        else
+          yield ReloadClass();
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var userEmail = prefs.getString('userEmail');
@@ -40,6 +44,7 @@ class ClassBloc extends Bloc<ClassEvent, ClassState> {
           }
           //sort
           yield LoadedClass(sapXepGiamDan(listClassOfStudent));
+          showLoading = false;
         } else
           yield LoadErrorClass('Bạn chưa có lớp học nào');
         break;
