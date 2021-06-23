@@ -157,7 +157,6 @@ class _HomePageState extends State<HomePage> {
         message.data['isAtten'] == 'false') {
       print('Thông báo new Notity--------------------------------------');
       if (message.data['token'] != token) {
-        print('token=>>>>>' + message.data['token'] != token);
         MyLocalNotification.showNotification(
           notifications,
           message.data['idChannel'],
