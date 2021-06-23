@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/repositories/google_signin_repo.dart';
-import 'package:utc2_student/screens/home_screen.dart';
 import 'package:utc2_student/screens/login/login_screen.dart';
 import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
 import 'package:utc2_student/screens/profile_screen/help_screen.dart';

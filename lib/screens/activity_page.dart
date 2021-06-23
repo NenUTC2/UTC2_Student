@@ -1,11 +1,8 @@
 import 'dart:math';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/screens/classroom/class_detail_screen.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';

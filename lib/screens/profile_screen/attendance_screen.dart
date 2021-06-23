@@ -11,7 +11,6 @@ import 'package:utc2_student/service/firestore/post_database.dart';
 
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/geo_service.dart';
-import 'package:utc2_student/utils/custom_glow.dart';
 import 'package:utc2_student/utils/utils.dart';
 
 class AttendanceScreen extends StatefulWidget {

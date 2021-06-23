@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/repositories/google_signin_repo.dart';
 import 'package:utc2_student/scraper/student_info_scraper.dart';
 import 'package:utc2_student/screens/home_screen.dart';
-import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:utc2_student/widgets/loading_widget.dart';
 

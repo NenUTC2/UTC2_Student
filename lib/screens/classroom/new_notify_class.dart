@@ -1,13 +1,9 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
 import 'package:utc2_student/service/firestore/post_database.dart';
 import 'package:utc2_student/service/firestore/push_noti_firebase.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
-import 'package:utc2_student/service/firestore/teaacher_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 
 class NewNotify extends StatefulWidget {
