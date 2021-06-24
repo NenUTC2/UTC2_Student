@@ -6,10 +6,10 @@ import 'package:utc2_student/repositories/google_signin_repo.dart';
 import 'package:utc2_student/screens/login/login_screen.dart';
 import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
 import 'package:utc2_student/screens/profile_screen/help_screen.dart';
-import 'package:utc2_student/screens/profile_screen/payroll_table_screen.dart';
+import 'package:utc2_student/screens/profile_screen/schedule_table.dart';
 import 'package:utc2_student/screens/profile_screen/profile_info.dart';
 import 'package:utc2_student/screens/profile_screen/setting_screen.dart';
-import 'package:utc2_student/screens/profile_screen/work/performance_work_screen.dart';
+import 'package:utc2_student/screens/profile_screen/work/point_table_screen.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
@@ -90,7 +90,7 @@ class _ProFilePageState extends State<ProFilePage> {
   List buttonList = [
     {'title': 'Thông tin cá nhân', 'icon': Icons.person_pin},
     {'title': 'Điểm danh', 'icon': Icons.library_add_check_outlined},
-    {'title': 'Khối lượng công việc', 'icon': Icons.poll_outlined},
+    {'title': 'Xem điểm', 'icon': Icons.poll_outlined},
     {'title': 'Xem thời khoá biểu', 'icon': Icons.money},
     {'title': 'Trợ giúp', 'icon': Icons.help_outline_outlined},
     {'title': 'Đánh giá ứng dụng', 'icon': Icons.star},
@@ -101,8 +101,8 @@ class _ProFilePageState extends State<ProFilePage> {
   List screen = [
     ProfileInfo(),
     AttendanceScreen(),
-    TaskPerformanceScreen(),
-    PayrollScreen(),
+    PointTableScreen(),
+    ScheduleTable(),
     HelpScreen(),
     ProfileInfo(), //chia sẻ link
     SettingScreen(),
@@ -166,11 +166,14 @@ class _ProFilePageState extends State<ProFilePage> {
                                                     : Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                            builder: (context) => index == 1
+                                                            builder: (context) =>
+                                                                index == 1
                                                                     ? AttendanceScreen(
-                                                                      student: widget.student,
-                                                                      ):
-                                                                screen[index]));
+                                                                        student:
+                                                                            widget.student,
+                                                                      )
+                                                                    : screen[
+                                                                        index]));
                                               }
                                             : () async {
                                                 ScaffoldMessenger.of(context)
@@ -270,9 +273,6 @@ class _ProFilePageState extends State<ProFilePage> {
           SafeArea(
             child: Column(
               children: [
-                SizedBox(
-                  height: 15,
-                ),
                 GestureDetector(
                   onTap: () {
                     _show(size);

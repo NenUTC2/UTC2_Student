@@ -302,13 +302,12 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Text('Giảng viên phụ trách : ' +
+                                            Text('GV phụ trách : ' +
                                                 teacher.name),
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            Text('Email giảng viên : ' +
-                                                teacher.email),
+                                            Text('Email GV : ' + teacher.email),
                                           ],
                                         ),
                                       ],
