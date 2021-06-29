@@ -49,7 +49,7 @@ class _QuizSreenState extends State<QuizSreen> {
     _timer = Timer.periodic(duration, (timer) {
       setState(() {
         currentSeconds = timer.tick;
-        if (timer.tick >= 10) {
+        if (timer.tick >= timerMaxSeconds) {
           submitTest();
         }
       });

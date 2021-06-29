@@ -133,6 +133,7 @@ class StudentDatabase {
   static Future submitTest(String idClass, String idPost, String idStudent,
       String totalAnswer, String score, String idQuiz) async {
     var submitQuizData = {
+      'idPost': idPost,
       'idStudent': idStudent,
       'idQuiz': idQuiz,
       'time': DateTime.now().toString(),
