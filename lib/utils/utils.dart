@@ -25,3 +25,25 @@ void unfocus(BuildContext context) {
     FocusManager.instance.primaryFocus.unfocus();
   }
 }
+bool isImage(String fileName) {
+  return [
+    '.jpeg',
+    '.jpg',
+    '.png',
+    '.PNG',
+    '.JPG',
+    '.JPEG',
+    '.heic',
+    '.HEIC',
+    '.tiff',
+    '.TIFF',
+    '.bmp',
+    '.BMP',
+  ].any(fileName.contains);
+}
+ bool isLink(String link) {
+    return [
+      'http://',
+      'https://',
+    ].any(link.contains);
+  }

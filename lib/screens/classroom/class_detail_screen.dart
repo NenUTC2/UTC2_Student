@@ -5,16 +5,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:utc2_student/blocs/file_bloc/file_bloc.dart';
+import 'package:utc2_student/blocs/file_bloc/file_event.dart';
+import 'package:utc2_student/blocs/file_bloc/file_state.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
+import 'package:utc2_student/models/firebase_file.dart';
+import 'package:utc2_student/screens/classroom/image_page.dart';
 import 'package:utc2_student/screens/classroom/new_comment.dart';
 import 'package:utc2_student/screens/classroom/new_notify_class.dart';
 import 'package:utc2_student/screens/classroom/quiz_screen.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
+import 'package:utc2_student/service/firestore/api_getfile.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
+import 'package:utc2_student/service/firestore/file_database.dart';
 import 'package:utc2_student/service/firestore/post_database.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/firestore/teaacher_database.dart';
@@ -43,6 +52,9 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
   StudentBloc studentBloc;
   Class _class;
   Teacher teacher;
+
+  FileBloc fileBloc = new FileBloc();
+  List<File> listFile = [];
   @override
   void initState() {
     super.initState();
@@ -66,6 +78,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
     studentBloc = BlocProvider.of<StudentBloc>(context);
     postBloc.add(GetPostEvent(widget.idClass));
     studentBloc.add(GetStudent());
+    fileBloc = BlocProvider.of<FileBloc>(context);
   }
 
   getTeacher() async {
@@ -149,61 +162,72 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                 )),
             Flexible(
               flex: 15,
-              child: BlocBuilder<PostBloc, PostState>(
-                builder: (context, state) {
+              child: BlocConsumer<PostBloc, PostState>(
+                listener: (context, state) {
                   if (state is LoadedPost) {
-                    return Container(
-                      // padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
-                      decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                              color: ColorApp.orange.withOpacity(0.02),
-                              spreadRadius: 1,
-                              blurRadius: 3,
-                              offset:
-                                  Offset(1, 1), // changes position of shadow
-                            ),
-                          ],
-                          // color: Colors.green,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(color: ColorApp.lightGrey)),
-                      margin: EdgeInsets.only(top: 10),
-                      child: RefreshIndicator(
-                        onRefresh: () async {
-                          postBloc.add(GetPostEvent(widget.idClass));
-                        },
-                        child: Scrollbar(
-                          child: ListView.builder(
-                              itemCount: state.list.length,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: size.width * 0.03),
-                              itemBuilder: (context, index) {
-                                var e = state.list[index];
-                                // DateTime parseDate =
-                                //     new DateFormat("yyyy-MM-dd HH:mm:ss")
-                                //         .parse(e.date);
-                                return ItemNoti(
-                                  student: widget.student,
-                                  post: e,
-                                  idTeacher: _class.teacherId,
-                                  utcClass: _class,
-                                );
-                              }),
-                        ),
-                      ),
-                    );
-                  } else if (state is LoadingPost) {
-                    return loadingWidget();
-                  } else if (state is LoadErrorPost) {
-                    return Center(
-                      child: Text(
-                        state.error,
-                        style: TextStyle(fontSize: 20),
-                      ),
-                    );
-                  } else {
-                    return loadingWidget();
+                    setState(() {
+                      fileBloc.add(GetFileEvent(widget.idClass, state.list));
+                    });
                   }
+                },
+                builder: (context, state) {
+                  return BlocBuilder<PostBloc, PostState>(
+                    builder: (context, state) {
+                      if (state is LoadedPost) {
+                        return Container(
+                          // padding: EdgeInsets.symmetric(horizontal: size.width * 0.03),
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: ColorApp.orange.withOpacity(0.02),
+                                  spreadRadius: 1,
+                                  blurRadius: 3,
+                                  offset: Offset(
+                                      1, 1), // changes position of shadow
+                                ),
+                              ],
+                              // color: Colors.green,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: ColorApp.lightGrey)),
+                          margin: EdgeInsets.only(top: 10),
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              postBloc.add(GetPostEvent(widget.idClass));
+                            },
+                            child: Scrollbar(
+                              child: ListView.builder(
+                                  itemCount: state.list.length,
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: size.width * 0.03),
+                                  itemBuilder: (context, index) {
+                                    var e = state.list[index];
+                                    // DateTime parseDate =
+                                    //     new DateFormat("yyyy-MM-dd HH:mm:ss")
+                                    //         .parse(e.date);
+                                    return ItemNoti(
+                                      student: widget.student,
+                                      post: e,
+                                      idTeacher: _class.teacherId,
+                                      utcClass: _class,
+                                    );
+                                  }),
+                            ),
+                          ),
+                        );
+                      } else if (state is LoadingPost) {
+                        return loadingWidget();
+                      } else if (state is LoadErrorPost) {
+                        return Center(
+                          child: Text(
+                            state.error,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        );
+                      } else {
+                        return loadingWidget();
+                      }
+                    },
+                  );
                 },
               ),
             )
@@ -525,6 +549,19 @@ class ItemNoti extends StatefulWidget {
   _ItemNotiState createState() => _ItemNotiState();
 }
 
+Future<void> _launchInWebViewWithJavaScript(String url) async {
+  if (await canLaunch(url)) {
+    await launch(
+      url,
+      forceSafariVC: true,
+      forceWebView: true,
+      enableJavaScript: true,
+    );
+  } else {
+    throw 'Could not launch $url';
+  }
+}
+
 class _ItemNotiState extends State<ItemNoti> {
   bool loadingQuiz = false;
   @override
@@ -584,22 +621,35 @@ class _ItemNotiState extends State<ItemNoti> {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                  widget.post.title,
-                  softWrap: true,
-                  style: TextStyle(color: ColorApp.black, fontSize: 16),
-                ),
+                isLink(widget.post.title)
+                    ? TextButton(
+                        onPressed: () {
+                          _launchInWebViewWithJavaScript(widget.post.title);
+                        },
+                        child: Text(widget.post.title))
+                    : Text(
+                        widget.post.title,
+                        softWrap: true,
+                        style: TextStyle(color: ColorApp.black, fontSize: 16),
+                      ),
                 SizedBox(
-                  height: 5,
+                  height: widget.post.content != null ? 5 : 0,
                 ),
                 widget.post.content != null
-                    ? Text(
-                        widget.post.content,
-                        softWrap: true,
-                        style: TextStyle(
-                            color: ColorApp.black.withOpacity(.6),
-                            fontSize: 16),
-                      )
+                    ? isLink(widget.post.content)
+                        ? TextButton(
+                            onPressed: () {
+                              _launchInWebViewWithJavaScript(
+                                  widget.post.content);
+                            },
+                            child: Text(widget.post.content))
+                        : Text(
+                            widget.post.content,
+                            softWrap: true,
+                            style: TextStyle(
+                                color: ColorApp.black.withOpacity(.6),
+                                fontSize: 16),
+                          )
                     : Container(),
                 SizedBox(
                   height: 10,
@@ -796,22 +846,91 @@ class _ItemNotiState extends State<ItemNoti> {
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.attachment,
-                      color: Colors.grey,
-                      size: 15,
-                    ),
-                    SizedBox(
-                      width: 3,
-                    ),
-                    Text(
-                      widget.numberFile.toString() + ' Tệp đính kèm',
-                      softWrap: true,
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
-                    ),
-                  ],
+                BlocBuilder<FileBloc, FileState>(
+                  builder: (context, state) {
+                    if (state is LoadedFile) {
+                      var numberFile = state.list
+                          .where((element) => element.idPost == widget.post.id)
+                          .toList()
+                          .length;
+                      List<File> list = state.list
+                          .where((element) => element.idPost == widget.post.id)
+                          .toList();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.attachment,
+                                color: Colors.grey,
+                                size: 15,
+                              ),
+                              SizedBox(
+                                width: 3,
+                              ),
+                              Text(
+                                numberFile == 0
+                                    ? 'Tệp đính kèm'
+                                    : numberFile.toString() + ' Tệp đính kèm',
+                                softWrap: true,
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 11),
+                              ),
+                            ],
+                          ),
+                          numberFile > 0
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: List.generate(
+                                      numberFile,
+                                      (index) => TextButton(
+                                          onPressed: () async {
+                                            if (isImage(list[index].nameFile))
+                                              Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (context) => ImagePage(
+                                                    file: FirebaseFile(
+                                                        ref: null,
+                                                        name: list[index]
+                                                            .nameFile,
+                                                        url: list[index].url)),
+                                              ));
+                                            else {
+                                              FirebaseApiGetFile.downloadFile(
+                                                  list[index].url,
+                                                  list[index].nameFile,
+                                                  context);
+                                            }
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                  child: Text(
+                                                list[index].nameFile,
+                                                softWrap: true,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(fontSize: 11),
+                                              )),
+                                              isImage(list[index].nameFile)
+                                                  ? CircleAvatar(
+                                                      backgroundColor:
+                                                          ColorApp.lightGrey,
+                                                      radius: 20,
+                                                      backgroundImage:
+                                                          CachedNetworkImageProvider(
+                                                              list[index].url),
+                                                    )
+                                                  : Container(),
+                                            ],
+                                          ))))
+                              : Container()
+                        ],
+                      );
+                    } else
+                      return Container();
+                  },
                 ),
               ],
             ),
