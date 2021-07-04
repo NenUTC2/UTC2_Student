@@ -76,6 +76,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           status = 'Thất bại';
         StudentDatabase.attend(
             widget.idClass,
+            post['idAtten'],
             widget.idPost,
             widget.student.id,
             results[0].addressLine.toString(),

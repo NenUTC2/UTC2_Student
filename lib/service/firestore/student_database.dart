@@ -111,9 +111,11 @@ class StudentDatabase {
     return list;
   }
 
-  static Future attend(String idClass, String idPost, String idStudent,
+  static Future attend(String idClass,String idAttend, String idPost, String idStudent,
       String address, String location, String status) async {
     var attendData = {
+      'idPost':idPost,
+      'idAttend':idAttend,
       'idStudent': idStudent,
       'time': DateTime.now().toString(),
       'address': address,
