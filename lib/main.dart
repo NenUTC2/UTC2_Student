@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/blocs/comment_bloc/comment_bloc.dart';
+import 'package:utc2_student/blocs/file_bloc/file_bloc.dart';
 import 'package:utc2_student/blocs/login_bloc/login_bloc.dart';
 import 'package:utc2_student/blocs/notify_app_bloc/notify_app_bloc.dart';
 import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
@@ -137,6 +138,7 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<QuestionBloc>(create: (context) => QuestionBloc()),
         BlocProvider<QuizBloc>(create: (context) => QuizBloc()),
         BlocProvider<NotifyAppBloc>(create: (context) => NotifyAppBloc()),
+        BlocProvider<FileBloc>(create: (context) => FileBloc()),
       ],
       child: GetMaterialApp(
         theme: ThemeData(
