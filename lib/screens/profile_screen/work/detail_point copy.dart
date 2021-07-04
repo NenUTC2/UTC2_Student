@@ -15,11 +15,11 @@ class DetailPoint extends StatefulWidget {
 
 class _DetailPointState extends State<DetailPoint> {
   bool isAll = false;
-  String getTinChi(List<MonHoc> ds_MonHoc) {
+  String getTinChi(List<MonHoc> dsMonHoc) {
     int tongtc = 0;
 
-    for (int i = 0; i < ds_MonHoc.length; i++) {
-      tongtc += int.parse(ds_MonHoc[i].tinchi);
+    for (int i = 0; i < dsMonHoc.length; i++) {
+      tongtc += int.parse(dsMonHoc[i].tinchi);
     }
 
     return tongtc.toString();
