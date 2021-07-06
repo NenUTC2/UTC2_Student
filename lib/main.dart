@@ -23,6 +23,10 @@ import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/local_notification.dart';
 import 'package:utc2_student/utils/utils.dart';
 
+import 'blocs/schedule_bloc/schedule_bloc.dart';
+import 'blocs/task_of_schedule_bloc/task_of_schedule_bloc.dart';
+import 'blocs/today_task_bloc/today_task_bloc.dart';
+
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId}');
@@ -139,6 +143,10 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<QuizBloc>(create: (context) => QuizBloc()),
         BlocProvider<NotifyAppBloc>(create: (context) => NotifyAppBloc()),
         BlocProvider<FileBloc>(create: (context) => FileBloc()),
+         BlocProvider<ScheduleBloc>(create: (context) => ScheduleBloc()),
+        BlocProvider<TodayTaskBloc>(create: (context) => TodayTaskBloc()),
+        BlocProvider<TaskOfScheduleBloc>(
+            create: (context) => TaskOfScheduleBloc()),
       ],
       child: GetMaterialApp(
         theme: ThemeData(

@@ -1,5 +1,15 @@
 import 'dart:math';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utc2_student/blocs/schedule_bloc/schedule_state.dart';
+import 'package:utc2_student/blocs/task_of_schedule_bloc/task_of_schedule_bloc.dart';
+import 'package:utc2_student/blocs/task_of_schedule_bloc/task_of_schedule_event.dart';
+import 'package:utc2_student/blocs/task_of_schedule_bloc/task_of_schedule_state.dart';
+import 'package:utc2_student/blocs/today_task_bloc/today_task_bloc.dart';
+import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:dots_indicator/dots_indicator.dart';
@@ -14,17 +24,33 @@ class _HomePageState extends State<HomePage> {
       PageController(initialPage: 0, viewportFraction: 0.85);
   final ValueNotifier<int> _pageNotifier = new ValueNotifier<int>(0);
   List subTask = [
-    {'title': 'Làm bài kiểm tra', 'isComplete': true},
-    {'title': 'Báo cáo', 'isComplete': false},
-    {'title': 'Trình bày', 'isComplete': false},
+    {'title': 'Báo Cáo', 'isComplete': true},
+    {'title': 'Khảo sát ý kiến', 'isComplete': false},
     {'title': 'Tổng kết', 'isComplete': true},
+    {'title': 'Trình bày', 'isComplete': false}
   ];
-  List user = [
-    'https://images.pexels.com/photos/1987042/pexels-photo-1987042.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-    'https://upload.wikimedia.org/wikipedia/commons/thumb/4/40/A-small_glyphs.svg/227px-A-small_glyphs.svg.png'
-  ];
+
   final _scrollController = ScrollController();
+  TodayTaskBloc scheduleBloc;
+  TaskOfScheduleBloc taskBloc;
+  Student student;
+  int lenght;
+  getSchedule() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userEmail = prefs.getString('userEmail');
+    student = await StudentDatabase.getStudentData(userEmail);
+    scheduleBloc.add(GetTodayTaskEvent(student.id));
+  }
+
+  @override
+  void initState() {
+    getSchedule();
+    scheduleBloc = BlocProvider.of<TodayTaskBloc>(context);
+    taskBloc = BlocProvider.of<TaskOfScheduleBloc>(context);
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -48,8 +74,8 @@ class _HomePageState extends State<HomePage> {
             ColorApp.lightOrange,
             ColorApp.mediumOrange,
             ColorApp.lightOrange,
-            ColorApp.lightOrange.withOpacity(.4),
-            ColorApp.mediumOrange.withOpacity(.4),
+            ColorApp.lightOrange,
+            ColorApp.mediumOrange,
           ],
         )),
         child: Column(
@@ -111,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Lập trình di động',
+                      'Tham gia họp báo',
                       style: TextStyle(
                           color: ColorApp.mediumOrange,
                           fontSize: size.width * 0.05,
@@ -127,7 +153,7 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           padding: EdgeInsets.all(5),
                           child: Text(
-                            'Hôm nay, 07:00 -11:30',
+                            'Now, 07:00 -11:30',
                             style: TextStyle(
                               color: ColorApp.orange,
                             ),
@@ -148,7 +174,7 @@ class _HomePageState extends State<HomePage> {
                                   size: 16,
                                 ),
                                 Text(
-                                  '6E10',
+                                  'C1',
                                   style: TextStyle(
                                     color: ColorApp.orange,
                                   ),
@@ -194,18 +220,18 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    TextButton.icon(
-                      // height: 10,
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.add,
-                        color: ColorApp.orange,
-                      ),
-                      label: Text(
-                        "Thêm mô tả",
-                        style: TextStyle(color: ColorApp.orange),
-                      ),
-                    ),
+                    // FlatButton.icon(
+                    //   height: 10,
+                    //   onPressed: () {},
+                    //   icon: Icon(
+                    //     Icons.add,
+                    //     color: ColorApp.blue,
+                    //   ),
+                    //   label: Text(
+                    //     "Thêm mô tả",
+                    //     style: TextStyle(color: ColorApp.blue),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -216,10 +242,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  String formatTime(String time) {
+    DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
+    return DateFormat("HH:mm").format(parseDate);
+  }
+
   Widget taskToday(Size size, PageController pageController,
       ValueNotifier<int> _pageNotifier) {
     return Container(
-      // color: ColorApp.mediumOrange,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -236,173 +266,336 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.only(bottom: 10),
                 width: size.width,
                 height: size.width / 2.2,
-                child: PageView(
-                  physics: BouncingScrollPhysics(),
-                  controller: pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _pageNotifier.value = index;
-                    });
+                child: BlocConsumer<TodayTaskBloc, TodayTaskState>(
+                  listener: (context, state) {
+                    if (state is LoadedTodayTask) {
+                      lenght = state.list.length;
+                      taskBloc.add(GetTaskOfScheduleEvent(
+                          student.id, state.list[0].idSchedule));
+                    }
                   },
-                  children: List.generate(3, (index) {
-                    return Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Container(
-                            padding: EdgeInsets.only(left: 5),
-                            color: Colors.primaries[
-                                Random().nextInt(Colors.primaries.length)],
-                            child: Container(
-                              padding: EdgeInsets.all(size.width * 0.03),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.3),
-                                    spreadRadius: 3,
-                                    blurRadius: 7,
-                                    offset: Offset(
-                                        0, 5), // changes position of shadow
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Lập trình di động',
-                                    style: TextStyle(
-                                        color: ColorApp.mediumOrange,
-                                        fontSize: size.width * 0.045,
-                                        letterSpacing: 1,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                  SizedBox(
-                                    height: 3,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        padding: EdgeInsets.all(5),
-                                        child: Text(
-                                          '07:00 -11:30',
-                                          style: TextStyle(
-                                            color: Colors.orange,
-                                          ),
-                                        ),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: Colors.orangeAccent
-                                                .withOpacity(.1)),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.all(5),
-                                        child: Row(
-                                          children: [
-                                            Icon(
-                                              Icons.place,
-                                              color: ColorApp.lightOrange,
-                                              size: 16,
-                                            ),
-                                            Text(
-                                              '6E10',
-                                              style: TextStyle(
-                                                color: ColorApp.orange,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(5),
-                                            color: ColorApp.lightOrange
-                                                .withOpacity(.1)),
-                                      ),
-                                    ],
-                                  ),
-                                  // Spacer(),
-                                  Expanded(
-                                    child: Container(
-                                      width: size.width,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: [
-                                          Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: List.generate(user.length,
-                                                (index) {
-                                              return Align(
-                                                widthFactor: 0.4,
-                                                alignment: Alignment.bottomLeft,
-                                                child: Container(
-                                                  width: 35,
-                                                  decoration: BoxDecoration(
-                                                      color: ColorApp.lightGrey,
-                                                      shape: BoxShape.circle),
-                                                  padding: EdgeInsets.all(2),
-                                                  child: CircleAvatar(
-                                                    radius: 20.0,
-                                                    backgroundImage:
-                                                        NetworkImage(
-                                                            user[index]),
-                                                    child:
-                                                        index == user.length - 1
-                                                            ? Text('12')
-                                                            : Container(),
-                                                  ),
+                  builder: (context, state) {
+                    if (state is LoadingSchedule)
+                      return Container(
+                        child: Center(
+                            child: SpinKitThreeBounce(
+                          color: Colors.orange,
+                          size: 30,
+                        )),
+                      );
+                    else if (state is LoadedTodayTask) {
+                      lenght = state.list.length;
+
+                      return lenght == 0
+                          ? Container()
+                          : PageView(
+                              physics: BouncingScrollPhysics(),
+                              controller: pageController,
+                              onPageChanged: (index) {
+                                setState(() {
+                                  _pageNotifier.value = index;
+                                });
+                                taskBloc.add(GetTaskOfScheduleEvent(
+                                    student.id, state.list[index].idSchedule));
+                              },
+                              children: List.generate(
+                                state.list.length,
+                                (index) {
+                                  return Container(
+                                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(15),
+                                        child: Container(
+                                          padding: EdgeInsets.only(left: 5),
+                                          color: Colors.primaries[Random()
+                                              .nextInt(
+                                                  Colors.primaries.length)],
+                                          child: Container(
+                                            padding: EdgeInsets.all(
+                                                size.width * 0.03),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.3),
+                                                  spreadRadius: 3,
+                                                  blurRadius: 7,
+                                                  offset: Offset(0,
+                                                      5), // changes position of shadow
                                                 ),
-                                              );
-                                            }),
-                                          ),
-                                          ElevatedButton(
-                                              child: Text("Vào lớp",
+                                              ],
+                                            ),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  state.list[index]
+                                                      .titleSchedule,
                                                   style: TextStyle(
-                                                      fontSize: 14,
+                                                      color:
+                                                          ColorApp.mediumOrange,
+                                                      fontSize:
+                                                          size.width * 0.045,
                                                       letterSpacing: 1,
-                                                      wordSpacing: 1,
                                                       fontWeight:
-                                                          FontWeight.w600)),
-                                              style: ButtonStyle(
-                                                  foregroundColor:
-                                                      MaterialStateProperty.all<Color>(
-                                                          Colors.white),
-                                                  backgroundColor: MaterialStateProperty.all<Color>(
-                                                      ColorApp.mediumOrange),
-                                                  shape: MaterialStateProperty.all<
-                                                          RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.circular(10),
-                                                          side: BorderSide(color: Colors.red)))),
-                                              onPressed: () => null)
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )),
-                    );
-                  }),
+                                                          FontWeight.w600),
+                                                ),
+                                                SizedBox(
+                                                  height: 3,
+                                                ),
+                                                BlocBuilder<TaskOfScheduleBloc,
+                                                    TaskOfScheduleState>(
+                                                  builder:
+                                                      (context, stateTask) {
+                                                    if (state
+                                                        is LoadingTaskOfSchedule)
+                                                      return Container(
+                                                          // child: Center(
+                                                          //     child:
+                                                          //         SpinKitThreeBounce(
+                                                          //   color: Colors
+                                                          //       .lightOrange,
+                                                          //   size: size.width *
+                                                          //       0.06,
+                                                          // )),
+                                                          );
+                                                    else if (stateTask
+                                                        is LoadedTaskOfSchedule) {
+                                                      return Column(
+                                                        children: List.generate(
+                                                          stateTask.list.length,
+                                                          (index1) => Column(
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsets
+                                                                    .symmetric(
+                                                                        vertical:
+                                                                            5),
+                                                                child: Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceBetween,
+                                                                  children: [
+                                                                    Text('Thứ ' +
+                                                                        (stateTask.list[index1].note)
+                                                                            .toString()),
+                                                                    Text(stateTask
+                                                                        .list[
+                                                                            index1]
+                                                                        .titleTask),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Container(
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .all(5),
+                                                                    child: Text(
+                                                                      formatTime(stateTask
+                                                                              .list[
+                                                                                  index1]
+                                                                              .timeStart) +
+                                                                          ' - ' +
+                                                                          formatTime(stateTask
+                                                                              .list[index1]
+                                                                              .timeEnd),
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .orange,
+                                                                      ),
+                                                                    ),
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                5),
+                                                                        color: Colors
+                                                                            .orangeAccent
+                                                                            .withOpacity(.1)),
+                                                                  ),
+                                                                  Container(
+                                                                    padding:
+                                                                        EdgeInsets
+                                                                            .all(5),
+                                                                    child: Row(
+                                                                      children: [
+                                                                        Icon(
+                                                                          Icons
+                                                                              .place,
+                                                                          color:
+                                                                              ColorApp.lightOrange,
+                                                                          size:
+                                                                              16,
+                                                                        ),
+                                                                        Text(
+                                                                          stateTask
+                                                                              .list[index1]
+                                                                              .idRoom,
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                ColorApp.orange,
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                5),
+                                                                        color: ColorApp
+                                                                            .lightOrange
+                                                                            .withOpacity(.1)),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      );
+                                                    } else if (stateTask
+                                                        is LoadErrorTaskOfSchedule) {
+                                                      return Center(
+                                                        child: Text(
+                                                          stateTask.error,
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 20),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      return Container(
+                                                        child: Column(
+                                                          children: [
+                                                            Container(
+                                                              padding: EdgeInsets
+                                                                  .symmetric(
+                                                                      vertical:
+                                                                          5),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text('Thứ '),
+                                                                  // Text(
+                                                                  //     '          '),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                Container(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              5),
+                                                                  child: Text(
+                                                                    '                      ',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                          .orange,
+                                                                    ),
+                                                                  ),
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      color: Colors
+                                                                          .orangeAccent
+                                                                          .withOpacity(
+                                                                              .1)),
+                                                                ),
+                                                                Container(
+                                                                  padding:
+                                                                      EdgeInsets
+                                                                          .all(
+                                                                              5),
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Icon(
+                                                                        Icons
+                                                                            .place,
+                                                                        color: ColorApp
+                                                                            .lightOrange,
+                                                                        size:
+                                                                            16,
+                                                                      ),
+                                                                      Text(
+                                                                        '          ',
+                                                                        style:
+                                                                            TextStyle(
+                                                                          color:
+                                                                              ColorApp.orange,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              5),
+                                                                      color: ColorApp
+                                                                          .lightOrange
+                                                                          .withOpacity(
+                                                                              .1)),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        )),
+                                  );
+                                },
+                              ));
+                    } else if (state is TodayTaskError) {
+                      return Center(
+                        child: Text(
+                          state.error,
+                          style: TextStyle(
+                            color: Colors.white60,
+                            fontSize: 16,
+                          ),
+                        ),
+                      );
+                    } else {
+                      return Container(
+                        child: Center(
+                            child: SpinKitThreeBounce(
+                          color: Colors.orange,
+                          size: 30,
+                        )),
+                      );
+                    }
+                  },
                 ),
               )
             ],
           ),
           Center(
             child: DotsIndicator(
-              dotsCount: 3,
+              dotsCount: lenght ?? 1,
               mainAxisAlignment: MainAxisAlignment.center,
               position: _pageNotifier.value.toDouble(),
               decorator: DotsDecorator(
