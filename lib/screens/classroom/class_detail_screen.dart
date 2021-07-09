@@ -18,6 +18,7 @@ import 'package:utc2_student/screens/classroom/image_page.dart';
 import 'package:utc2_student/screens/classroom/new_comment.dart';
 import 'package:utc2_student/screens/classroom/new_notify_class.dart';
 import 'package:utc2_student/screens/classroom/quiz_screen.dart';
+import 'package:utc2_student/screens/classroom/score_student.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
 import 'package:utc2_student/service/firestore/api_getfile.dart';
@@ -54,6 +55,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
 
   FileBloc fileBloc = new FileBloc();
   List<File> listFile = [];
+  List<Post> listPostQuiz = [];
   @override
   void initState() {
     super.initState();
@@ -115,6 +117,24 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                   onPressed: () => Scaffold.of(context).openDrawer()),
         ),
         actions: [
+          TextButton.icon(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ScroreScreen(
+                              idTeacher: teacher.id,
+                              student: widget.student,
+                              classUtc: _class,
+                              listPost: listPostQuiz
+                                  .where((e) => e.idQuiz != null)
+                                  .toList(),
+                            )));
+              },
+              icon: Icon(
+                Icons.visibility_rounded,
+              ),
+              label: Text('Xem điểm')),
           Builder(
             builder: (context) => Container(
               margin: EdgeInsets.only(right: size.width * 0.03),
@@ -166,6 +186,7 @@ class _DetailClassScreenState extends State<DetailClassScreen> {
                   if (state is LoadedPost) {
                     setState(() {
                       fileBloc.add(GetFileEvent(widget.idClass, state.list));
+                      listPostQuiz = state.list;
                     });
                   }
                 },

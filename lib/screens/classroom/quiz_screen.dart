@@ -75,7 +75,7 @@ class _QuizSreenState extends State<QuizSreen> {
         widget.idPost,
         widget.idStudent,
         totalCorrect.toString() + '/' + listAnswer.length.toString(),
-        (totalCorrect / listAnswer.length * 10).toString(),
+        (totalCorrect / listAnswer.length * 10).toStringAsFixed(2),
         widget.quizId);
   }
 

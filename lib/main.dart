@@ -14,6 +14,7 @@ import 'package:utc2_student/blocs/post_bloc/post_bloc.dart';
 import 'package:utc2_student/blocs/question_bloc/question_bloc.dart';
 import 'package:utc2_student/blocs/quiz_bloc/quiz_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
+import 'package:utc2_student/blocs/test_bloc/test_bloc.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -143,10 +144,12 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<QuizBloc>(create: (context) => QuizBloc()),
         BlocProvider<NotifyAppBloc>(create: (context) => NotifyAppBloc()),
         BlocProvider<FileBloc>(create: (context) => FileBloc()),
-         BlocProvider<ScheduleBloc>(create: (context) => ScheduleBloc()),
+        BlocProvider<ScheduleBloc>(create: (context) => ScheduleBloc()),
         BlocProvider<TodayTaskBloc>(create: (context) => TodayTaskBloc()),
         BlocProvider<TaskOfScheduleBloc>(
             create: (context) => TaskOfScheduleBloc()),
+             BlocProvider<TestBloc>(
+            create: (context) => TestBloc()),
       ],
       child: GetMaterialApp(
         theme: ThemeData(
