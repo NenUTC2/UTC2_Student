@@ -32,7 +32,7 @@ class TaskOfScheduleBloc
         if (todayList.isNotEmpty) {
           yield LoadedTaskOfSchedule(todayList);
         } else
-          yield LoadErrorTaskOfSchedule('Chưa có lịch giảng cụ thể');
+          yield LoadErrorTaskOfSchedule('Chưa có lịch học cụ thể');
         break;
       default:
     }

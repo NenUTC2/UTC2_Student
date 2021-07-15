@@ -1,14 +1,31 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:utc2_student/blocs/schedule_bloc/schedule_bloc.dart';
+import 'package:utc2_student/blocs/schedule_bloc/schedule_event.dart';
+import 'package:utc2_student/blocs/schedule_bloc/schedule_state.dart';
 import 'package:utc2_student/utils/utils.dart';
+import 'package:utc2_student/widgets/loading_widget.dart';
+import 'package:utc2_student/widgets/schedule_day.dart';
 import 'package:utc2_student/widgets/schedule_option.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:utc2_student/widgets/schedule_week.dart';
 
 class SchedulePage extends StatefulWidget {
+   final String idStudent;
+
+  const SchedulePage({Key key, this.idStudent}) : super(key: key);
   @override
   _SchedulePageState createState() => _SchedulePageState();
 }
 
 class _SchedulePageState extends State<SchedulePage> {
+  ScheduleBloc scheduleBloc;
+  @override
+  void initState() {
+    super.initState();
+    scheduleBloc = BlocProvider.of<ScheduleBloc>(context);
+    scheduleBloc.add(GetSchedulePageEvent(widget.idStudent));
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -59,19 +76,29 @@ class _SchedulePageState extends State<SchedulePage> {
                   ),
                 )),
           ),
-          body: TabBarView(
-            physics: BouncingScrollPhysics(),
-            children: [
-              OpitonSchedule(
-                view: 0,
-              ),
-              OpitonSchedule(
-                view: 1,
-              ),
-              OpitonSchedule(
-                view: 2,
-              ),
-            ],
+          body: BlocBuilder<ScheduleBloc, ScheduleState>(
+            builder: (context, state) {
+              if (state is LoadedSchedulePage)
+                return TabBarView(
+                  physics: BouncingScrollPhysics(),
+                  children: [
+                    OpitonScheduleDay(
+                      listMon: state.listMon,
+                      listLich: state.listLich,
+                    ),
+                    OpitonScheduleWeek(
+                      listMon: state.listMon,
+                      listLich: state.listLich,
+                    ),
+                    OpitonScheduleMonth(
+                      listMon: state.listMon,
+                      listLich: state.listLich,
+                    ),
+                  ],
+                );
+              else
+                return loadingWidget();
+            },
           )),
     );
   }

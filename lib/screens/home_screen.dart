@@ -85,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: <Widget>[
               utc2,
               NotifyPage(idUser: state.student.id,),
-              SchedulePage(),
+              SchedulePage(idStudent: state.student.id,),
               ActivityPage(student:state.student),
             ],
           ),

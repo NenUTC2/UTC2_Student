@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/repositories/google_signin_repo.dart';
+import 'package:utc2_student/screens/2d_map.dart';
 import 'package:utc2_student/screens/login/login_screen.dart';
 import 'package:utc2_student/screens/profile_screen/attendance_screen.dart';
 import 'package:utc2_student/screens/profile_screen/help_screen.dart';
@@ -91,6 +92,7 @@ class _ProFilePageState extends State<ProFilePage> {
     {'title': 'Thông tin cá nhân', 'icon': Icons.person_pin},
     {'title': 'Điểm danh', 'icon': Icons.library_add_check_outlined},
     {'title': 'Xem điểm', 'icon': Icons.poll_outlined},
+    {'title': 'Bản đồ 2D', 'icon': Icons.location_on},
     {'title': 'Xem thời khoá biểu', 'icon': Icons.money},
     {'title': 'Trợ giúp', 'icon': Icons.help_outline_outlined},
     {'title': 'Đánh giá ứng dụng', 'icon': Icons.star},
@@ -102,6 +104,7 @@ class _ProFilePageState extends State<ProFilePage> {
     ProfileInfo(),
     AttendanceScreen(),
     PointTableScreen(),
+    Map2dScreen(),
     ScheduleTable(),
     HelpScreen(),
     ProfileInfo(), //chia sẻ link

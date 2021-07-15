@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/blocs/class_bloc/class_bloc.dart';
 import 'package:utc2_student/blocs/comment_bloc/comment_bloc.dart';
@@ -15,6 +16,7 @@ import 'package:utc2_student/blocs/question_bloc/question_bloc.dart';
 import 'package:utc2_student/blocs/quiz_bloc/quiz_bloc.dart';
 import 'package:utc2_student/blocs/student_bloc/student_bloc.dart';
 import 'package:utc2_student/blocs/test_bloc/test_bloc.dart';
+import 'package:utc2_student/models/floorplan_model.dart';
 import 'package:utc2_student/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -151,15 +153,21 @@ class _HomePageState extends State<HomePage> {
              BlocProvider<TestBloc>(
             create: (context) => TestBloc()),
       ],
-      child: GetMaterialApp(
-        theme: ThemeData(
-            fontFamily: 'Nunito',
-            primaryColor: Colors.orange,
-            appBarTheme: Theme.of(context)
-                .appBarTheme
-                .copyWith(brightness: Brightness.light)),
-        debugShowCheckedModeBanner: false,
-        home: body,
+      child: MultiProvider(
+        providers: [
+        ChangeNotifierProvider<FloorPlanModel>(
+            create: (context) => FloorPlanModel()),
+      ],
+        child: GetMaterialApp(
+          theme: ThemeData(
+              fontFamily: 'Nunito',
+              primaryColor: Colors.orange,
+              appBarTheme: Theme.of(context)
+                  .appBarTheme
+                  .copyWith(brightness: Brightness.light)),
+          debugShowCheckedModeBanner: false,
+          home: body,
+        ),
       ),
     );
   }

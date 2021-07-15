@@ -1,27 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:utc2_student/service/firestore/schedule_student.dart';
+import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/local_notification.dart';
 import 'package:utc2_student/utils/color_random.dart';
 
 import 'package:utc2_student/utils/utils.dart';
 
-// ignore: must_be_immutable
-class OpitonSchedule extends StatefulWidget {
-  int view;
-  OpitonSchedule({
-    this.view,
-  });
+class OpitonScheduleMonth extends StatefulWidget {
+  final List<Schedule> listMon;
+  final List<TaskOfSchedule> listLich;
+
+  const OpitonScheduleMonth({Key key, this.listMon, this.listLich})
+      : super(key: key);
   @override
   _OpitonScheduleState createState() => _OpitonScheduleState();
 }
 
-class _OpitonScheduleState extends State<OpitonSchedule> {
+class _OpitonScheduleState extends State<OpitonScheduleMonth>
+    with AutomaticKeepAliveClientMixin {
   final notifications = FlutterLocalNotificationsPlugin();
+  final studentDatabase = StudentDatabase();
   @override
   void initState() {
     super.initState();
-    MyLocalNotification.configureLocalTimeZone();
+    // MyLocalNotification.configureLocalTimeZone();
     final settingsAndroid = AndroidInitializationSettings('app_icon');
 
     final settingsIOS = IOSInitializationSettings(
@@ -43,67 +47,26 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
   List<Meeting> meetings;
   List<Meeting> _getDataSource() {
     meetings = <Meeting>[];
-    List monHoc = [
-      {
-        "id": "1",
-        "userId": "userId 1",
-        "TenMon": "Lập trình di động",
-        "StartDate": "2021-05-01",
-        "EndDate": "2021-06-22"
-      },
-      {
-        "id": "2",
-        "userId": "userId 1",
-        "TenMon": "Trí tuệ nhân tạo",
-        "StartDate": "2021-05-01",
-        "EndDate": "2021-06-30"
-      },
-    ];
-    List lichHoc = [
-      {
-        "id": "1",
-        "MonHocId": "1",
-        "StartTime": "07:30",
-        "EndTime": "11:00",
-        "WeekDay": 3,
-        "Room": "101C2"
-      },
-      {
-        "id": "2",
-        "MonHocId": "1",
-        "StartTime": "13:30",
-        "EndTime": "17:00",
-        "WeekDay": 1,
-        "Room": "201C2"
-      },
-      {
-        "id": "3",
-        "MonHocId": "2",
-        "StartTime": "13:30",
-        "EndTime": "17:00",
-        "WeekDay": 5,
-        "Room": "Room 1"
-      },
-      {
-        "id": "4",
-        "MonHocId": "1",
-        "StartTime": "08:30",
-        "EndTime": "12:00",
-        "WeekDay": 6,
-        "Room": "201C2"
-      },
-    ];
+
+    int wd, sh, sm, eh, em;
+    int maMon, maLich;
+    String room, tenMon;
+
+    scheduleNoti() {
+      MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
+          notifications, wd, sh, sm, eh, em, tenMon, room, maMon, maLich);
+    }
 
     final DateTime today = DateTime.now();
 
-    for (int i = 0; i < monHoc.length; i++) {
-      DateTime endDate = DateTime.parse(monHoc[i]['EndDate'] + ' 23:59:00');
-      DateTime startDate = DateTime.parse(monHoc[i]['StartDate'] + ' 00:00:00');
+    for (int i = 0; i < widget.listMon.length; i++) {
+      DateTime endDate = DateTime.parse(widget.listMon[i].timeEnd);
+      DateTime startDate = DateTime.parse(widget.listMon[i].timeStart);
 
       //Neu mon hoc chua ket thuc
       if (endDate.difference(today).inDays >= 0) {
-        ///Chay for lichHoc
-        for (int j = 0; j < lichHoc.length; j++) {
+        ///Chay for widget.listLich
+        for (int j = 0; j < widget.listLich.length; j++) {
           DateTime date = startDate;
 
           ///Bien tam cua StartDate
@@ -112,24 +75,21 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
           for (int d = 0; d < endDate.difference(startDate).inDays; d++) {
             date = date.add(Duration(days: 1));
 
+            wd = widget.listLich[j].note - 1;
             //Kiem tra Week day va id Mon hoc
-            if (date.weekday == lichHoc[j]['WeekDay'] &&
-                lichHoc[j]['MonHocId'] == monHoc[i]['id']) {
+            if (date.weekday == wd &&
+                widget.listLich[j].idSchedule == widget.listMon[i].idSchedule) {
               ///Timmmmmme
-              int wd = lichHoc[j]['WeekDay'];
-              int sh =
-                  int.parse(lichHoc[j]['StartTime'].toString().substring(0, 2));
-              int sm =
-                  int.parse(lichHoc[j]['StartTime'].toString().substring(3));
-              int eh =
-                  int.parse(lichHoc[j]['EndTime'].toString().substring(0, 2));
-              int em = int.parse(lichHoc[j]['EndTime'].toString().substring(3));
+              sh = DateTime.parse(widget.listLich[j].timeStart).hour;
+              sm = DateTime.parse(widget.listLich[j].timeStart).minute;
+              eh = DateTime.parse(widget.listLich[j].timeEnd).hour;
+              em = DateTime.parse(widget.listLich[j].timeEnd).minute;
 
               //Mon
-              String tenMon = monHoc[i]['TenMon'];
-              int maMon = int.parse(monHoc[i]['id']);
-              int maLich = int.parse(lichHoc[j]['id']);
-              String room = lichHoc[j]['Room'];
+              tenMon = widget.listMon[i].titleSchedule;
+              maMon = int.parse(widget.listMon[i].idSchedule);
+              maLich = int.parse(widget.listLich[j].idTask);
+              room = widget.listLich[j].idRoom;
 
               DateTime startTime =
                   DateTime(date.year, date.month, date.day, sh, sm);
@@ -137,81 +97,37 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
               DateTime endTime =
                   DateTime(date.year, date.month, date.day, eh, em);
 
-              meetings.add(Meeting(
-                  monHoc[i]['TenMon'] + '\n\n' + lichHoc[j]['Room'],
-                  startTime,
-                  endTime,
-                  ColorRandom.colorRandom[int.parse(monHoc[i]['id'])][0],
-                  false));
-              MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
-                  notifications,
-                  wd,
-                  sh,
-                  sm,
-                  eh,
-                  em,
-                  tenMon,
-                  room,
-                  maMon,
-                  maLich);
-              // if (date.day == today.day &&
-              //     date.month == today.month &&
-              //     date.year == today.year) {
-              //   if (sh > today.hour) {
-              //     MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
-              //         notifications,
-              //         wd,
-              //         sh,
-              //         sm,
-              //         eh,
-              //         em,
-              //         tenMon,
-              //         room,
-              //         maMon,
-              //         maLich);
-              //   } else if (sh == today.hour) {
-              //     if (sm > today.minute) {
-              //       MyLocalNotification.scheduleWeeklyMondayTenAMNotification(
-              //           notifications,
-              //           wd,
-              //           sh,
-              //           sm,
-              //           eh,
-              //           em,
-              //           tenMon,
-              //           room,
-              //           maMon,
-              //           maLich);
-              //     }
-              //   }
-              // }
+              meetings.add(Meeting(tenMon + '\n\n' + room, startTime, endTime,
+                  ColorRandom.colorRandom[maMon][0], false));
+
+              if (date.day == today.day &&
+                  date.month == today.month &&
+                  date.year == today.year) {
+                if (sh > today.hour) {
+                  scheduleNoti();
+                } else if (sh == today.hour) {
+                  if (sm > today.minute) {
+                    scheduleNoti();
+                  }
+                }
+              } else {
+                scheduleNoti();
+              }
             }
           }
         }
       }
     }
 
-    // final DateTime startTime =
-    //     DateTime(today.year, today.month, today.day + 1, 7, 0, 0);
-
-    // final DateTime endTime = startTime.add(const Duration(hours: 4));
-
-    // meetings.add(Meeting('Lập trình di động\n 204E7', startTime, endTime,
-    //     ColorApp.lightBlue, false));
-
-    ///Return
     return meetings;
   }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Container(
       child: SfCalendar(
-        view: widget.view == 0
-            ? CalendarView.day
-            : widget.view == 1
-                ? CalendarView.week
-                : CalendarView.month,
+        view: CalendarView.month,
         dataSource: MeetingDataSource(meetings),
         allowedViews: <CalendarView>[
           CalendarView.day,
@@ -258,6 +174,9 @@ class _OpitonScheduleState extends State<OpitonSchedule> {
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class MeetingDataSource extends CalendarDataSource {

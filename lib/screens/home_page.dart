@@ -24,9 +24,8 @@ class _HomePageState extends State<HomePage> {
       PageController(initialPage: 0, viewportFraction: 0.85);
   final ValueNotifier<int> _pageNotifier = new ValueNotifier<int>(0);
   List subTask = [
-    {'title': 'Báo Cáo', 'isComplete': true},
-    {'title': 'Khảo sát ý kiến', 'isComplete': false},
-    {'title': 'Tổng kết', 'isComplete': true},
+    {'title': 'Khảo sát ý kiến', 'isComplete': true},
+    {'title': 'Họp nhóm', 'isComplete': true},
     {'title': 'Trình bày', 'isComplete': false}
   ];
 
@@ -137,7 +136,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Tham gia họp báo',
+                      'Lập trình di động',
                       style: TextStyle(
                           color: ColorApp.mediumOrange,
                           fontSize: size.width * 0.05,
@@ -174,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                   size: 16,
                                 ),
                                 Text(
-                                  'C1',
+                                  '202C1',
                                   style: TextStyle(
                                     color: ColorApp.orange,
                                   ),
