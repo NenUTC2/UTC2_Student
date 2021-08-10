@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ColorApp {
   static const Color lightOrange = Color(0xFFFA8D45);
@@ -46,4 +47,8 @@ bool isImage(String fileName) {
       'http://',
       'https://',
     ].any(link.contains);
+  }
+  String formatTime(String time) {
+    DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
+    return DateFormat("HH:mm").format(parseDate);
   }

@@ -52,7 +52,7 @@ class TodayTaskBloc extends Bloc<TodayTaskEvent, TodayTaskState> {
           print(todayList.length);
           yield LoadedTodayTask(todayList);
         } else
-          yield TodayTaskError('Chưa có lịch học');
+          yield TodayTaskError('Hôm nay bạn không có lịch học');
         break;
     }
   }

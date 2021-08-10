@@ -92,7 +92,7 @@ class _ProFilePageState extends State<ProFilePage> {
     {'title': 'Thông tin cá nhân', 'icon': Icons.person_pin},
     {'title': 'Điểm danh', 'icon': Icons.library_add_check_outlined},
     {'title': 'Xem điểm', 'icon': Icons.poll_outlined},
-    {'title': 'Bản đồ 2D', 'icon': Icons.location_on},
+    {'title': 'Bản đồ', 'icon': Icons.location_on},
     {'title': 'Xem thời khoá biểu', 'icon': Icons.money},
     {'title': 'Trợ giúp', 'icon': Icons.help_outline_outlined},
     {'title': 'Đánh giá ứng dụng', 'icon': Icons.star},
