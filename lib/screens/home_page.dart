@@ -256,21 +256,21 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          Center(
-            child: DotsIndicator(
-              dotsCount: lenght ?? 1,
-              mainAxisAlignment: MainAxisAlignment.center,
-              position: _pageNotifier.value.toDouble(),
-              decorator: DotsDecorator(
-                color: Colors.white, // Inactive color
-                activeColor: ColorApp.lightOrange,
-                size: const Size.square(9.0),
-                activeSize: const Size(18.0, 9.0),
-                activeShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0)),
-              ),
-            ),
-          ),
+          // Center(
+          //   child: DotsIndicator(
+          //     dotsCount: lenght ?? 1,
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     position: _pageNotifier.value.toDouble(),
+          //     decorator: DotsDecorator(
+          //       color: Colors.white, // Inactive color
+          //       activeColor: ColorApp.lightOrange,
+          //       size: const Size.square(9.0),
+          //       activeSize: const Size(18.0, 9.0),
+          //       activeShape: RoundedRectangleBorder(
+          //           borderRadius: BorderRadius.circular(5.0)),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

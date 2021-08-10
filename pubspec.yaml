@@ -3,7 +3,7 @@ description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
-publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -23,7 +23,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -54,9 +53,9 @@ dependencies:
   # firebase_analytics: ^8.1.0
   # firebase_crashlytics: ^2.0.4
   cloud_firestore: ^2.2.0
+  file_picker: ^3.0.1
   firebase_messaging: ^10.0.0
   firebase_core: ^1.2.0
-  
   firebase_storage: ^8.0.3
   firebase_auth: ^1.2.0
   flutter_bloc: ^7.0.0
@@ -82,7 +81,7 @@ dependencies:
   intl: ^0.17.0
   image_picker: ^0.7.5+2
   image_gallery_saver: ^1.6.9
-  
+
   #J
   #K
   #L
@@ -95,7 +94,7 @@ dependencies:
   #P
   pin_code_fields: ^7.1.0
   permission_handler: ^7.1.0
-  
+
   photo_view: ^0.11.1
   pdf: ^3.3.0
   path_provider: ^2.0.1
@@ -131,7 +130,6 @@ dev_dependencies:
   flutter_launcher_icons: "^0.9.0"
   # flutter_launcher_name: ^0.0.1
 
-
 # flutter_launcher_name:
 #   name: "UTC2 Staff"
 
@@ -158,17 +156,13 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-  
   assets:
-    -  assets/icons/
-    -  assets/images/
-
+    - assets/icons/
+    - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

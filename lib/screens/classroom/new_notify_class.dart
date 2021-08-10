@@ -1,5 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utc2_student/models/firebase_file.dart';
+import 'package:utc2_student/screens/classroom/image_page.dart';
+import 'package:utc2_student/screens/classroom/new_file.dart';
 import 'package:utc2_student/service/firestore/class_database.dart';
 import 'package:utc2_student/service/firestore/post_database.dart';
 import 'package:utc2_student/service/firestore/push_noti_firebase.dart';
@@ -21,6 +27,64 @@ class _NewNotifyState extends State<NewNotify> {
   String title, content;
   TextEditingController _controller = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+
+  List<FirebaseFile> listFile = [];
+
+  void submitPost() async {
+    if (_formKey.currentState.validate()) {
+      final prefs = await SharedPreferences.getInstance();
+      String token = prefs.getString('token');
+
+      var response = await PushNotiFireBaseAPI.pushNotiTopic(
+          title,
+          content,
+          {
+            'idNoti': 'newNoti',
+            "isAtten": false,
+            "msg": 'student post',
+            "idChannel": widget.classUtc.id,
+            "className": widget.classUtc.name,
+            "classDescription": widget.classUtc.note,
+            "timeAtten": null,
+            "idQuiz": null,
+            "token": token,
+            'name': widget.student.name,
+            'avatar': widget.student.avatar,
+            "content": "Đã đăng trong lớp: " +
+                widget.classUtc.name +
+                '\n' +
+                _controller.text.trim(),
+          },
+          widget.classUtc.id);
+      if (response.statusCode == 200) {
+        print('success');
+      } else
+        print('fail');
+      var idPost = generateRandomString(5);
+
+      Map<String, String> dataPost = {
+        'id': idPost,
+        'idClass': widget.classUtc.id,
+        'title': title,
+        'content': content,
+        'name': widget.student.name,
+        'avatar': widget.student.avatar,
+        'date': DateTime.now().toString(),
+        'idAtten': null,
+        'timeAtten': null,
+        "idQuiz": null,
+        "quizContent": null,
+      };
+      await postDatabase.createPost(dataPost, widget.classUtc.id, idPost);
+      if (listFile.isNotEmpty) {
+        for (var file in listFile) {
+          await postDatabase.createFileInPost(
+              dataPost, widget.classUtc.id, idPost, file);
+        }
+      }
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,54 +115,7 @@ class _NewNotifyState extends State<NewNotify> {
           actions: [
             TextButton(
               onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  final prefs = await SharedPreferences.getInstance();
-                  String token = prefs.getString('token');
-                  print(token);
-                  var response = await PushNotiFireBaseAPI.pushNotiTopic(
-                      title,
-                      content,
-                      {
-                        'idNoti': 'newNoti',
-                        "isAtten": false,
-                        "msg": 'student post',
-                        "idChannel": widget.classUtc.id,
-                        "className": widget.classUtc.name,
-                        "classDescription": widget.classUtc.note,
-                        "timeAtten": null,
-                        "idQuiz": null,
-                        "token": token,
-                        'name': widget.student.name,
-                        'avatar': widget.student.avatar,
-                        "content": "Đã đăng trong lớp: " +
-                            widget.classUtc.name +
-                            '\n' +
-                            _controller.text.trim(),
-                      },
-                      widget.classUtc.id);
-                  if (response.statusCode == 200) {
-                    print('success');
-                  } else
-                    print('fail');
-                  var idPost = generateRandomString(5);
-
-                  Map<String, String> dataPost = {
-                    'id': idPost,
-                    'idClass': widget.classUtc.id,
-                    'title': title,
-                    'content': content,
-                    'name': widget.student.name,
-                    'avatar': widget.student.avatar,
-                    'date': DateTime.now().toString(),
-                    'idAtten': null,
-                    'timeAtten': null,
-                    "idQuiz": null,
-                    "quizContent": null,
-                  };
-                  postDatabase.createPost(dataPost, widget.classUtc.id, idPost);
-
-                  Navigator.pop(context);
-                }
+                submitPost();
               },
               child: Text("Đăng    ",
                   style: TextStyle(
@@ -256,8 +273,107 @@ class _NewNotifyState extends State<NewNotify> {
                             height: 35,
                             child: Text('Tệp đính kèm')),
                       ),
+                      IconButton(
+                          onPressed: () {
+                            setState(() {
+                              Get.to(NewFile(idClass: widget.classUtc.id))
+                                  .then((value) {
+                                if (value != null) {
+                                  for (var item in value) {
+                                    setState(() {
+                                      listFile.add(item);
+                                    });
+                                  }
+                                  // setState(() {
+                                  //   listFile.addAll(value);
+                                  // });
+                                }
+                              });
+                            });
+                          },
+                          icon: Icon(
+                            Icons.add_circle_rounded,
+                            color: ColorApp.mediumOrange,
+                          )),
                     ],
                   ),
+                ),
+                AnimatedCrossFade(
+                  firstChild: Column(
+                    children: List.generate(
+                        listFile.length,
+                        (index) => TextButton(
+                              onPressed: () async {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      ImagePage(file: listFile[index]),
+                                ));
+                              },
+                              child: Container(
+                                height: 40,
+                                margin: EdgeInsets.symmetric(vertical: 2),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    gradient: LinearGradient(
+                                        stops: [0.08, 1],
+                                        begin: Alignment.topLeft,
+                                        end: Alignment.bottomRight,
+                                        colors: [
+                                          Colors.white,
+                                          ColorApp.lightGrey
+                                        ])),
+                                child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      isImage(listFile[index].name)
+                                          ? CircleAvatar(
+                                              backgroundColor:
+                                                  ColorApp.lightGrey,
+                                              radius: 15,
+                                              backgroundImage:
+                                                  CachedNetworkImageProvider(
+                                                      listFile[index].url),
+                                            )
+                                          : Container(),
+                                      SizedBox(
+                                        width: 15,
+                                      ),
+                                      Expanded(
+                                        child: Container(
+                                          alignment: Alignment.centerLeft,
+                                          // height: 25,
+                                          child: Text(
+                                            listFile[index].name,
+                                          ),
+                                        ),
+                                      ),
+                                      IconButton(
+                                          onPressed: () {
+                                            FirebaseStorage.instance
+                                                .ref()
+                                                .child(
+                                                    '${widget.classUtc.id}/${listFile[index].name}')
+                                                .delete();
+                                            setState(() {
+                                              listFile.removeAt(index);
+                                            });
+                                          },
+                                          icon: Icon(
+                                            Icons.close,
+                                            size: 20,
+                                            color: Colors.red.withOpacity(.8),
+                                          )),
+                                    ]),
+                              ),
+                            )),
+                  ),
+                  secondChild: Container(),
+                  crossFadeState: listFile.isNotEmpty
+                      ? CrossFadeState.showFirst
+                      : CrossFadeState.showSecond,
+                  duration: Duration(milliseconds: 300),
                 ),
               ],
             ),

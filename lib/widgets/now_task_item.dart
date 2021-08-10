@@ -94,16 +94,12 @@ class NowTaskItem extends StatelessWidget {
                               color: ColorApp.lightOrange,
                               size: 16,
                             ),
-                            // Text(
-                            //   stateTaskTask
-                            //       .list[index1]
-                            //       .idRoom,
-                            //   style:
-                            //       TextStyle(
-                            //     color:
-                            //         ColorApp.orange,
-                            //   ),
-                            // ),
+                            Text(
+                              task.idRoom,
+                              style: TextStyle(
+                                color: ColorApp.orange,
+                              ),
+                            ),
                           ],
                         ),
                         decoration: BoxDecoration(

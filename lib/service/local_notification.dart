@@ -19,6 +19,7 @@ class MyLocalNotification {
       String room,
       int maMon,
       int maLich) async {
+    tz.initializeTimeZones();
     String sem = em == 0 ? '00' : '$em';
     // print(nextInstanceOfWeekDayTime(sh, sm, wd));
     await notifications.zonedSchedule(
