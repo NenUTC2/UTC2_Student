@@ -1,16 +1,12 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:utc2_student/models/end_point.dart';
 import 'package:utc2_student/models/floorplan_model.dart';
-import 'package:utc2_student/models/global.dart';
-import 'package:utc2_student/models/models.dart';
-
-import '../../path_finder/repo_path.dart';
+import 'package:utc2_student/path_finder/repo_path.dart';
+import 'package:utc2_student/utils/utils.dart';
 
 class PositionedWidget extends StatefulWidget {
-  final Function(List<int>) findPath;
+  final Function(int) findPath;
 
   const PositionedWidget({Key key, this.findPath}) : super(key: key);
   @override
@@ -25,8 +21,6 @@ class PositionedWidgetState extends State<PositionedWidget> {
   @override
   Widget build(BuildContext context) {
     final model = Provider.of<FloorPlanModel>(context);
-    final List<Room> phongHoc =
-        Global.phongHoc.map((item) => Room.fromMap(item)).toList();
     return Stack(
       children:
           // model.isScaled
@@ -114,19 +108,20 @@ class PositionedWidgetState extends State<PositionedWidget> {
                           // fillColor: Colors.black,
                           splashColor: Colors.white,
                           onTap: () {
-                            if (diem.length < 2) {
-                              if (!diem.contains(dayNha[index].id)) {
-                                setState(() {
-                                  diem.add(dayNha[index].id);
-                                });
-                              }
-                            } else {
-                              setState(() {
-                                diem.clear();
-                                diem.add(dayNha[index].id);
-                              });
-                            }
-                            widget.findPath(diem);
+                            unfocus(context);
+                            // if (diem.length < 2) {
+                            //   if (!diem.contains(dayNha[index].id)) {
+                            //     setState(() {
+                            //       diem.add(dayNha[index].id);
+                            //     });
+                            //   }
+                            // } else {
+                            //   setState(() {
+                            //     diem.clear();
+                            //     diem.add(dayNha[index].id);
+                            //   });
+                            // }
+                            widget.findPath(dayNha[index].id);
                           },
                           child: Stack(
                               alignment: Alignment.centerLeft,
@@ -154,7 +149,7 @@ class PositionedWidgetState extends State<PositionedWidget> {
                                                   ? Colors.blue
                                                   : Colors.red,
                                           backgroundImage:
-                                              AssetImage('assets/utc2.png'),
+                                              AssetImage(dayNha[index].image),
                                         ),
                                 ),
                                 Transform(

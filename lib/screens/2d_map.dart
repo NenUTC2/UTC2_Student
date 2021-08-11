@@ -1,10 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:utc2_student/models/end_point.dart';
-import 'package:utc2_student/path_finder/dijsktra.dart';
-import 'package:utc2_student/path_finder/repo_path.dart';
-import 'package:utc2_student/utils/utils.dart';
+import 'package:get/get.dart';
+import 'package:utc2_student/screens/2d_controller.dart';
 import 'package:utc2_student/widgets/positioned_widget.dart';
 import 'package:utc2_student/widgets/raw_gesture_detector_widget.dart';
 
@@ -15,132 +13,33 @@ class Map2dScreen extends StatefulWidget {
 
 class _Map2dScreenState extends State<Map2dScreen>
     with SingleTickerProviderStateMixin {
+  var controller = Get.put(Map2dController());
+
   double x = 40, y = 200;
   double xdef = 40, ydef = 200;
   double step = 10, size = 20;
-  TextEditingController _diemDauController;
-  TextEditingController _diemCuoiController;
   String huong = '';
-  int diemDau = 0, diemCuoi = 0;
-  AnimationController _controller;
-  Animation _animation;
-  Path _path;
-  List<int> listDiem = [];
-  List<EndPoint> listSearchBuilding = listBuilding;
 
   @override
   void initState() {
-    _diemDauController = TextEditingController();
-    _diemCuoiController = TextEditingController();
-    _controller = AnimationController(
+    controller.init(Get.arguments);
+    controller.animateController = AnimationController(
         vsync: this, duration: Duration(milliseconds: 5000));
-    super.initState();
-    _animation = Tween(begin: 0.0, end: 1.0).animate(_controller)
-      ..addListener(() {
-        setState(() {});
-      });
+    controller.animation =
+        Tween(begin: 0.0, end: 1.0).animate(controller.animateController)
+          ..addListener(() {
+            controller.animateValue.value = controller.animation.value;
+          });
 
-    _controller.repeat();
-    _path = drawPath();
+    controller.animateController.repeat();
+    controller.path = controller.drawPath();
+    super.initState();
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    controller.animateController.dispose();
     super.dispose();
-  }
-
-  void search(String input) {
-    var data = listBuilding
-        .where((item) =>
-            item.name != '' &&
-            item.name.toLowerCase().contains(input.toLowerCase()))
-        .toList();
-    setState(() {
-      listSearchBuilding = data;
-    });
-    print(listSearchBuilding[0].name);
-  }
-
-  Path drawPath() {
-    Path path = Path();
-
-    if (diemDau != 0 && diemCuoi != 0) {
-      List<int> diem = Dijsktra.findPath(diemDau, diemCuoi);
-      double prevX = 0;
-      double prevY = 0;
-      for (int i = 0; i < diem.length; i++) {
-        for (int j = 0; j < listBuilding.length; j++) {
-          if ((listBuilding[j].id) == diem[i]) {
-            if (prevX == 0 && prevY == 0) {
-              path.moveTo(
-                  listBuilding[j].location.dx, listBuilding[j].location.dy);
-              prevX = listBuilding[j].location.dx;
-              prevY = listBuilding[j].location.dy;
-            } else {
-              path.quadraticBezierTo(prevX, prevY, listBuilding[j].location.dx,
-                  listBuilding[j].location.dy);
-              prevX = listBuilding[j].location.dx;
-              prevY = listBuilding[j].location.dy;
-            }
-          }
-        }
-      }
-    } else if (diemDau == 0 || diemCuoi == 0) {
-      path.moveTo(0, 0);
-    }
-    return path;
-  }
-
-  Offset calculate(value) {
-    PathMetrics pathMetrics = _path.computeMetrics();
-    PathMetric pathMetric = pathMetrics.elementAt(0);
-    value = pathMetric.length * value;
-    Tangent pos = pathMetric.getTangentForOffset(value);
-    return pos.position;
-  }
-
-  void clearFindPath() {
-    setState(() {
-      _diemDauController.clear();
-      _diemCuoiController.clear();
-
-      diemDau = 0;
-      diemCuoi = 0;
-
-      _path = drawPath();
-
-      _controller.reset();
-      PositionedWidgetState.diem.clear();
-    });
-  }
-
-  void findPath(List<int> diem) {
-    if (diem.length == 2) {
-      setState(() {
-        // diemDau = diem[0];
-        diemCuoi = diem[1];
-        _diemCuoiController.text = listBuilding[diemCuoi - 1].name;
-
-        _path = drawPath();
-
-        _controller.reset();
-        _controller.repeat();
-      });
-    } else if (diem.length == 1) {
-      setState(() {
-        diemDau = diem[0];
-        _diemCuoiController.clear();
-        _diemDauController.text = listBuilding[diemDau - 1].name;
-
-        diemCuoi = 0;
-        _path = drawPath();
-
-        _controller.repeat();
-      });
-    } else {
-      clearFindPath();
-    }
   }
 
   @override
@@ -149,96 +48,126 @@ class _Map2dScreenState extends State<Map2dScreen>
         statusBarColor: Colors.transparent,
         statusBarIconBrightness: Brightness.light));
     Size scsize = MediaQuery.of(context).size;
-    return Scaffold(
-      backgroundColor: ColorApp.orange,
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(150.0),
-        child: appBarWidget(scsize),
-      ),
-      body: Container(
-        height: scsize.height * 0.85,
-        color: Colors.white,
-        child: Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
-          children: <Widget>[
-            Positioned(
-              bottom: 20,
-              child: Container(
-                color: Colors.red,
-                child: RawGestureDetectorWidget(
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Container(
-                        width: 400,
-                        height: 400,
-                        // color: Colors.grey,
-                        child: Hero(
-                          tag: 'mapUtc2',
-                          child: Image.asset(
-                            'assets/images/1305.png',
-                            fit: BoxFit.contain,
-                          ),
-                        ),
-                      ),
-
-                      Stack(
+    // final model = Provider.of<FloorPlanModel>(context);
+    return WillPopScope(
+      onWillPop: () async {
+        Get.delete<Map2dController>();
+        PositionedWidgetState.diem.clear();
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(150.0),
+          child: appBarWidget(scsize),
+        ),
+        body: SingleChildScrollView(
+          physics: NeverScrollableScrollPhysics(),
+          child: Container(
+            height: scsize.height * 0.85,
+            color: Colors.white,
+            child: Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: <Widget>[
+                Positioned(
+                  top: 30,
+                  child: Container(
+                    color: Colors.red,
+                    child: RawGestureDetectorWidget(
+                      child: Stack(
+                        alignment: Alignment.center,
                         children: [
                           Container(
-                            //color: Colors.black.withOpacity(0.7),
-                            child: CustomPaint(
-                              size: Size(411.4, 411.4),
-                              painter: Painter(path: _path),
+                            width: 400,
+                            height: 400,
+                            // color: Colors.grey,
+                            child: Hero(
+                              tag: 'mapUtc2',
+                              child: Image.asset(
+                                'assets/images/1305.png',
+                                fit: BoxFit.contain,
+                              ),
                             ),
                           ),
-                          Positioned(
-                            top: (diemDau != 0 && diemCuoi != 0)
-                                ? calculate(_animation.value).dy - 15
-                                : 0,
-                            left: (diemDau != 0 && diemCuoi != 0)
-                                ? calculate(_animation.value).dx - 15
-                                : 0,
-                            child: Opacity(
-                              opacity: (diemDau != 0 && diemCuoi != 0) ? 1 : 0,
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: Colors.yellow,
-                                  shape: BoxShape.circle,
+
+                          Obx(
+                            () => Stack(
+                              children: [
+                                Container(
+                                  //color: Colors.black.withOpacity(0.7),
+                                  child: CustomPaint(
+                                    size: Size(411.4, 411.4),
+                                    painter: Painter(path: controller.path),
+                                  ),
                                 ),
-                                child: Icon(Icons.directions_walk_rounded),
-                              ),
+                                Positioned(
+                                  top: (controller.diemDau.value != 0 &&
+                                          controller.diemCuoi.value != 0)
+                                      ? controller
+                                              .calculate(
+                                                  controller.animateValue.value)
+                                              .dy -
+                                          15
+                                      : 0,
+                                  left: (controller.diemDau.value != 0 &&
+                                          controller.diemCuoi.value != 0)
+                                      ? controller
+                                              .calculate(
+                                                  controller.animateValue.value)
+                                              .dx -
+                                          15
+                                      : 0,
+                                  child: Opacity(
+                                    opacity: (controller.diemDau.value != 0 &&
+                                            controller.diemCuoi.value != 0)
+                                        ? 1
+                                        : 0,
+                                    child: Container(
+                                      width: 30,
+                                      height: 30,
+                                      decoration: BoxDecoration(
+                                        color: Colors.yellow,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child:
+                                          Icon(Icons.directions_walk_rounded),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // GridViewWidget(),
+                          Container(
+                            width: 411.4,
+                            height: 411.4,
+                            child: PositionedWidget(
+                              findPath: (diem) {
+                                controller.onTapPositioned(diem, context);
+                              },
                             ),
                           ),
                         ],
                       ),
-                      // GridViewWidget(),
-                      Container(
-                        width: 411.4,
-                        height: 411.4,
-                        child: PositionedWidget(
-                          findPath: (diem) {
-                            findPath(diem);
-                          },
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
+                Obx(() => AnimatedOpacity(
+                    opacity: controller.isShowSearch.value ? 1.0 : 0.0,
+                    duration: Duration(milliseconds: 500),
+                    child: listWidget(scsize))),
+              ],
             ),
-            // listWidget(scsize),
-          ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.screen_rotation),
-        onPressed: () {
-          // Navigator.push(
-          //     context, MaterialPageRoute(builder: (context) => PanoScreen()));
-        },
+        // floatingActionButton: FloatingActionButton(
+        //   child: Icon(Icons.screen_rotation),
+        //   onPressed: () {
+
+        //     Get.delete<Map2dController>();
+        //   },
+        // ),
       ),
     );
   }
@@ -252,24 +181,13 @@ class _Map2dScreenState extends State<Map2dScreen>
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
-            children: List.generate(listBuilding.length, (index) {
-              return listBuilding[index].name == ''
+            children: List.generate(controller.listSearch.length, (index) {
+              return controller.listSearch[index].name == ''
                   ? Container()
                   : GestureDetector(
                       onTap: () {
-                        if (listDiem.length < 2) {
-                          if (!listDiem.contains(listBuilding[index].id)) {
-                            setState(() {
-                              listDiem.add(listBuilding[index].id);
-                            });
-                          }
-                        } else {
-                          setState(() {
-                            listDiem.clear();
-                            listDiem.add(listBuilding[index].id);
-                          });
-                        }
-                        findPath(listDiem);
+                        controller.onTapItem(
+                            controller.listSearch[index].id, context);
                       },
                       child: Container(
                         // margin: EdgeInsets.symmetric(vertical: 10),
@@ -295,10 +213,10 @@ class _Map2dScreenState extends State<Map2dScreen>
                             ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: Image.asset(
-                                'assets/images/image.png',
+                                controller.listSearch[index].image,
                                 width: 100,
                                 height: 100,
-                                fit: BoxFit.fitHeight,
+                                fit: BoxFit.cover,
                               ),
                             ),
                             SizedBox(
@@ -308,10 +226,12 @@ class _Map2dScreenState extends State<Map2dScreen>
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  listBuilding[index].name,
+                                  controller.listSearch[index].name,
                                   style: TextStyle(color: Colors.black),
                                 ),
                                 Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
                                       'Chỉ đường',
@@ -319,18 +239,6 @@ class _Map2dScreenState extends State<Map2dScreen>
                                     ),
                                     Icon(
                                       Icons.directions,
-                                      size: 18,
-                                    )
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      '360',
-                                      style: TextStyle(color: Colors.black),
-                                    ),
-                                    Icon(
-                                      Icons.visibility_rounded,
                                       size: 18,
                                     )
                                   ],
@@ -370,9 +278,13 @@ class _Map2dScreenState extends State<Map2dScreen>
                       children: [
                         Expanded(
                           child: TextField(
-                            controller: _diemDauController,
+                            onTap: () {
+                              controller.onTapTextField(true);
+                              print('tap true');
+                            },
+                            controller: controller.diemDauController,
                             onChanged: (val) {
-                              // search(val.trim());
+                              controller.onSearch(val.trim());
                             },
                             decoration: InputDecoration(
                               prefixIcon: Icon(Icons.search),
@@ -393,7 +305,7 @@ class _Map2dScreenState extends State<Map2dScreen>
                               borderRadius: BorderRadius.circular(5)),
                           child: IconButton(
                             onPressed: () {
-                              clearFindPath();
+                              controller.clearFindPath();
                             },
                             icon: Icon(
                               Icons.close,
@@ -408,7 +320,15 @@ class _Map2dScreenState extends State<Map2dScreen>
                     height: 5,
                   ),
                   TextField(
-                    controller: _diemCuoiController,
+                    onTap: () {
+                      controller.onTapTextField(false);
+
+                      print('tap false');
+                    },
+                    controller: controller.diemCuoiController,
+                    onChanged: (val) {
+                      controller.onSearch(val.trim());
+                    },
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.search),
                       hintText: 'Điểm đến',

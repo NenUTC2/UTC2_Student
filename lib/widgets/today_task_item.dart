@@ -3,8 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:get/get.dart';
 import 'package:utc2_student/blocs/task_of_schedule_bloc/task_of_schedule_bloc.dart';
 import 'package:utc2_student/blocs/task_of_schedule_bloc/task_of_schedule_state.dart';
+import 'package:utc2_student/path_finder/repo_path.dart';
+import 'package:utc2_student/screens/2d_map.dart';
 import 'package:utc2_student/service/firestore/schedule_student.dart';
 import 'package:utc2_student/utils/utils.dart';
 
@@ -114,7 +117,11 @@ class TodayTaskItem extends StatelessWidget {
                                             .withOpacity(.1)),
                                   ),
                                   GestureDetector(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Get.to(() => Map2dScreen(),
+                                          arguments: int.parse(
+                                              state.list[index].idRoom));
+                                    },
                                     child: Container(
                                       padding: EdgeInsets.all(5),
                                       child: Row(
@@ -125,7 +132,10 @@ class TodayTaskItem extends StatelessWidget {
                                             size: 16,
                                           ),
                                           Text(
-                                            state.list[index].idRoom,
+                                            listBuilding[int.parse(state
+                                                        .list[index].idRoom) -
+                                                    1]
+                                                .name,
                                             style: TextStyle(
                                               color: ColorApp.orange,
                                             ),

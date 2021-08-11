@@ -1,6 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:utc2_student/path_finder/repo_path.dart';
+import 'package:utc2_student/screens/2d_map.dart';
 import 'package:utc2_student/service/firestore/schedule_student.dart';
 import 'package:utc2_student/utils/utils.dart';
 
@@ -85,26 +88,31 @@ class NowTaskItem extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5),
                             color: Colors.orangeAccent.withOpacity(.1)),
                       ),
-                      Container(
-                        padding: EdgeInsets.all(5),
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.place,
-                              color: ColorApp.lightOrange,
-                              size: 16,
-                            ),
-                            Text(
-                              task.idRoom,
-                              style: TextStyle(
-                                color: ColorApp.orange,
+                      GestureDetector(
+                        onTap: () {
+                          Get.to(()=>Map2dScreen(),arguments: int.parse(task.idRoom));
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(5),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.place,
+                                color: ColorApp.lightOrange,
+                                size: 16,
                               ),
-                            ),
-                          ],
+                              Text(
+                                listBuilding[int.parse(task.idRoom) - 1].name,
+                                style: TextStyle(
+                                  color: ColorApp.orange,
+                                ),
+                              ),
+                            ],
+                          ),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: ColorApp.lightOrange.withOpacity(.1)),
                         ),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: ColorApp.lightOrange.withOpacity(.1)),
                       ),
                     ],
                   ),
