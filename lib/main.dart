@@ -83,16 +83,12 @@ class _HomePageState extends State<HomePage> {
     notifications.initialize(
         InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
         onSelectNotification: onSelectNotification);
+
     if (Platform.isIOS) {
       _fireBaseMessaging.requestPermission(
           alert: true, badge: true, sound: true, provisional: true);
     }
 
-    // LoginEmailBloc.getInstance().init();
-    // ConnectionStatusSingleton.getInstance()
-    //     .connectionChange
-    //     .listen(_updateConnectivity);
-    // _notificationPlugin = NotificationPlugin();
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage message) {
@@ -101,33 +97,14 @@ class _HomePageState extends State<HomePage> {
       }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      var userEmail = prefs.getString('userEmail');
-      Student student = await StudentDatabase.getStudentData(userEmail);
-      String random = generateRandomString(5);
-      Map<String, String> dataNotifyApp = {
-        'id': random ?? '',
-        'idUser': student.id ?? '', //user đăng nhập
-        'content': message.data['content'] ?? '',
-        'name': message.data['name'] ?? '', //người đăng
-        'avatar': message.data['avatar'] ?? '', //người đăng
-        'date': DateTime.now().toString(), //time nhận được
-      };
-
-      notifyAppDatabase.createNotifyApp(
-        dataNotifyApp,
-        student.id,
-        random,
-      );
-      setUpNoti(message);
+      print('>>>>>>>>>>A new onMessage event');
+      createLocalNotify(message);
     });
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('>>>>>>>>>>A new onMessageOpenedApp event');
       Get.to(HomeScreen());
     });
     FirebaseMessaging.instance.subscribeToTopic('fcm_test');
-    // login();
-
     getTokenFCM();
   }
 
@@ -150,14 +127,13 @@ class _HomePageState extends State<HomePage> {
         BlocProvider<TodayTaskBloc>(create: (context) => TodayTaskBloc()),
         BlocProvider<TaskOfScheduleBloc>(
             create: (context) => TaskOfScheduleBloc()),
-             BlocProvider<TestBloc>(
-            create: (context) => TestBloc()),
+        BlocProvider<TestBloc>(create: (context) => TestBloc()),
       ],
       child: MultiProvider(
         providers: [
-        ChangeNotifierProvider<FloorPlanModel>(
-            create: (context) => FloorPlanModel()),
-      ],
+          ChangeNotifierProvider<FloorPlanModel>(
+              create: (context) => FloorPlanModel()),
+        ],
         child: GetMaterialApp(
           title: 'UTC2 Student',
           theme: ThemeData(
@@ -171,51 +147,6 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
     );
-  }
-
-  void setUpNoti(RemoteMessage message) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString('token');
-
-    if (message.data['idNoti'] == 'newNoti' &&
-        message.data['isAtten'] == 'false') {
-      print('Thông báo new Notity--------------------------------------');
-      if (message.data['token'] != token) {
-        MyLocalNotification.showNotification(
-          notifications,
-          message.data['idChannel'],
-          message.data['className'],
-          message.data['classDescription'],
-          message.notification.title,
-          message.notification.body,
-        );
-      }
-    } else if (message.data['idNoti'] == 'newNoti' &&
-        message.data['isAtten'] == 'true') {
-      MyLocalNotification.showNotificationAttenden(
-        notifications,
-        message.data['msg'],
-        message.data['idChannel'],
-        message.data['className'],
-        message.data['classDescription'],
-        message.notification.title,
-        message.notification.body,
-        message.data['timeAtten'],
-      );
-    } else {
-      print('Thông báo NEW CLASS-------------------------------------');
-      MyLocalNotification.showNotificationNewClass(
-        notifications,
-        message.data['nameTeacher'],
-        message.data['msg'], //id lớp học
-        message.data['idChannel'], //id lớp học
-        message.data['className'], //ten lop
-        message.data['classDescription'], //mieu ta
-        //day moi show len
-        message.notification.title, //ten lop
-        message.notification.body, //mieu ta
-      );
-    }
   }
 
   getTokenFCM() async {
@@ -249,5 +180,90 @@ class _HomePageState extends State<HomePage> {
   Future onSelectNotification(String payload) async {
     print(payload);
     // Get.to(DetailClassScreen());
+  }
+
+  void createLocalNotify(RemoteMessage message) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String email = preferences.getString('userEmail');
+    var teacher = await StudentDatabase.getStudentData(email);
+    String id = generateRandomString(5);
+
+    var token = preferences.getString('token');
+    if (message.data['token'] != token) {
+      ////Noti 1 normal
+      if (message.data['idNoti'] == 'newNoti' &&
+          message.data['isAtten'] == 'false') {
+        print('======> Noti 1');
+        MyLocalNotification.showNotification(
+          notifications,
+          message.data['idChannel'],
+          message.data['className'],
+          message.data['classDescription'],
+          message.notification.title,
+          message.notification.body,
+        );
+        Map<String, String> dataNotifyApp = {
+          'id': id ?? '',
+          'idUser': teacher.id ?? '', //user đăng nhập
+          'content': message.data['content'] ?? '',
+          'name': message.data['name'] ?? '' ?? '', //người đăng
+          'avatar': message.data['avatar'] ?? '', //người đăng
+          'date': DateTime.now().toString(), //time nhận được
+        };
+        notifyAppDatabase.createNotifyApp(dataNotifyApp, teacher.id, id);
+      }
+
+      ///////Noti 2 Attend
+      else if (message.data['idNoti'] == 'newNoti' &&
+          message.data['isAtten'] == 'true') {
+        print('=====> Noti 2 Attend');
+        MyLocalNotification.showNotificationAttenden(
+          notifications,
+          message.data['msg'],
+          message.data['idChannel'],
+          message.data['className'],
+          message.data['classDescription'],
+          message.notification.title,
+          message.notification.body,
+          message.data['timeAtten'],
+        );
+        Map<String, String> dataNotifyApp = {
+          'id': id ?? '',
+          'idUser': teacher.id ?? '', //user đăng nhập
+          'content': message.data['content'] ?? '',
+          'name': message.data['name'] ?? '' ?? '', //người đăng
+          'avatar': message.data['avatar'] ?? '', //người đăng
+          'date': DateTime.now().toString(), //time nhận được
+        };
+        notifyAppDatabase.createNotifyApp(dataNotifyApp, teacher.id, id);
+      }
+
+      ////Noti 3 new class
+      else if ((message.data['idNoti'] == 'newClass')) {
+        print('======> Noti 3 New class');
+        MyLocalNotification.showNotificationNewClass(
+          notifications,
+          message.data['nameTeacher'],
+          message.data['msg'], //id lớp học
+          message.data['idChannel'], //id lớp học
+          message.data['className'], //ten lop
+          message.data['classDescription'], //mieu ta
+          //day moi show len
+          message.notification.title, //ten lop
+          message.notification.body, //mieu ta
+        );
+        Map<String, String> dataNotifyApp = {
+          'id': id ?? '',
+          'idUser': teacher.id ?? '', //user đăng nhập
+          'content': message.data['content'] ?? '',
+          'name': message.data['name'] ?? '' ?? '', //người đăng
+          'avatar': message.data['avatar'] ?? '', //người đăng
+          'date': DateTime.now().toString(), //time nhận được
+        };
+        notifyAppDatabase.createNotifyApp(dataNotifyApp, teacher.id, id);
+      }
+    } else {
+      print('=======> User noti no need to show');
+    }
   }
 }

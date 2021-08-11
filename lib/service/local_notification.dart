@@ -153,7 +153,8 @@ class MyLocalNotification {
     final AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(idChannel, chanelName, chanelDescription,
             largeIcon: FilePathAndroidBitmap(largeIconPath),
-            styleInformation: bigPictureStyleInformation);
+            styleInformation: bigPictureStyleInformation,
+            importance: Importance.high);
     final NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await notifications.show(

@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/blocs/schedule_bloc/schedule_state.dart';
 import 'package:utc2_student/blocs/task_of_schedule_bloc/task_of_schedule_bloc.dart';
@@ -12,7 +9,6 @@ import 'package:utc2_student/blocs/today_task_bloc/today_task_bloc.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/utils/utils.dart';
 import 'package:flutter/material.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:utc2_student/widgets/now_task_item.dart';
 import 'package:utc2_student/widgets/today_task_item.dart';
 
