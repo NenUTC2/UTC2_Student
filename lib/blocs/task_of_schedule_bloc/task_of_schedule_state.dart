@@ -13,8 +13,8 @@ class TaskOfScheduleInitial extends TaskOfScheduleState {}
 class LoadingTaskOfSchedule extends TaskOfScheduleState {}
 
 class LoadedTaskOfSchedule extends TaskOfScheduleState {
-  final List<TaskOfSchedule> list;
-  LoadedTaskOfSchedule(this.list);
+  final List<TaskOfSchedule> list, nowList;
+  LoadedTaskOfSchedule(this.list,this.nowList);
 }
 
 class LoadErrorTaskOfSchedule extends TaskOfScheduleState {

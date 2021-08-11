@@ -151,7 +151,15 @@ class _HomePageState extends State<HomePage> {
                 ),
               );
             } else
-              return Container();
+              return Container(
+                height: 250,
+                child: Center(
+                  child: Text(
+                    'Hôm nay không có lịch học nào',
+                    style: TextStyle(color: Colors.grey, fontSize: 15),
+                  ),
+                ),
+              );
           }),
         ],
       ),
@@ -208,10 +216,17 @@ class _HomePageState extends State<HomePage> {
                             )),
                           );
                         else if (stateTask is LoadedTaskOfSchedule) {
-                          lenght = stateTask.list.length;
-
-                          return lenght == 0
-                              ? Container()
+                          return stateTask.nowList.isEmpty
+                              ? Container(
+                                  height: 250,
+                                  child: Center(
+                                    child: Text(
+                                      'Hiện tại không có lịch học nào',
+                                      style: TextStyle(
+                                          color: Colors.white70, fontSize: 15),
+                                    ),
+                                  ),
+                                )
                               : PageView(
                                   physics: BouncingScrollPhysics(),
                                   controller: pageController,
@@ -221,11 +236,11 @@ class _HomePageState extends State<HomePage> {
                                     });
                                   },
                                   children: List.generate(
-                                    stateTask.list.length,
+                                    stateTask.nowList.length,
                                     (index) {
                                       return NowTaskItem(
                                         schedule: state.list[0],
-                                        task: stateTask.list[index],
+                                        task: stateTask.nowList[index],
                                       );
                                     },
                                   ));
@@ -241,17 +256,28 @@ class _HomePageState extends State<HomePage> {
                           );
                         } else {
                           return Container(
+                            height: 250,
                             child: Center(
-                                child: SpinKitThreeBounce(
-                              color: Colors.orange,
-                              size: 30,
-                            )),
+                              child: Text(
+                                'Hiện tại không có lịch học nào',
+                                style:
+                                    TextStyle(color: Colors.grey, fontSize: 15),
+                              ),
+                            ),
                           );
                         }
                       },
                     );
                   } else
-                    return Container();
+                    return Container(
+                      height: 250,
+                      child: Center(
+                        child: Text(
+                          'Hiện tại không có lịch học nào',
+                          style: TextStyle(color: Colors.white70, fontSize: 15),
+                        ),
+                      ),
+                    );
                 }),
               ),
             ],

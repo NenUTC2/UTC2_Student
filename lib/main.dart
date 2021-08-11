@@ -159,6 +159,7 @@ class _HomePageState extends State<HomePage> {
             create: (context) => FloorPlanModel()),
       ],
         child: GetMaterialApp(
+          title: 'UTC2 Student',
           theme: ThemeData(
               fontFamily: 'Nunito',
               primaryColor: Colors.orange,
