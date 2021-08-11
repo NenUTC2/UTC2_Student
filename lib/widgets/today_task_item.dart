@@ -76,7 +76,7 @@ class TodayTaskItem extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Thứ ' +
-                                        (state.list[index].note - 1).toString(),
+                                        (state.list[index].note).toString(),
                                     style: TextStyle(
                                       color: ColorApp.black,
                                     ),
@@ -99,7 +99,11 @@ class TodayTaskItem extends StatelessWidget {
                                   Container(
                                     padding: EdgeInsets.all(5),
                                     child: Text(
-                                      'Now, 07:00 -11:30',
+                                      'Now, ' +
+                                          formatTime(
+                                              state.list[index].timeStart) +
+                                          '-' +
+                                          formatTime(state.list[index].timeEnd),
                                       style: TextStyle(
                                         color: ColorApp.orange,
                                       ),
