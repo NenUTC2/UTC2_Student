@@ -29,18 +29,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   bool isLoading = false, isChecked = false, success = false, isErro = false;
   String code, error = 'Nhập mã điểm danh';
 
-  GeoService geoService = GeoService();
-  Future<Position> getLocation() async {
-    var currentPosition = await geoService.getCurrentLocation();
-    return currentPosition;
-  }
-
   Position location;
   Geocoding geocoding;
   List<Address> results = [];
+  
+    GeoService geoService = GeoService();
 
   Future search(String code) async {
-    location = await getLocation();
+    location = await getLocation(geoService);
     setState(() {
       isLoading = true;
     });

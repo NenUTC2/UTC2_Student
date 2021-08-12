@@ -63,7 +63,6 @@ class MyLocalNotification {
     while (scheduledDate.weekday != wd) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
-    print(scheduledDate);
     return scheduledDate;
   }
 

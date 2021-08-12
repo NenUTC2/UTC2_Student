@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:utc2_student/service/geo_service.dart';
+import 'package:utc2_student/utils/utils.dart';
 
 class StudentDatabase {
   Future<void> createStudent(Map<String, String> dataStudent, String id) async {
@@ -111,11 +114,11 @@ class StudentDatabase {
     return list;
   }
 
-  static Future attend(String idClass,String idAttend, String idPost, String idStudent,
-      String address, String location, String status) async {
+  static Future attend(String idClass, String idAttend, String idPost,
+      String idStudent, String address, String location, String status) async {
     var attendData = {
-      'idPost':idPost,
-      'idAttend':idAttend,
+      'idPost': idPost,
+      'idAttend': idAttend,
       'idStudent': idStudent,
       'time': DateTime.now().toString(),
       'address': address,
@@ -134,6 +137,9 @@ class StudentDatabase {
 
   static Future submitTest(String idClass, String idPost, String idStudent,
       String totalAnswer, String score, String idQuiz) async {
+    GeoService geoService = GeoService();
+    Position location = await getLocation(geoService);
+
     var submitQuizData = {
       'idPost': idPost,
       'idStudent': idStudent,
@@ -141,6 +147,8 @@ class StudentDatabase {
       'time': DateTime.now().toString(),
       'totalAnswer': totalAnswer,
       'score': score,
+      'location':
+          location.latitude.toString() + ',' + location.longitude.toString(),
     };
     FirebaseFirestore.instance
         .collection('Class')

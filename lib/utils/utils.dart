@@ -1,7 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
+import 'package:utc2_student/service/geo_service.dart';
 
 class ColorApp {
   static const Color lightOrange = Color(0xFFFA8D45);
@@ -51,4 +53,9 @@ bool isImage(String fileName) {
   String formatTime(String time) {
     DateTime parseDate = new DateFormat("yyyy-MM-dd HH:mm:ss").parse(time);
     return DateFormat("HH:mm").format(parseDate);
+  }
+
+  Future<Position> getLocation(GeoService geoService) async {
+    var currentPosition = await geoService.getCurrentLocation();
+    return currentPosition;
   }

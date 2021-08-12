@@ -31,13 +31,14 @@ class QuizDatabase {
         .doc(idQuiz)
         .delete();
   }
-   static getOneQuiz(String idTeacher,String idQuiz) async {
+
+  static getOneQuiz(String idTeacher, String idQuiz) async {
     List<Quiz> list = [];
     var data = await FirebaseFirestore.instance
         .collection('Teacher')
         .doc(idTeacher)
         .collection('Quiz')
-        .where('idQuiz',isEqualTo: idQuiz)
+        .where('idQuiz', isEqualTo: idQuiz)
         .get();
     list = data.docs.map((e) => Quiz(e)).toList();
     return list[0];
