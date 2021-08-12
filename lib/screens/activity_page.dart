@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
@@ -228,6 +229,11 @@ class _ActivityPageState extends State<ActivityPage> {
               setState(() {
                 listClass = state.list;
               });
+
+              for (var e in state.list) {
+                print(e.id);
+                FirebaseMessaging.instance.subscribeToTopic(e.id);
+              }
             }
           },
           builder: (context, state) {

@@ -20,16 +20,20 @@ class MyLocalNotification {
       int maMon,
       int maLich) async {
     tz.initializeTimeZones();
-    String sem = em == 0 ? '00' : '$em';
+    tz.setLocalLocation(tz.getLocation('Asia/Bangkok'));
+
+    String ssm = sm.toString().length < 2 ? '0$sm' : '$sm';
+    String sem = em.toString().length < 2 ? '0$em' : '$em';
     // print(nextInstanceOfWeekDayTime(sh, sm, wd));
     await notifications.zonedSchedule(
         int.parse('$maMon$maLich'),
         'Đến giờ học môn $tenMon - $room',
-        '$sh:$sm - $eh:$sem',
+        '$sh:$ssm - $eh:$sem',
         nextInstanceOfWeekDayTime(sh, sm, wd),
         NotificationDetails(
           android: AndroidNotificationDetails(
-              '$tenMon-$maLich', '$tenMon-$maLich', '$tenMon-$maLich'),
+              '$tenMon-$maLich', '$tenMon-$maLich', '$tenMon-$maLich',
+              priority: Priority.high),
         ),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
@@ -59,6 +63,7 @@ class MyLocalNotification {
     while (scheduledDate.weekday != wd) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
+    print(scheduledDate);
     return scheduledDate;
   }
 

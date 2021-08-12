@@ -35,7 +35,7 @@ class StudentDatabase {
         .where('email', isEqualTo: email)
         .get();
     list = data.docs.map((e) => Student(e)).toList();
-    print('Get student ' + list[0].email);
+    // print('Get student ' + list[0].email);
     return list[0];
   }
 

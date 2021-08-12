@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:utc2_student/path_finder/repo_path.dart';
 import 'package:utc2_student/service/firestore/schedule_student.dart';
 import 'package:utc2_student/service/local_notification.dart';
 import 'package:utc2_student/utils/color_random.dart';
@@ -45,56 +46,6 @@ class _OpitonScheduleState extends State<OpitonScheduleDay>
   List<Meeting> meetings;
   List<Meeting> _getDataSource() {
     meetings = <Meeting>[];
-    // List widget.listMon = [
-    //   {
-    //     "id": "1",
-    //     "userId": "userId 1",
-    //     "TenMon": "Lập trình di động",
-    //     "StartDate": "2021-05-01",
-    //     "EndDate": "2021-06-22"
-    //   },
-    //   {
-    //     "id": "2",
-    //     "userId": "userId 1",
-    //     "TenMon": "Trí tuệ nhân tạo",
-    //     "StartDate": "2021-05-01",
-    //     "EndDate": "2021-05-30"
-    //   },
-    // ];
-    // List widget.listLich = [
-    //   {
-    //     "id": "1",
-    //     "MonHocId": "1",
-    //     "StartTime": "07:30",
-    //     "EndTime": "11:00",
-    //     "WeekDay": 3,
-    //     "Room": "101C2"
-    //   },
-    //   {
-    //     "id": "2",
-    //     "MonHocId": "1",
-    //     "StartTime": "13:30",
-    //     "EndTime": "17:00",
-    //     "WeekDay": 1,
-    //     "Room": "201C2"
-    //   },
-    //   {
-    //     "id": "3",
-    //     "MonHocId": "2",
-    //     "StartTime": "13:30",
-    //     "EndTime": "17:00",
-    //     "WeekDay": 5,
-    //     "Room": "Room 1"
-    //   },
-    //   {
-    //     "id": "4",
-    //     "MonHocId": "1",
-    //     "StartTime": "08:30",
-    //     "EndTime": "12:00",
-    //     "WeekDay": 6,
-    //     "Room": "201C2"
-    //   },
-    // ];
 
     int wd, sh, sm, eh, em;
     int maMon, maLich;
@@ -135,9 +86,10 @@ class _OpitonScheduleState extends State<OpitonScheduleDay>
 
               //Mon
               tenMon = widget.listMon[i].titleSchedule;
-              maMon =int.parse( widget.listMon[i].idSchedule);
-              maLich =int.parse(widget.listLich[j].idSchedule);
-              room = widget.listLich[j].idRoom;
+              maMon = int.parse(widget.listMon[i].idSchedule);
+              maLich = int.parse(widget.listLich[j].idSchedule);
+              room =
+                  listBuilding[int.parse(widget.listLich[j].idRoom) - 1].name;
 
               DateTime startTime =
                   DateTime(date.year, date.month, date.day, sh, sm);
@@ -153,7 +105,7 @@ class _OpitonScheduleState extends State<OpitonScheduleDay>
                 if (sh > today.hour) {
                   scheduleNoti();
                 } else if (sh == today.hour) {
-                  if (sm > today.minute) {
+                  if (sm >= today.minute) {
                     scheduleNoti();
                   }
                 }

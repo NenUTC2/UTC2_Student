@@ -36,7 +36,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
           listAllLich.add(task);
         }
       }
-      print(listAllLich.length);
+      // print(listAllLich.length);
       yield LoadedSchedulePage(listMon, listAllLich);
     } else
       yield LoadErrorSchedule('Chưa có lịch học nào');

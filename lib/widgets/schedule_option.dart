@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:utc2_student/path_finder/repo_path.dart';
 import 'package:utc2_student/service/firestore/schedule_student.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
 import 'package:utc2_student/service/local_notification.dart';
@@ -89,7 +90,7 @@ class _OpitonScheduleState extends State<OpitonScheduleMonth>
               tenMon = widget.listMon[i].titleSchedule;
               maMon = int.parse(widget.listMon[i].idSchedule);
               maLich = int.parse(widget.listLich[j].idTask);
-              room = widget.listLich[j].idRoom;
+              room = listBuilding[int.parse(widget.listLich[j].idRoom)-1].name;
 
               DateTime startTime =
                   DateTime(date.year, date.month, date.day, sh, sm);
@@ -100,19 +101,19 @@ class _OpitonScheduleState extends State<OpitonScheduleMonth>
               meetings.add(Meeting(tenMon + '\n\n' + room, startTime, endTime,
                   ColorRandom.colorRandom[maMon][0], false));
 
-              if (date.day == today.day &&
-                  date.month == today.month &&
-                  date.year == today.year) {
-                if (sh > today.hour) {
-                  scheduleNoti();
-                } else if (sh == today.hour) {
-                  if (sm > today.minute) {
-                    scheduleNoti();
-                  }
-                }
-              } else {
-                scheduleNoti();
-              }
+              // if (date.day == today.day &&
+              //     date.month == today.month &&
+              //     date.year == today.year) {
+              //   if (sh > today.hour) {
+              //     scheduleNoti();
+              //   } else if (sh == today.hour) {
+              //     if (sm >= today.minute) {
+              //       scheduleNoti();
+              //     }
+              //   }
+              // } else {
+              //   scheduleNoti();
+              // }
             }
           }
         }

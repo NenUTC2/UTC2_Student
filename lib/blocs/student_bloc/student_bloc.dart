@@ -20,9 +20,9 @@ class StudentBloc extends Bloc<StudentEvent, StudentState> {
         yield StudentLoading();
         SharedPreferences prefs = await SharedPreferences.getInstance();
         var userEmail = prefs.getString('userEmail');
-        print('Prefs ' + userEmail.toString());
+        // print('Prefs ' + userEmail.toString());
         Student student = await StudentDatabase.getStudentData(userEmail);
-        print('student ' + student.email);
+        // print('student ' + student.email);
         if (student != null) {
           yield StudentLoaded(student);
         } else {

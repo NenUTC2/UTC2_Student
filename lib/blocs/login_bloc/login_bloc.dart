@@ -31,7 +31,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           bool isRegister = await StudentDatabase.isRegister(login.email);
           if (isRegister) {
             prefs.setString('userEmail', login.email);
-            print('update');
+            // print('update');
             var student = await StudentDatabase.getStudentData(login.email);
             var studentInfo = await getThongTin(student.id);
             Map<String, String> data = {
@@ -55,7 +55,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             if (login.email.substring(len) == emailLen) {
               SinhVien studentInfo =
                   await getThongTin(login.email.substring(0, len - 1));
-              print(login.email.substring(len) == emailLen);
+              // print(login.email.substring(len) == emailLen);
 
               Map<String, String> dataStudent = {
                 'id': login.email.substring(0, len - 1),
