@@ -1,4 +1,4 @@
-package com.example.utc2_student
+package vn.utc2.student
 
 import io.flutter.embedding.android.FlutterActivity
 

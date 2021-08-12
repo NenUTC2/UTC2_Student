@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "423190494078-9ahtj1cpdje6td8g7abgtdsutd3ta9j1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.utc2_staff",
+            "certificate_hash": "fc5ec382de1ebd4f817bf3dd51ce37b358c81043"
+          }
+        },
+        {
+          "client_id": "423190494078-q7cictmashb5gkbb2paad4jrofbt47fd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.utc2_staff",
+            "certificate_hash": "dfa31766d50edb53d5eaada542fc899149aac415"
+          }
+        },
+        {
           "client_id": "423190494078-d09ttrg4cdutjqmc63a9oq8m0tmal1ti.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -39,7 +55,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:423190494078:android:aa4aec205ba6e3f7b1912f",
         "android_client_info": {
-          "package_name": "com.example.utc2_student"
+          "package_name": "vn.utc2.student"
         }
       },
       "oauth_client": [
@@ -47,7 +63,7 @@
           "client_id": "423190494078-5tajfmc0c3b8qn5shbtqk83a4moudl3n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.utc2_student",
+            "package_name": "vn.utc2.student",
             "certificate_hash": "fc5ec382de1ebd4f817bf3dd51ce37b358c81043"
           }
         },
@@ -55,8 +71,98 @@
           "client_id": "423190494078-f238c0gc4kqdkh727vc0dgfa7r4cdnfg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.utc2_student",
+            "package_name": "vn.utc2.student",
             "certificate_hash": "dfa31766d50edb53d5eaada542fc899149aac415"
+          }
+        },
+        {
+          "client_id": "423190494078-d09ttrg4cdutjqmc63a9oq8m0tmal1ti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkuE98NGto54cCx2TunqtRsOldY0N-kTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423190494078-d09ttrg4cdutjqmc63a9oq8m0tmal1ti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423190494078:android:e9ba9c8635fe194cb1912f",
+        "android_client_info": {
+          "package_name": "vn.utc2.staff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423190494078-17865f698nehit7eqe89njrn4t3ojh3u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.utc2.staff",
+            "certificate_hash": "dfa31766d50edb53d5eaada542fc899149aac415"
+          }
+        },
+        {
+          "client_id": "423190494078-3pl1mjbc32m3dlsfenab2kqdmppg9t6u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.utc2.staff",
+            "certificate_hash": "fc5ec382de1ebd4f817bf3dd51ce37b358c81043"
+          }
+        },
+        {
+          "client_id": "423190494078-d09ttrg4cdutjqmc63a9oq8m0tmal1ti.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkuE98NGto54cCx2TunqtRsOldY0N-kTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423190494078-d09ttrg4cdutjqmc63a9oq8m0tmal1ti.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423190494078:android:eff1a9278113523cb1912f",
+        "android_client_info": {
+          "package_name": "vn.utc2.student"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423190494078-cut8chnvv0n66pe3ur8nb915q2kbr9v7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.utc2.student",
+            "certificate_hash": "dfa31766d50edb53d5eaada542fc899149aac415"
+          }
+        },
+        {
+          "client_id": "423190494078-o9po6mlc6itcmr5jfku1be5unhlerh3n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "vn.utc2.student",
+            "certificate_hash": "fc5ec382de1ebd4f817bf3dd51ce37b358c81043"
           }
         },
         {

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:geocoder/model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/service/geo_service.dart';
 import 'package:utc2_student/utils/utils.dart';
+import 'package:geocoder/geocoder.dart';
 
 class StudentDatabase {
   Future<void> createStudent(Map<String, String> dataStudent, String id) async {
@@ -138,7 +140,16 @@ class StudentDatabase {
   static Future submitTest(String idClass, String idPost, String idStudent,
       String totalAnswer, String score, String idQuiz) async {
     GeoService geoService = GeoService();
+
+    //Lay lat long
     Position location = await getLocation(geoService);
+
+    //Tim dia chi
+    var geocoding = Geocoder.local;
+    var longitude = location.longitude;
+    var latitude = location.latitude;
+    var results = await geocoding
+        .findAddressesFromCoordinates(new Coordinates(latitude, longitude));
 
     var submitQuizData = {
       'idPost': idPost,
@@ -149,6 +160,7 @@ class StudentDatabase {
       'score': score,
       'location':
           location.latitude.toString() + ',' + location.longitude.toString(),
+      'address': results[0].addressLine.toString(),
     };
     FirebaseFirestore.instance
         .collection('Class')
