@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoder/geocoder.dart';
+import 'package:geocoder/services/base.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:utc2_student/models/firebase_file.dart';
@@ -10,6 +12,7 @@ import 'package:utc2_student/service/firestore/class_database.dart';
 import 'package:utc2_student/service/firestore/post_database.dart';
 import 'package:utc2_student/service/firestore/push_noti_firebase.dart';
 import 'package:utc2_student/service/firestore/student_database.dart';
+import 'package:utc2_student/service/geo_service.dart';
 import 'package:utc2_student/utils/utils.dart';
 
 class NewNotify extends StatefulWidget {
@@ -27,8 +30,24 @@ class _NewNotifyState extends State<NewNotify> {
   String title, content;
   TextEditingController _controller = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  GeoService geoService = GeoService();
+  var location;
+  Geocoding geocoding = Geocoder.local;
+  var results;
 
   List<FirebaseFile> listFile = [];
+  @override
+  void initState() {
+    initLocation();
+    super.initState();
+  }
+
+  void initLocation() async {
+    //Lay lat long
+    location = await getLocation(geoService);
+    results = await geocoding.findAddressesFromCoordinates(
+        new Coordinates(location.latitude, location.longitude));
+  }
 
   void submitPost() async {
     if (_formKey.currentState.validate()) {
@@ -74,6 +93,10 @@ class _NewNotifyState extends State<NewNotify> {
         'timeAtten': null,
         "idQuiz": null,
         "quizContent": null,
+        'location': (location?.latitude.toString() ?? '') +
+            ',' +
+            (location?.longitude.toString() ?? ''),
+        'address': results[0].addressLine.toString(),
       };
       await postDatabase.createPost(dataPost, widget.classUtc.id, idPost);
       if (listFile.isNotEmpty) {
