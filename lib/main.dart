@@ -179,7 +179,6 @@ class _HomePageState extends State<HomePage> {
 
   Future onSelectNotification(String payload) async {
     print(payload);
-    // Get.to(DetailClassScreen());
   }
 
   void createLocalNotify(RemoteMessage message) async {

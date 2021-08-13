@@ -6,6 +6,7 @@ import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:utc2_student/path_finder/repo_path.dart';
 
 class MyLocalNotification {
   static Future<void> scheduleWeeklyMondayTenAMNotification(
@@ -20,21 +21,31 @@ class MyLocalNotification {
       int maMon,
       int maLich) async {
     tz.initializeTimeZones();
-    tz.setLocalLocation(tz.getLocation('Asia/Bangkok'));
-
+    String ssh = sh.toString().length < 2 ? '0$sh' : '$sh';
+    String seh = eh.toString().length < 2 ? '0$eh' : '$eh';
     String ssm = sm.toString().length < 2 ? '0$sm' : '$sm';
     String sem = em.toString().length < 2 ? '0$em' : '$em';
-    // print(nextInstanceOfWeekDayTime(sh, sm, wd));
+
+    DateTime retime = nextInstanceOfWeekDayTime(sh, sm, wd);
+    var stringTime = retime.toString() + '000';
+    print(stringTime);
+    var time = tz.TZDateTime.parse(tz.getLocation('Asia/Bangkok'), stringTime);
+
     await notifications.zonedSchedule(
         int.parse('$maMon$maLich'),
-        'Đến giờ học môn $tenMon - $room',
-        '$sh:$ssm - $eh:$sem',
-        nextInstanceOfWeekDayTime(sh, sm, wd),
+        'Đến giờ học môn $tenMon - Phòng: ' +
+            listBuilding[int.parse(room) - 1].name +
+            '\n Nhấn để mở bản đồ',
+        '$ssh:$ssm - $seh:$sem',
+        time,
         NotificationDetails(
           android: AndroidNotificationDetails(
-              '$tenMon-$maLich', '$tenMon-$maLich', '$tenMon-$maLich',
-              priority: Priority.high),
+            '$tenMon-$maLich',
+            '$tenMon-$maLich',
+            '$tenMon-$maLich',
+          ),
         ),
+        payload: room,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
@@ -48,18 +59,17 @@ class MyLocalNotification {
     print(timeZoneName);
   }
 
-  static tz.TZDateTime nextInstanceOfTime(int h, int m) {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate =
-        tz.TZDateTime(tz.local, now.year, now.month, now.day, h, m);
+  static DateTime nextInstanceOfTime(int h, int m) {
+    final DateTime now = DateTime.now();
+    DateTime scheduledDate = DateTime(now.year, now.month, now.day, h, m);
     if (scheduledDate.isBefore(now)) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
     return scheduledDate;
   }
 
-  static tz.TZDateTime nextInstanceOfWeekDayTime(int h, int m, int wd) {
-    tz.TZDateTime scheduledDate = nextInstanceOfTime(h, m);
+  static DateTime nextInstanceOfWeekDayTime(int h, int m, int wd) {
+    DateTime scheduledDate = nextInstanceOfTime(h, m);
     while (scheduledDate.weekday != wd) {
       scheduledDate = scheduledDate.add(const Duration(days: 1));
     }
@@ -95,7 +105,7 @@ class MyLocalNotification {
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await notifications.show(0, title, body, platformChannelSpecifics,
-        payload: 'item x');
+        payload: idChannel);
   }
 
   static Future<void> showNotificationEvent(
@@ -119,7 +129,7 @@ class MyLocalNotification {
     NotificationDetails platformChannelSpecifics =
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await notifications.show(0, chanelName, title, platformChannelSpecifics,
-        payload: 'item x');
+        payload: idChannel);
   }
 
   static Future<void> cancelNotification(
@@ -165,7 +175,8 @@ class MyLocalNotification {
         0,
         chanelName,
         title + '  -   Mã điểm danh: ' + idQR + '  -   Hạn: ' + timeAtten,
-        platformChannelSpecifics);
+        platformChannelSpecifics,
+        payload: idChannel);
   }
 
   static Future<void> showNotificationNewClass(

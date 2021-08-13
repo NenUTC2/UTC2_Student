@@ -25,16 +25,16 @@ class _OpitonScheduleState extends State<OpitonScheduleWeek>
   void initState() {
     super.initState();
     // MyLocalNotification.configureLocalTimeZone();
-    final settingsAndroid = AndroidInitializationSettings('app_icon');
+    // final settingsAndroid = AndroidInitializationSettings('app_icon');
 
-    final settingsIOS = IOSInitializationSettings(
-        onDidReceiveLocalNotification: (id, title, body, payload) =>
-            onSelectNotification(payload));
+    // final settingsIOS = IOSInitializationSettings(
+    //     onDidReceiveLocalNotification: (id, title, body, payload) =>
+    //         onSelectNotification(payload));
 
-    notifications.initialize(
-        InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
-        onSelectNotification: onSelectNotification);
-    notifications.cancelAll();
+    // notifications.initialize(
+    //     InitializationSettings(android: settingsAndroid, iOS: settingsIOS),
+    //     onSelectNotification: onSelectNotification);
+    // notifications.cancelAll();
     _getDataSource();
   }
 
@@ -88,7 +88,8 @@ class _OpitonScheduleState extends State<OpitonScheduleWeek>
               tenMon = widget.listMon[i].titleSchedule;
               maMon = int.parse(widget.listMon[i].idSchedule);
               maLich = int.parse(widget.listLich[j].idSchedule);
-              room = listBuilding[int.parse(widget.listLich[j].idRoom)-1].name;
+              room =
+                  listBuilding[int.parse(widget.listLich[j].idRoom) - 1].name;
               print(room);
 
               DateTime startTime =

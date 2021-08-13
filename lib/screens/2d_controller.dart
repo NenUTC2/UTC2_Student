@@ -82,21 +82,17 @@ class Map2dController extends GetxController {
     print(isFirst);
 
     if (!listDiem.contains(itemId)) {
-      if (listDiem.length < 2) {
-        listDiem.add(itemId);
-        listDiem.refresh();
-        PositionedWidgetState.diem.add(itemId);
-      } else {
+      if (isFirst) {
         clearFindPath();
 
         PositionedWidgetState.diem.add(itemId);
         listDiem.add(itemId);
-      }
-      if (isFirst) {
         //Diem dau
         diemDau.value = itemId;
         diemDauController.text = listBuilding[itemId - 1].name;
       } else {
+        PositionedWidgetState.diem.add(itemId);
+        listDiem.add(itemId);
         //Diem Cuoi
         diemCuoi.value = itemId;
         diemCuoiController.text = listBuilding[itemId - 1].name;
@@ -120,6 +116,7 @@ class Map2dController extends GetxController {
     }
     if (isFirst) {
       //Diem dau
+
       diemDau.value = id;
       diemDauController.text = listBuilding[id - 1].name;
     } else {
