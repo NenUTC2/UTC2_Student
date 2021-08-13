@@ -102,12 +102,17 @@ class _HomePageState extends State<HomePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                '   Lịch học hôm nay',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500),
+              GestureDetector(
+                onTap: () {
+                  scheduleBloc.add(GetTodayTaskEvent(student.id));
+                },
+                child: Text(
+                  '   Lịch học hôm nay',
+                  style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500),
+                ),
               ),
             ],
           ),
